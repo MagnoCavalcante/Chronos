@@ -1,0 +1,6 @@
+{
+  "name": "CHRONOS",
+  "description": "Uma plataforma premium de conhecimento histórico baseada na passagem do tempo e evidências científicas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
