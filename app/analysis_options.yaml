@@ -1,0 +1,14 @@
+# Configurações de análise estática de código Dart para o projeto CHRONOS
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    avoid_print: true
+    prefer_const_constructors: true
+    prefer_const_declarations: true
+    always_declare_return_types: true
+    curly_braces_in_flow_control_structures: true
+    prefer_single_quotes: true
+    annotate_overrides: true
+    avoid_empty_else: true
+    no_duplicate_case_values: true

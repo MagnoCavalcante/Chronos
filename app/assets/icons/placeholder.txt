@@ -1,0 +1,1 @@
+Diretório reservado para ícones personalizados de nós, pins de mapas e marcadores de status da linha do tempo.
