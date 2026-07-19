@@ -73,7 +73,7 @@ class HistoricalEventCard extends StatelessWidget {
     return ChronosCard(
       margin: const EdgeInsets.symmetric(vertical: ChronosSpacing.sm, horizontal: ChronosSpacing.xxs),
       onTap: onTap,
-      borderColor: accentColor.withOpacity(0.35),
+      borderColor: accentColor.withValues(alpha: 0.35),
       borderWidth: 1.5,
       padding: const EdgeInsets.all(ChronosSpacing.lg),
       child: Column(
@@ -88,7 +88,7 @@ class HistoricalEventCard extends StatelessWidget {
                 width: 38,
                 height: 38,
                 decoration: BoxDecoration(
-                  color: accentColor.withOpacity(0.12),
+                  color: accentColor.withValues(alpha: 0.12),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -114,7 +114,7 @@ class HistoricalEventCard extends StatelessWidget {
                     Text(
                       typeData.label.toUpperCase(),
                       style: ChronosTypography.labelSmall.copyWith(
-                        color: accentColor.withOpacity(0.85),
+                        color: accentColor.withValues(alpha: 0.85),
                       ),
                     ),
                   ],
@@ -174,7 +174,7 @@ class HistoricalEventCard extends StatelessWidget {
                           child: Text(
                             'Era: ${era?.nome ?? "Desconhecida"}',
                             style: ChronosTypography.bodySmall.copyWith(
-                              color: accentColor.withOpacity(0.75),
+                              color: accentColor.withValues(alpha: 0.75),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -189,7 +189,7 @@ class HistoricalEventCard extends StatelessWidget {
                 children: List.generate(5, (index) {
                   return Icon(
                     index < importance ? Icons.star_rounded : Icons.star_outline_rounded,
-                    color: index < importance ? ChronosColors.accent : ChronosColors.textMuted.withOpacity(0.3),
+                    color: index < importance ? ChronosColors.accent : ChronosColors.textMuted.withValues(alpha: 0.3),
                     size: 15,
                   );
                 }),
@@ -205,19 +205,19 @@ class HistoricalEventCard extends StatelessWidget {
   _EventTypeData _getEventTypeData(String type) {
     switch (type.toLowerCase()) {
       case 'political':
-        return _EventTypeData(Icons.gavel_rounded, 'Político');
+        return const _EventTypeData(Icons.gavel_rounded, 'Político');
       case 'military':
-        return _EventTypeData(Icons.shield_rounded, 'Militar');
+        return const _EventTypeData(Icons.shield_rounded, 'Militar');
       case 'social':
-        return _EventTypeData(Icons.people_alt_rounded, 'Social');
+        return const _EventTypeData(Icons.people_alt_rounded, 'Social');
       case 'cultural':
-        return _EventTypeData(Icons.palette_rounded, 'Cultural');
+        return const _EventTypeData(Icons.palette_rounded, 'Cultural');
       case 'scientific':
-        return _EventTypeData(Icons.science_rounded, 'Científico');
+        return const _EventTypeData(Icons.science_rounded, 'Científico');
       case 'religious':
-        return _EventTypeData(Icons.church_rounded, 'Religioso');
+        return const _EventTypeData(Icons.church_rounded, 'Religioso');
       default:
-        return _EventTypeData(Icons.event_note_rounded, 'Geral');
+        return const _EventTypeData(Icons.event_note_rounded, 'Geral');
     }
   }
 }

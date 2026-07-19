@@ -10,7 +10,7 @@ class FeatureContext {
     // Singularize featureName
     String singular = featureName;
     if (featureName.endsWith('ies')) {
-      singular = featureName.substring(0, featureName.length - 3) + 'y';
+      singular = '${featureName.substring(0, featureName.length - 3)}y';
     } else if (featureName.endsWith('s') && !featureName.endsWith('ss')) {
       singular = featureName.substring(0, featureName.length - 1);
     }

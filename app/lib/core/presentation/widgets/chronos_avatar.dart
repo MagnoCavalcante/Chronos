@@ -72,7 +72,7 @@ class ChronosAvatar extends StatelessWidget {
   }
 
   Widget _buildFallback(BuildContext context) {
-    final accentCol = ChronosColors.accent;
+    const accentCol = ChronosColors.accent;
 
     if (name != null && name!.trim().isNotEmpty) {
       final cleanName = name!.trim();
@@ -86,7 +86,7 @@ class ChronosAvatar extends StatelessWidget {
       initials = initials.toUpperCase();
 
       return Container(
-        color: accentCol.withOpacity(0.12),
+        color: accentCol.withValues(alpha: 0.12),
         child: Center(
           child: Text(
             initials,

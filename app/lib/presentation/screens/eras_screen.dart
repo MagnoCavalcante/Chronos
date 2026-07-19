@@ -58,7 +58,7 @@ class _ErasScreenState extends State<ErasScreen> {
   Widget _buildBodyContent() {
     if (_controller.isLoading) {
       return const ChronosLoading(
-        description: 'Carregando Eras do CHRONOS...',
+        message: 'Carregando Eras do CHRONOS...',
       );
     }
 
@@ -116,7 +116,7 @@ class _EraValidationCard extends StatelessWidget {
 
     return ChronosCard(
       margin: const EdgeInsets.symmetric(vertical: ChronosSpacing.sm),
-      borderColor: accentColor.withOpacity(0.4),
+      borderColor: accentColor.withValues(alpha: 0.4),
       borderWidth: 1.5,
       padding: const EdgeInsets.all(ChronosSpacing.lg),
       child: Row(
@@ -126,7 +126,7 @@ class _EraValidationCard extends StatelessWidget {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: accentColor.withOpacity(0.12),
+              color: accentColor.withValues(alpha: 0.12),
               shape: BoxShape.circle,
             ),
             child: Icon(

@@ -1,4 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'build_config.dart';
 
 /// Gerenciador de Configuração e Inicialização do Supabase para o ecossistema CHRONOS.
 ///
@@ -18,10 +19,7 @@ class SupabaseConfig {
   /// (ex: `--dart-define=SUPABASE_URL=valor`) para segregação de ambientes (Staging/Production).
   ///
   /// [SUPABASE_URL] representa a constante de ambiente correspondente.
-  static const String supabaseUrl = String.fromEnvironment(
-    'SUPABASE_URL',
-    defaultValue: 'https://nmoyrkhozsomnbqepfvs.supabase.co',
-  );
+  static String get supabaseUrl => BuildConfig.supabaseUrl;
 
   /// Chave Pública Anônima (Anon Key) para acesso às tabelas do Supabase que obedecem à RLS.
   ///
@@ -29,10 +27,7 @@ class SupabaseConfig {
   /// (ex: `--dart-define=SUPABASE_ANON_KEY=valor`) para segregação de chaves por ambiente.
   ///
   /// [SUPABASE_ANON_KEY] representa a constante de ambiente correspondente.
-  static const String supabaseAnonKey = String.fromEnvironment(
-    'SUPABASE_ANON_KEY',
-    defaultValue: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5tb3lya2hvenNvbW5icWVwZnZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyODU5NDUsImV4cCI6MjA5OTg2MTk0NX0.WycYAClfwx1ouhzS6gNA3hh4AOmuZvnY5dKpC4VFPFM',
-  );
+  static String get supabaseAnonKey => BuildConfig.supabaseAnonKey;
 
   /// Status interno que armazena se o cliente foi inicializado com sucesso.
   static bool _isInitialized = false;
@@ -58,7 +53,7 @@ class SupabaseConfig {
     try {
       await Supabase.initialize(
         url: supabaseUrl,
-        anonKey: supabaseAnonKey,
+        publishableKey: supabaseAnonKey,
       );
       _isInitialized = true;
       _initializationError = null;

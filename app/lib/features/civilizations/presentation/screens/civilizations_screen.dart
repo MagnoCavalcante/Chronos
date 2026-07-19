@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:chronos/core/di/service_locator.dart';
+import 'package:chronos/core/presentation/widgets/chronos_icon_button.dart';
+import 'package:chronos/core/presentation/widgets/chronos_page.dart';
+import 'package:chronos/core/presentation/widgets/chronos_scaffold.dart';
+import 'package:chronos/core/theme/chronos_icons.dart';
 import 'package:chronos/core/utils/logger.dart';
 import '../../domain/entities/civilization.dart';
 import '../controllers/civilizations_controller.dart';
@@ -53,34 +57,22 @@ class _CivilizationsScreenState extends State<CivilizationsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'CHRONOS — Civilizations',
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            letterSpacing: 0.8,
-          ),
+    return ChronosScaffold(
+      title: 'CHRONOS — Civilizations',
+      actions: [
+        ChronosIconButton(
+          tooltip: 'Sincronizar',
+          icon: ChronosIcons.sync,
+          onPressed: _handleRefresh,
         ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            tooltip: 'Sincronizar',
-            icon: const Icon(Icons.sync_rounded),
-            onPressed: _handleRefresh,
-          ),
-        ],
-      ),
+      ],
       body: ListenableBuilder(
         listenable: _controller,
         builder: (context, _) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: _buildBodyContent(),
-              ),
-            ],
+          return ChronosPage(
+            onRefresh: _handleRefresh,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: _buildBodyContent(),
           );
         },
       ),
@@ -121,7 +113,7 @@ class _CivilizationsScreenState extends State<CivilizationsScreen> {
             onTap: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Visualizando detalhes do item "${item.nome}".'),
+                  content: Text('Visualizando detalhes do item "${item.name}".'),
                   duration: const Duration(milliseconds: 1500),
                 ),
               );

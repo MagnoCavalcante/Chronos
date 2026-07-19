@@ -1,77 +1,38 @@
-import 'package:flutter/foundation.dart';
 import 'package:chronos/core/di/service_locator.dart';
 import 'package:chronos/core/errors/failure.dart';
-import 'package:chronos/core/utils/logger.dart';
-import 'package:chronos/core/utils/result.dart';
+import 'package:chronos/core/presentation/base_controller.dart';
 import '../../domain/entities/civilization.dart';
 import '../../domain/usecases/get_civilizations_usecase.dart';
 
-/// Controller da camada de Apresentação (Presentation Layer) encarregado do
-/// gerenciamento de estado e fluxo de dados reativos para Civilizations.
-class CivilizationsController extends ChangeNotifier {
+/// Controller da camada de apresentação para Civilizations.
+///
+/// Mantém a lógica de estado dentro do padrão BaseController do CHRONOS e deixa a UI
+/// responsiva a estados de initial/loading/success/empty/error/refreshing.
+class CivilizationsController extends BaseController<List<Civilization>> {
   final GetCivilizationsUseCase _getCivilizationsUseCase;
 
-  List<Civilization> _items = const [];
-  bool _isLoading = false;
-  Failure? _failure;
+  CivilizationsController({GetCivilizationsUseCase? useCase})
+      : _getCivilizationsUseCase = useCase ?? locate<GetCivilizationsUseCase>(),
+        super(initialData: const []);
 
-  CivilizationsController({
-    GetCivilizationsUseCase? useCase,
-  }) : _getCivilizationsUseCase = useCase ?? locate<GetCivilizationsUseCase>();
+  List<Civilization> get items => data ?? const [];
 
-  List<Civilization> get items => List.unmodifiable(_items);
-  bool get isLoading => _isLoading;
-  Failure? get failure => _failure;
-  bool get hasError => _failure != null;
-  bool get hasData => _items.isNotEmpty && !_isLoading;
-  bool get isEmpty => _items.isEmpty && !_isLoading && !hasError;
+  Failure? get failure => error;
 
   Future<void> loadCivilizations() async {
-    ChronosLogger.info('Iniciando o carregamento de Civilizations...', tag: 'CivilizationsController');
-    _setLoading(true);
-    _clearErrorInternal();
-
-    final stopwatch = Stopwatch()..start();
-    final result = await _getCivilizationsUseCase();
-    stopwatch.stop();
-
-    result.fold(
-      onSuccess: (data) {
-        _items = List.unmodifiable(data);
-        _failure = null;
-        ChronosLogger.info(
-          'Civilizations carregados(as) com sucesso! Total: ${_items.length}. Tempo: ${stopwatch.elapsedMilliseconds}ms',
-          tag: 'CivilizationsController',
-        );
-      },
-      onFailure: (falha) {
-        _failure = falha;
-        ChronosLogger.error(
-          'Falha ao carregar civilizations: ${falha.message}',
-          tag: 'CivilizationsController',
-          error: falha.originalError,
-        );
-      },
+    await execute(
+      () => _getCivilizationsUseCase(),
+      tag: 'CivilizationsController',
     );
-
-    _setLoading(false);
   }
 
-  void clearError() {
-    if (_failure != null) {
-      _clearErrorInternal();
-      notifyListeners();
-    }
+  @override
+  Future<void> retry() async {
+    await loadCivilizations();
   }
 
-  void _setLoading(bool value) {
-    if (_isLoading != value) {
-      _isLoading = value;
-      notifyListeners();
-    }
-  }
-
-  void _clearErrorInternal() {
-    _failure = null;
+  @override
+  Future<void> refresh() async {
+    await loadCivilizations();
   }
 }

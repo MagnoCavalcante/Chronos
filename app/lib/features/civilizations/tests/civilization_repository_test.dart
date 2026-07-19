@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:chronos/core/utils/result.dart';
 import 'package:chronos/domain/entities/publication_status.dart';
 import '../data/models/civilization_model.dart';
 import '../data/repositories/civilization_repository_impl.dart';
@@ -29,10 +28,12 @@ void main() {
     final modelSample = CivilizationModel(
       id: '1',
       slug: 'slug',
-      nome: 'Nome',
-      descricao: 'Desc',
+      name: 'Nome',
+      shortName: 'N',
+      description: 'Desc',
+      summary: 'Resumo',
       publicationStatus: PublicationStatus.published,
-      ativo: true,
+      active: true,
       createdAt: now,
       updatedAt: now,
     );

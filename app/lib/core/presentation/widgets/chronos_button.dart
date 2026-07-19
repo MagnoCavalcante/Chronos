@@ -59,11 +59,11 @@ class ChronosButton extends StatelessWidget {
 
     if (isDisabled) {
       bgColor = variant == ChronosButtonVariant.primary || variant == ChronosButtonVariant.secondary
-          ? ChronosColors.primaryLight.withOpacity(0.5)
+          ? ChronosColors.primaryLight.withValues(alpha: 0.5)
           : ChronosColors.transparent;
       fgColor = ChronosColors.textMuted;
       borderSide = borderSide != BorderSide.none
-          ? BorderSide(color: ChronosColors.border, width: 1.5)
+          ? const BorderSide(color: ChronosColors.border, width: 1.5)
           : BorderSide.none;
     }
 

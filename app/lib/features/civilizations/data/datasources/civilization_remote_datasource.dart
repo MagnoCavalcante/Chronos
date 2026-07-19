@@ -71,9 +71,9 @@ class CivilizationRemoteDataSourceImpl implements CivilizationRemoteDataSource {
       final List<dynamic> response = await _client
           .from('civilizations')
           .select()
-          .eq('ativo', true)
+          .eq('active', true)
           .eq('publication_status', PublicationStatus.published.value)
-          .order('nome', ascending: true);
+          .order('name', ascending: true);
 
       if (response.isEmpty) {
         const errorMsg = 'Nenhum(a) Civilization ativo(a) e publicado(a) foi localizado(a).';
@@ -115,7 +115,7 @@ class CivilizationRemoteDataSourceImpl implements CivilizationRemoteDataSource {
           errorStr.contains('connection failed') ||
           errorStr.contains('network') ||
           errorStr.contains('xmlhttprequest')) {
-        final errorMsg = 'Falha de conectividade de rede ao comunicar com o servidor Supabase.';
+        const errorMsg = 'Falha de conectividade de rede ao comunicar com o servidor Supabase.';
         ChronosLogger.error(errorMsg, tag: _tag, error: e);
         throw CivilizationDataSourceException.network(
           errorMsg,

@@ -132,7 +132,7 @@ class HistoricalCharacterRemoteDataSourceImpl implements HistoricalCharacterRemo
           errorStr.contains('connection failed') ||
           errorStr.contains('network') ||
           errorStr.contains('xmlhttprequest')) {
-        final errorMsg = 'Falha de conectividade de rede ao comunicar com o servidor Supabase.';
+        const errorMsg = 'Falha de conectividade de rede ao comunicar com o servidor Supabase.';
         ChronosLogger.error(errorMsg, tag: _tag, error: e);
         throw HistoricalCharacterDataSourceException.network(
           errorMsg,
@@ -204,7 +204,7 @@ class HistoricalCharacterRemoteDataSourceImpl implements HistoricalCharacterRemo
           errorStr.contains('connection failed') ||
           errorStr.contains('network') ||
           errorStr.contains('xmlhttprequest')) {
-        final errorMsg = 'Falha de conectividade de rede ao comunicar com o servidor Supabase.';
+        const errorMsg = 'Falha de conectividade de rede ao comunicar com o servidor Supabase.';
         ChronosLogger.error(errorMsg, tag: _tag, error: e);
         throw HistoricalCharacterDataSourceException.network(
           errorMsg,
@@ -276,7 +276,7 @@ class HistoricalCharacterRemoteDataSourceImpl implements HistoricalCharacterRemo
           errorStr.contains('connection failed') ||
           errorStr.contains('network') ||
           errorStr.contains('xmlhttprequest')) {
-        final errorMsg = 'Falha de conectividade de rede ao comunicar com o servidor Supabase.';
+        const errorMsg = 'Falha de conectividade de rede ao comunicar com o servidor Supabase.';
         ChronosLogger.error(errorMsg, tag: _tag, error: e);
         throw HistoricalCharacterDataSourceException.network(
           errorMsg,

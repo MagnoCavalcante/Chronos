@@ -29,7 +29,7 @@ class ChronosChip extends StatelessWidget {
     final bool isInteractive = onTap != null;
 
     final Color bgColor = isSelected
-        ? ChronosColors.accent.withOpacity(0.15)
+        ? ChronosColors.accent.withValues(alpha: 0.15)
         : ChronosColors.surface;
 
     final Color fgColor = isSelected
@@ -65,7 +65,7 @@ class ChronosChip extends StatelessWidget {
             const SizedBox(width: 6),
             GestureDetector(
               onTap: onTrailingTap,
-              child: Icon(trailingIcon, size: 14, color: fgColor.withOpacity(0.7)),
+              child: Icon(trailingIcon, size: 14, color: fgColor.withValues(alpha: 0.7)),
             ),
           ],
         ],

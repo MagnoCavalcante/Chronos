@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
-import '../../core/errors/failure.dart';
 import '../../core/utils/logger.dart';
-import '../../core/utils/result.dart';
 import '../../domain/entities/era.dart';
 import '../../domain/usecases/get_all_eras_usecase.dart';
 

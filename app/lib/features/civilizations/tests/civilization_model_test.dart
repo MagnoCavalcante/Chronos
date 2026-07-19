@@ -10,10 +10,12 @@ void main() {
     final jsonSample = {
       'id': '123',
       'slug': 'test-slug',
-      'nome': 'Test Name',
-      'descricao': 'Test Description',
+      'name': 'Test Name',
+      'short_name': 'TN',
+      'description': 'Test Description',
+      'summary': 'Test Summary',
       'publication_status': 'published',
-      'ativo': true,
+      'active': true,
       'created_at': now.toIso8601String(),
       'updated_at': now.toIso8601String(),
     };
@@ -22,7 +24,7 @@ void main() {
       final model = CivilizationModel.fromJson(jsonSample);
 
       expect(model.id, '123');
-      expect(model.nome, 'Test Name');
+      expect(model.name, 'Test Name');
       expect(model.publicationStatus, PublicationStatus.published);
     });
 
@@ -30,10 +32,12 @@ void main() {
       final model = CivilizationModel(
         id: '123',
         slug: 'test-slug',
-        nome: 'Test Name',
-        descricao: 'Test Description',
+        name: 'Test Name',
+        shortName: 'TN',
+        description: 'Test Description',
+        summary: 'Test Summary',
         publicationStatus: PublicationStatus.published,
-        ativo: true,
+        active: true,
         createdAt: now,
         updatedAt: now,
       );
@@ -41,17 +45,19 @@ void main() {
       final json = model.toJson();
 
       expect(json['id'], '123');
-      expect(json['nome'], 'Test Name');
+      expect(json['name'], 'Test Name');
     });
 
     test('should support conversion from entity', () {
       final entity = Civilization(
         id: '123',
         slug: 'test-slug',
-        nome: 'Test Name',
-        descricao: 'Test Description',
+        name: 'Test Name',
+        shortName: 'TN',
+        description: 'Test Description',
+        summary: 'Test Summary',
         publicationStatus: PublicationStatus.published,
-        ativo: true,
+        active: true,
         createdAt: now,
         updatedAt: now,
       );
@@ -59,7 +65,7 @@ void main() {
       final model = CivilizationModel.fromEntity(entity);
 
       expect(model.id, '123');
-      expect(model.nome, 'Test Name');
+      expect(model.name, 'Test Name');
     });
   });
 }

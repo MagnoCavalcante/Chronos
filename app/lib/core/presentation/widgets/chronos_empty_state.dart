@@ -35,7 +35,7 @@ class ChronosEmptyState extends StatelessWidget {
             // Círculo de destaque com o ícone semântico
             Container(
               padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: ChronosColors.surfaceLight,
                 shape: BoxShape.circle,
               ),

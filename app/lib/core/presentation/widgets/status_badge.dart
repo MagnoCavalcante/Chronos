@@ -15,7 +15,7 @@ class StatusBadge extends StatelessWidget {
     Color badgeColor;
     switch (status.toLowerCase()) {
       case 'published':
-        badgeColor = Colors.emerald;
+        badgeColor = Colors.green;
         break;
       case 'draft':
         badgeColor = Colors.orange;
@@ -31,9 +31,9 @@ class StatusBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
-        color: badgeColor.withOpacity(0.12),
+        color: badgeColor.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: badgeColor.withOpacity(0.35), width: 1.0),
+        border: Border.all(color: badgeColor.withValues(alpha: 0.35), width: 1.0),
       ),
       child: Text(
         status.toUpperCase(),

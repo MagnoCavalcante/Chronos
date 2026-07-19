@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:chronos/core/di/service_locator.dart';
+import 'package:chronos/core/navigation/navigation_service.dart';
+import 'package:chronos/core/presentation/widgets/chronos_icon_button.dart';
+import 'package:chronos/core/presentation/widgets/chronos_page.dart';
+import 'package:chronos/core/presentation/widgets/chronos_scaffold.dart';
+import 'package:chronos/core/theme/chronos_icons.dart';
 import 'package:chronos/core/utils/logger.dart';
 import 'package:chronos/domain/entities/era.dart';
 import 'package:chronos/domain/usecases/get_all_eras_usecase.dart';
-import '../../domain/entities/historical_character.dart';
 import '../controllers/historical_characters_controller.dart';
 import '../widgets/historical_character_card.dart';
 import '../widgets/historical_character_empty.dart';
@@ -25,6 +29,7 @@ class HistoricalCharactersScreen extends StatefulWidget {
 
 class _HistoricalCharactersScreenState extends State<HistoricalCharactersScreen> {
   late final HistoricalCharactersController _controller;
+  late final NavigationService _navigationService;
   static const String _tag = 'HistoricalCharactersScreen';
   Map<String, Era> _erasMap = const {};
 
@@ -34,6 +39,7 @@ class _HistoricalCharactersScreenState extends State<HistoricalCharactersScreen>
     ChronosLogger.info('Iniciando ciclo de vida da tela de HistoricalCharacters...', tag: _tag);
 
     _controller = widget.controller ?? locate<HistoricalCharactersController>();
+    _navigationService = locate<NavigationService>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _controller.loadHistoricalCharacters();
@@ -41,23 +47,15 @@ class _HistoricalCharactersScreenState extends State<HistoricalCharactersScreen>
     });
   }
 
-  @override
-  void dispose() {
-    ChronosLogger.info('Liberando recursos e saindo da tela de HistoricalCharacters.', tag: _tag);
-    super.dispose();
-  }
-
   Future<void> _loadEras() async {
     try {
       final getAllEras = locate<GetAllErasUseCase>();
       final result = await getAllEras();
-      if (result.isSuccess) {
+      if (result.isSuccess && mounted) {
         final eras = result.valueOrNull ?? [];
-        if (mounted) {
-          setState(() {
-            _erasMap = {for (final e in eras) e.id: e};
-          });
-        }
+        setState(() {
+          _erasMap = {for (final e in eras) e.id: e};
+        });
       }
     } catch (e) {
       ChronosLogger.error('Erro ao carregar Eras contextuais para os Personagens.', tag: _tag, error: e);
@@ -66,43 +64,28 @@ class _HistoricalCharactersScreenState extends State<HistoricalCharactersScreen>
 
   Future<void> _handleRefresh() async {
     ChronosLogger.info('Disparando atualização manual de historicalCharacters...', tag: _tag);
-    final stopwatch = Stopwatch()..start();
     await _controller.loadHistoricalCharacters();
     await _loadEras();
-    stopwatch.stop();
-    ChronosLogger.info('Atualização manual de historicalCharacters finalizada em ${stopwatch.elapsedMilliseconds}ms.', tag: _tag);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'CHRONOS — Personagens',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            letterSpacing: 0.8,
-          ),
+    return ChronosScaffold(
+      title: 'CHRONOS — Personagens',
+      actions: [
+        ChronosIconButton(
+          tooltip: 'Sincronizar',
+          icon: ChronosIcons.sync,
+          onPressed: _handleRefresh,
         ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            tooltip: 'Sincronizar',
-            icon: const Icon(Icons.sync_rounded),
-            onPressed: _handleRefresh,
-          ),
-        ],
-      ),
+      ],
       body: ListenableBuilder(
         listenable: _controller,
         builder: (context, _) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: _buildBodyContent(),
-              ),
-            ],
+          return ChronosPage(
+            onRefresh: _handleRefresh,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: _buildBodyContent(),
           );
         },
       ),
@@ -128,31 +111,20 @@ class _HistoricalCharactersScreenState extends State<HistoricalCharactersScreen>
     }
 
     final itemsList = _controller.items;
-    return RefreshIndicator(
-      color: Colors.amberAccent,
-      backgroundColor: const Color(0xFF1E1E1E),
-      onRefresh: _handleRefresh,
-      child: ListView.builder(
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
-        itemCount: itemsList.length,
-        itemBuilder: (context, index) {
-          final HistoricalCharacter item = itemsList[index];
-          final era = _erasMap[item.eraId];
-          return HistoricalCharacterCard(
-            item: item,
-            era: era,
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Visualizando detalhes do item "${item.nome}".'),
-                  duration: const Duration(milliseconds: 1500),
-                ),
-              );
-            },
-          );
-        },
-      ),
+    return ListView.separated(
+      itemCount: itemsList.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 2),
+      itemBuilder: (context, index) {
+        final item = itemsList[index];
+        final era = _erasMap[item.eraId];
+        return HistoricalCharacterCard(
+          item: item,
+          era: era,
+          onTap: () {
+            _navigationService.openHistoricalEvent(arguments: item);
+          },
+        );
+      },
     );
   }
 }

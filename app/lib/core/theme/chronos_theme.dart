@@ -61,7 +61,7 @@ abstract class ChronosTheme {
       ),
 
       // Configuração de Cards
-      cardTheme: CardTheme(
+      cardTheme: const CardThemeData(
         color: ChronosColors.surface,
         elevation: 2,
         margin: EdgeInsets.zero,
@@ -88,25 +88,25 @@ abstract class ChronosTheme {
         hintStyle: ChronosTypography.bodyMedium.copyWith(color: ChronosColors.textMuted),
         labelStyle: ChronosTypography.bodyMedium.copyWith(color: ChronosColors.textSecondary),
         errorStyle: ChronosTypography.bodySmall.copyWith(color: ChronosColors.error),
-        border: OutlineInputBorder(
+        border: const OutlineInputBorder(
           borderRadius: ChronosRadius.borderRadiusMD,
-          borderSide: const BorderSide(color: ChronosColors.border, width: 1.0),
+          borderSide: BorderSide(color: ChronosColors.border, width: 1.0),
         ),
-        enabledBorder: OutlineInputBorder(
+        enabledBorder: const OutlineInputBorder(
           borderRadius: ChronosRadius.borderRadiusMD,
-          borderSide: const BorderSide(color: ChronosColors.border, width: 1.0),
+          borderSide: BorderSide(color: ChronosColors.border, width: 1.0),
         ),
-        focusedBorder: OutlineInputBorder(
+        focusedBorder: const OutlineInputBorder(
           borderRadius: ChronosRadius.borderRadiusMD,
-          borderSide: const BorderSide(color: ChronosColors.accent, width: 1.5),
+          borderSide: BorderSide(color: ChronosColors.accent, width: 1.5),
         ),
-        errorBorder: OutlineInputBorder(
+        errorBorder: const OutlineInputBorder(
           borderRadius: ChronosRadius.borderRadiusMD,
-          borderSide: const BorderSide(color: ChronosColors.error, width: 1.0),
+          borderSide: BorderSide(color: ChronosColors.error, width: 1.0),
         ),
-        focusedErrorBorder: OutlineInputBorder(
+        focusedErrorBorder: const OutlineInputBorder(
           borderRadius: ChronosRadius.borderRadiusMD,
-          borderSide: const BorderSide(color: ChronosColors.error, width: 1.5),
+          borderSide: BorderSide(color: ChronosColors.error, width: 1.5),
         ),
       ),
 

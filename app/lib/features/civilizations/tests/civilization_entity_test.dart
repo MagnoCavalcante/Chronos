@@ -10,17 +10,19 @@ void main() {
       final entity = Civilization(
         id: '1',
         slug: 'slug',
-        nome: 'Nome',
-        descricao: 'Descricao',
+        name: 'Nome',
+        shortName: 'N',
+        description: 'Descricao',
+        summary: 'Resumo',
         publicationStatus: PublicationStatus.published,
-        ativo: true,
+        active: true,
         createdAt: now,
         updatedAt: now,
       );
 
-      final updated = entity.copyWith(nome: 'Novo Nome');
+      final updated = entity.copyWith(name: 'Novo Nome');
 
-      expect(updated.nome, 'Novo Nome');
+      expect(updated.name, 'Novo Nome');
       expect(updated.id, '1');
     });
 
@@ -28,10 +30,12 @@ void main() {
       final entity1 = Civilization(
         id: '1',
         slug: 'slug',
-        nome: 'Nome',
-        descricao: 'Descricao',
+        name: 'Nome',
+        shortName: 'N',
+        description: 'Descricao',
+        summary: 'Resumo',
         publicationStatus: PublicationStatus.published,
-        ativo: true,
+        active: true,
         createdAt: now,
         updatedAt: now,
       );
@@ -39,10 +43,12 @@ void main() {
       final entity2 = Civilization(
         id: '1',
         slug: 'slug',
-        nome: 'Nome',
-        descricao: 'Descricao',
+        name: 'Nome',
+        shortName: 'N',
+        description: 'Descricao',
+        summary: 'Resumo',
         publicationStatus: PublicationStatus.published,
-        ativo: true,
+        active: true,
         createdAt: now,
         updatedAt: now,
       );

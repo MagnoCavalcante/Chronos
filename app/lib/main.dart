@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'core/config/app_constants.dart';
 import 'core/config/supabase_config.dart';
 import 'core/di/service_locator.dart';
 import 'core/navigation/app_router.dart';
@@ -24,7 +25,7 @@ class ChronosApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'CHRONOS',
+      title: AppConstants.appName,
       theme: ChronosTheme.darkTheme,
       navigatorKey: locate<NavigationService>().navigatorKey,
       initialRoute: AppRouter.initialRoute,

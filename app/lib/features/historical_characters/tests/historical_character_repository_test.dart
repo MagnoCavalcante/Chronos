@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:chronos/core/utils/result.dart';
 import 'package:chronos/domain/entities/publication_status.dart';
 import '../data/models/historical_character_model.dart';
 import '../data/repositories/historical_character_repository_impl.dart';
@@ -59,6 +58,10 @@ void main() {
       slug: 'slug',
       nome: 'Nome',
       descricao: 'Desc',
+      descricaoResumida: 'Desc resumida',
+      dataNascimento: DateTime(2000, 1, 1),
+      eraId: 'era-1',
+      sexo: 'M',
       publicationStatus: PublicationStatus.published,
       ativo: true,
       createdAt: now,

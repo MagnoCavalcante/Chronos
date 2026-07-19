@@ -31,7 +31,7 @@ class ChronosDialog extends StatelessWidget {
     return showDialog<T>(
       context: context,
       barrierDismissible: barrierDismissible,
-      barrierColor: ChronosColors.black.withOpacity(0.6),
+      barrierColor: ChronosColors.black.withValues(alpha: 0.6),
       builder: (context) => ChronosDialog(
         title: title,
         content: content,

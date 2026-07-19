@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../presentation/screens/connection_test_screen.dart';
 import '../../presentation/screens/eras_screen.dart';
 import '../../presentation/screens/historical_events_screen.dart';
+import '../../features/civilizations/presentation/screens/civilizations_screen.dart';
 import '../../features/historical_characters/presentation/screens/historical_characters_screen.dart';
 import '../presentation/widgets/widgets.dart';
 import '../theme/theme.dart';
@@ -25,11 +26,7 @@ class AppRouter {
         RouteNames.historicalCharacters: (context) => const HistoricalCharactersScreen(),
         
         // Rotas das Sprints Futuras mapeadas para telas de aviso polidas e interativas
-        RouteNames.civilizations: (context) => const _FutureSprintPlaceholderScreen(
-              title: 'Civilizações Antigas',
-              description: 'O mapeamento de impérios, linhagens dinásticas e evolução sociocultural será disponibilizado na Sprint 5.2.',
-              icon: Icons.gavel_rounded,
-            ),
+        RouteNames.civilizations: (context) => const CivilizationsScreen(),
         RouteNames.artifacts: (context) => const _FutureSprintPlaceholderScreen(
               title: 'Artefatos Históricos',
               description: 'O catálogo e visualizador 3D de relíquias arqueológicas, manuscritos e invenções serão introduzidos na Sprint 5.3.',
@@ -83,7 +80,7 @@ class AppRouter {
                   size: 54,
                 ),
                 const SizedBox(height: ChronosSpacing.md),
-                Text(
+                const Text(
                   'Rota inexistente no CHRONOS',
                   style: ChronosTypography.titleLarge,
                   textAlign: TextAlign.center,
@@ -135,7 +132,7 @@ class _FutureSprintPlaceholderScreen extends StatelessWidget {
                 width: 72,
                 height: 72,
                 decoration: BoxDecoration(
-                  color: ChronosColors.accent.withOpacity(0.12),
+                  color: ChronosColors.accent.withValues(alpha: 0.12),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -165,7 +162,7 @@ class _FutureSprintPlaceholderScreen extends StatelessWidget {
                 icon: const Icon(Icons.arrow_back_rounded),
                 label: const Text('Retornar à Base'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: ChronosColors.cardBackground,
+                  backgroundColor: ChronosColors.surface,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
                   shape: RoundedRectangleBorder(

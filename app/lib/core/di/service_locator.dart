@@ -1,3 +1,4 @@
+import '../../features/civilizations/di/civilizations_di.dart';
 import '../../features/historical_characters/di/historical_characters_di.dart';
 import '../navigation/navigation_service.dart';
 import '../../data/datasources/era_remote_datasource.dart';
@@ -101,5 +102,6 @@ void setupServiceLocator() {
     useCase: sl.get<GetHistoricalEventsUseCase>(),
   ));
   HistoricalCharactersDI.register();
+  CivilizationsDI.register();
 }
 

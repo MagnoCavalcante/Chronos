@@ -24,10 +24,12 @@ void main() {
     final entitySample = Civilization(
       id: '1',
       slug: 'slug',
-      nome: 'Nome',
-      descricao: 'Desc',
+      name: 'Nome',
+      shortName: 'N',
+      description: 'Desc',
+      summary: 'Resumo',
       publicationStatus: PublicationStatus.published,
-      ativo: true,
+      active: true,
       createdAt: now,
       updatedAt: now,
     );
