@@ -1,11 +1,12 @@
+import 'package:chronos/core/base/base_entity.dart';
 import 'package:chronos/domain/entities/publication_status.dart';
 
 /// Entidade de Domínio representando um Personagem Histórico no ecossistema CHRONOS.
 ///
 /// Totalmente pura, livre de qualquer dependência de frameworks ou de persistência.
 /// Implementa igualdade estrutural por valor e suporte a atualizações imutáveis.
-class HistoricalCharacter {
-  final String id;
+/// Extende [BaseEntity] para centralizar atributos comuns.
+class HistoricalCharacter extends BaseEntity {
   final String slug;
   final String nome;
   final String? nomeOriginal;
@@ -25,12 +26,12 @@ class HistoricalCharacter {
   final String? imagemPrincipal;
   final String? corIdentificacao;
   final PublicationStatus publicationStatus;
-  final bool ativo;
-  final DateTime createdAt;
-  final DateTime updatedAt;
 
   const HistoricalCharacter({
-    required this.id,
+    required super.id,
+    required super.active,
+    required super.createdAt,
+    required super.updatedAt,
     required this.slug,
     required this.nome,
     this.nomeOriginal,
@@ -50,14 +51,14 @@ class HistoricalCharacter {
     this.imagemPrincipal,
     this.corIdentificacao,
     required this.publicationStatus,
-    required this.ativo,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
-  /// Cria uma cópia deste Personagem Histórico com as propriedades especificadas alteradas (Padrão Prototype).
+  @override
   HistoricalCharacter copyWith({
     String? id,
+    bool? active,
+    DateTime? createdAt,
+    DateTime? updatedAt,
     String? slug,
     String? nome,
     String? nomeOriginal,
@@ -77,12 +78,12 @@ class HistoricalCharacter {
     String? imagemPrincipal,
     String? corIdentificacao,
     PublicationStatus? publicationStatus,
-    bool? ativo,
-    DateTime? createdAt,
-    DateTime? updatedAt,
   }) {
     return HistoricalCharacter(
       id: id ?? this.id,
+      active: active ?? this.active,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
       slug: slug ?? this.slug,
       nome: nome ?? this.nome,
       nomeOriginal: nomeOriginal ?? this.nomeOriginal,
@@ -102,66 +103,6 @@ class HistoricalCharacter {
       imagemPrincipal: imagemPrincipal ?? this.imagemPrincipal,
       corIdentificacao: corIdentificacao ?? this.corIdentificacao,
       publicationStatus: publicationStatus ?? this.publicationStatus,
-      ativo: ativo ?? this.ativo,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
     );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is HistoricalCharacter &&
-        other.id == id &&
-        other.slug == slug &&
-        other.nome == nome &&
-        other.nomeOriginal == nomeOriginal &&
-        other.nomeAlternativo == nomeAlternativo &&
-        other.titulo == titulo &&
-        other.epiteto == epiteto &&
-        other.descricao == descricao &&
-        other.descricaoResumida == descricaoResumida &&
-        other.dataNascimento == dataNascimento &&
-        other.dataMorte == dataMorte &&
-        other.eraId == eraId &&
-        other.localNascimentoId == localNascimentoId &&
-        other.localMorteId == localMorteId &&
-        other.sexo == sexo &&
-        other.ocupacaoPrincipal == ocupacaoPrincipal &&
-        other.civilizacaoPrincipalId == civilizacaoPrincipalId &&
-        other.imagemPrincipal == imagemPrincipal &&
-        other.corIdentificacao == corIdentificacao &&
-        other.publicationStatus == publicationStatus &&
-        other.ativo == ativo &&
-        other.createdAt == createdAt &&
-        other.updatedAt == updatedAt;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-        slug.hashCode ^
-        nome.hashCode ^
-        nomeOriginal.hashCode ^
-        nomeAlternativo.hashCode ^
-        titulo.hashCode ^
-        epiteto.hashCode ^
-        descricao.hashCode ^
-        descricaoResumida.hashCode ^
-        dataNascimento.hashCode ^
-        dataMorte.hashCode ^
-        eraId.hashCode ^
-        localNascimentoId.hashCode ^
-        localMorteId.hashCode ^
-        sexo.hashCode ^
-        ocupacaoPrincipal.hashCode ^
-        civilizacaoPrincipalId.hashCode ^
-        imagemPrincipal.hashCode ^
-        corIdentificacao.hashCode ^
-        publicationStatus.hashCode ^
-        ativo.hashCode ^
-        createdAt.hashCode ^
-        updatedAt.hashCode;
   }
 }

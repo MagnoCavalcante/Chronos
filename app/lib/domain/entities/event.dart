@@ -1,87 +1,56 @@
+import '../core/base/base_entity.dart';
 import 'publication_status.dart';
 
 /// Entidade de Domínio representando um Evento histórico no ecossistema CHRONOS.
 ///
 /// Totalmente pura e desacoplada de frameworks ou bancos de dados físicos.
-class Event {
-  final String id;
+/// Extende [BaseEntity] para centralizar atributos comuns.
+class Event extends BaseEntity {
   final String eraId;
   final String slug;
   final String nome;
   final String descricao;
   final int anoOcorrencia;
   final PublicationStatus publicationStatus;
-  final bool ativo;
-  final DateTime createdAt;
-  final DateTime updatedAt;
 
   const Event({
-    required this.id,
+    required super.id,
+    required super.active,
+    required super.createdAt,
+    required super.updatedAt,
     required this.eraId,
     required this.slug,
     required this.nome,
     required this.descricao,
     required this.anoOcorrencia,
     required this.publicationStatus,
-    required this.ativo,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
+  @override
   Event copyWith({
     String? id,
+    bool? active,
+    DateTime? createdAt,
+    DateTime? updatedAt,
     String? eraId,
     String? slug,
     String? nome,
     String? descricao,
     int? anoOcorrencia,
     PublicationStatus? publicationStatus,
-    bool? ativo,
-    DateTime? createdAt,
-    DateTime? updatedAt,
   }) {
     return Event(
       id: id ?? this.id,
+      active: active ?? this.active,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
       eraId: eraId ?? this.eraId,
       slug: slug ?? this.slug,
       nome: nome ?? this.nome,
       descricao: descricao ?? this.descricao,
       anoOcorrencia: anoOcorrencia ?? this.anoOcorrencia,
       publicationStatus: publicationStatus ?? this.publicationStatus,
-      ativo: ativo ?? this.ativo,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
     );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is Event &&
-        other.id == id &&
-        other.eraId == eraId &&
-        other.slug == slug &&
-        other.nome == nome &&
-        other.descricao == descricao &&
-        other.anoOcorrencia == anoOcorrencia &&
-        other.publicationStatus == publicationStatus &&
-        other.ativo == ativo &&
-        other.createdAt == createdAt &&
-        other.updatedAt == updatedAt;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-        eraId.hashCode ^
-        slug.hashCode ^
-        nome.hashCode ^
-        descricao.hashCode ^
-        anoOcorrencia.hashCode ^
-        publicationStatus.hashCode ^
-        ativo.hashCode ^
-        createdAt.hashCode ^
-        updatedAt.hashCode;
   }
 }
 

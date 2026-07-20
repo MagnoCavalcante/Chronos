@@ -10,6 +10,7 @@ import '../datasources/era_remote_datasource.dart';
 /// Responsável por coordenar a busca através do [EraRemoteDataSource],
 /// gerenciar o mapeamento de exceções específicas de infraestrutura para [Failure]s puras,
 /// e realizar a transformação estrutural dos modelos persistentes de dados em entidades imutáveis de domínio.
+/// O tratamento de erros é centralizado em [BaseRemoteDatasource].
 class EraRepositoryImpl implements EraRepository {
   final EraRemoteDataSource _remoteDataSource;
 
@@ -57,6 +58,30 @@ class EraRepositoryImpl implements EraRepository {
         originalError: e,
       ));
     }
+  }
+
+  @override
+  Future<Result<Era>> getById(String id) {
+    // Não implementado para Era - pode ser adicionado no futuro
+    throw UnimplementedError('getById não implementado para EraRepository');
+  }
+
+  @override
+  Future<Result<void>> delete(String id) {
+    // Não implementado para Era - pode ser adicionado no futuro
+    throw UnimplementedError('delete não implementado para EraRepository');
+  }
+
+  @override
+  Future<Result<Era>> save(Era entity) {
+    // Não implementado para Era - pode ser adicionado no futuro
+    throw UnimplementedError('save não implementado para EraRepository');
+  }
+
+  @override
+  Future<Result<Era>> update(Era entity) {
+    // Não implementado para Era - pode ser adicionado no futuro
+    throw UnimplementedError('update não implementado para EraRepository');
   }
 }
 

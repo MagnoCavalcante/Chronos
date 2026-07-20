@@ -1,73 +1,33 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:chronos/core/config/supabase_config.dart';
+import 'package:chronos/core/errors/exceptions.dart';
 import 'package:chronos/core/utils/logger.dart';
 import 'package:chronos/domain/entities/publication_status.dart';
 import '../models/historical_character_model.dart';
-
-/// Tipos de erro de infraestrutura técnica ocorridos em chamadas de servidores remotos,
-/// APIs ou bancos de dados específicos da fonte de dados de historicalCharacters.
-enum HistoricalCharacterDataSourceErrorType {
-  network,
-  authentication,
-  database,
-  emptyResponse,
-  unknown,
-}
-
-/// Exceção técnica específica para a infraestrutura de DataSources de HistoricalCharacter no ecossistema CHRONOS.
-class HistoricalCharacterDataSourceException implements Exception {
-  final String message;
-  final HistoricalCharacterDataSourceErrorType type;
-  final Object? originalError;
-
-  const HistoricalCharacterDataSourceException({
-    required this.message,
-    required this.type,
-    this.originalError,
-  });
-
-  const HistoricalCharacterDataSourceException.network(this.message, {this.originalError})
-      : type = HistoricalCharacterDataSourceErrorType.network;
-
-  const HistoricalCharacterDataSourceException.authentication(this.message, {this.originalError})
-      : type = HistoricalCharacterDataSourceErrorType.authentication;
-
-  const HistoricalCharacterDataSourceException.database(this.message, {this.originalError})
-      : type = HistoricalCharacterDataSourceErrorType.database;
-
-  const HistoricalCharacterDataSourceException.emptyResponse(this.message)
-      : type = HistoricalCharacterDataSourceErrorType.emptyResponse,
-        originalError = null;
-
-  const HistoricalCharacterDataSourceException.unknown(this.message, {this.originalError})
-      : type = HistoricalCharacterDataSourceErrorType.unknown;
-
-  @override
-  String toString() => 'HistoricalCharacterDataSourceException[$type]: $message';
-}
 
 /// Contrato de fonte de dados remota de HistoricalCharacter (HistoricalCharacters).
 abstract class HistoricalCharacterRemoteDataSource {
   /// Recupera todos os personagens históricos ativos e publicados ordenados por nome.
   ///
   /// Retorna uma lista imutável de [HistoricalCharacterModel].
-  /// Lança uma [HistoricalCharacterDataSourceException] em caso de falha física ou de rede.
+  /// Lança uma [ServerException] em caso de falha física ou de rede.
   Future<List<HistoricalCharacterModel>> getAllCharacters();
 
   /// Recupera um personagem histórico ativo e publicado por seu ID único.
   ///
   /// Retorna um [HistoricalCharacterModel].
-  /// Lança uma [HistoricalCharacterDataSourceException] em caso de falha física ou de rede.
+  /// Lança uma [ServerException] em caso de falha física ou de rede.
   Future<HistoricalCharacterModel> getCharacterById(String id);
 
   /// Recupera um personagem histórico ativo e publicado por seu slug único.
   ///
   /// Retorna um [HistoricalCharacterModel].
-  /// Lança uma [HistoricalCharacterDataSourceException] em caso de falha física ou de rede.
+  /// Lança uma [ServerException] em caso de falha física ou de rede.
   Future<HistoricalCharacterModel> getCharacterBySlug(String slug);
 }
 
 /// Implementação concreta da fonte de dados remota de HistoricalCharacters utilizando o cliente oficial do Supabase.
+/// As exceções customizadas foram removidas em favor do uso centralizado de [ServerException].
 class HistoricalCharacterRemoteDataSourceImpl implements HistoricalCharacterRemoteDataSource {
   final SupabaseClient _client;
   static const String _tag = 'HistoricalCharacterRemoteDataSource';
@@ -93,7 +53,7 @@ class HistoricalCharacterRemoteDataSourceImpl implements HistoricalCharacterRemo
       if (response.isEmpty) {
         const errorMsg = 'Nenhum personagem histórico ativo e publicado foi localizado.';
         ChronosLogger.warn(errorMsg, tag: _tag);
-        throw const HistoricalCharacterDataSourceException.emptyResponse(errorMsg);
+        throw const ServerException.emptyResponse(errorMsg);
       }
 
       final models = response
@@ -111,7 +71,7 @@ class HistoricalCharacterRemoteDataSourceImpl implements HistoricalCharacterRemo
       if (e.code == '42501' || e.code == 'PGRST301') {
         final errorMsg = 'Acesso não autorizado aos dados de personagens históricos: ${e.message}';
         ChronosLogger.error(errorMsg, tag: _tag, error: e);
-        throw HistoricalCharacterDataSourceException.authentication(
+        throw ServerException.authentication(
           errorMsg,
           originalError: e,
         );
@@ -119,13 +79,13 @@ class HistoricalCharacterRemoteDataSourceImpl implements HistoricalCharacterRemo
       
       final errorMsg = 'Erro de banco de dados ao buscar personagens históricos: ${e.message} (Código: ${e.code})';
       ChronosLogger.error(errorMsg, tag: _tag, error: e);
-      throw HistoricalCharacterDataSourceException.database(
+      throw ServerException.database(
         errorMsg,
         originalError: e,
       );
     } catch (e) {
       stopwatch.stop();
-      if (e is HistoricalCharacterDataSourceException) rethrow;
+      if (e is ServerException) rethrow;
 
       final errorStr = e.toString().toLowerCase();
       if (errorStr.contains('socketexception') ||
@@ -134,7 +94,7 @@ class HistoricalCharacterRemoteDataSourceImpl implements HistoricalCharacterRemo
           errorStr.contains('xmlhttprequest')) {
         const errorMsg = 'Falha de conectividade de rede ao comunicar com o servidor Supabase.';
         ChronosLogger.error(errorMsg, tag: _tag, error: e);
-        throw HistoricalCharacterDataSourceException.network(
+        throw ServerException.network(
           errorMsg,
           originalError: e,
         );
@@ -142,7 +102,7 @@ class HistoricalCharacterRemoteDataSourceImpl implements HistoricalCharacterRemo
 
       final errorMsg = 'Erro inesperado na fonte de dados de personagens históricos: $e';
       ChronosLogger.error(errorMsg, tag: _tag, error: e);
-      throw HistoricalCharacterDataSourceException.unknown(
+      throw ServerException.unknown(
         errorMsg,
         originalError: e,
       );
@@ -167,7 +127,7 @@ class HistoricalCharacterRemoteDataSourceImpl implements HistoricalCharacterRemo
       if (response.isEmpty) {
         final errorMsg = 'Personagem histórico ativo e publicado com ID $id não foi localizado.';
         ChronosLogger.warn(errorMsg, tag: _tag);
-        throw HistoricalCharacterDataSourceException.emptyResponse(errorMsg);
+        throw ServerException.emptyResponse(errorMsg);
       }
 
       final model = HistoricalCharacterModel.fromJson(response.first as Map<String, dynamic>);
@@ -183,7 +143,7 @@ class HistoricalCharacterRemoteDataSourceImpl implements HistoricalCharacterRemo
       if (e.code == '42501' || e.code == 'PGRST301') {
         final errorMsg = 'Acesso não autorizado aos dados do personagem histórico por ID: ${e.message}';
         ChronosLogger.error(errorMsg, tag: _tag, error: e);
-        throw HistoricalCharacterDataSourceException.authentication(
+        throw ServerException.authentication(
           errorMsg,
           originalError: e,
         );
@@ -191,13 +151,13 @@ class HistoricalCharacterRemoteDataSourceImpl implements HistoricalCharacterRemo
       
       final errorMsg = 'Erro de banco de dados ao buscar personagem histórico por ID: ${e.message} (Código: ${e.code})';
       ChronosLogger.error(errorMsg, tag: _tag, error: e);
-      throw HistoricalCharacterDataSourceException.database(
+      throw ServerException.database(
         errorMsg,
         originalError: e,
       );
     } catch (e) {
       stopwatch.stop();
-      if (e is HistoricalCharacterDataSourceException) rethrow;
+      if (e is ServerException) rethrow;
 
       final errorStr = e.toString().toLowerCase();
       if (errorStr.contains('socketexception') ||
@@ -206,7 +166,7 @@ class HistoricalCharacterRemoteDataSourceImpl implements HistoricalCharacterRemo
           errorStr.contains('xmlhttprequest')) {
         const errorMsg = 'Falha de conectividade de rede ao comunicar com o servidor Supabase.';
         ChronosLogger.error(errorMsg, tag: _tag, error: e);
-        throw HistoricalCharacterDataSourceException.network(
+        throw ServerException.network(
           errorMsg,
           originalError: e,
         );
@@ -214,7 +174,7 @@ class HistoricalCharacterRemoteDataSourceImpl implements HistoricalCharacterRemo
 
       final errorMsg = 'Erro inesperado na fonte de dados de personagens históricos por ID: $e';
       ChronosLogger.error(errorMsg, tag: _tag, error: e);
-      throw HistoricalCharacterDataSourceException.unknown(
+      throw ServerException.unknown(
         errorMsg,
         originalError: e,
       );
@@ -239,7 +199,7 @@ class HistoricalCharacterRemoteDataSourceImpl implements HistoricalCharacterRemo
       if (response.isEmpty) {
         final errorMsg = 'Personagem histórico ativo e publicado com slug $slug não foi localizado.';
         ChronosLogger.warn(errorMsg, tag: _tag);
-        throw HistoricalCharacterDataSourceException.emptyResponse(errorMsg);
+        throw ServerException.emptyResponse(errorMsg);
       }
 
       final model = HistoricalCharacterModel.fromJson(response.first as Map<String, dynamic>);
@@ -255,7 +215,7 @@ class HistoricalCharacterRemoteDataSourceImpl implements HistoricalCharacterRemo
       if (e.code == '42501' || e.code == 'PGRST301') {
         final errorMsg = 'Acesso não autorizado aos dados do personagem histórico por slug: ${e.message}';
         ChronosLogger.error(errorMsg, tag: _tag, error: e);
-        throw HistoricalCharacterDataSourceException.authentication(
+        throw ServerException.authentication(
           errorMsg,
           originalError: e,
         );
@@ -263,13 +223,13 @@ class HistoricalCharacterRemoteDataSourceImpl implements HistoricalCharacterRemo
       
       final errorMsg = 'Erro de banco de dados ao buscar personagem histórico por slug: ${e.message} (Código: ${e.code})';
       ChronosLogger.error(errorMsg, tag: _tag, error: e);
-      throw HistoricalCharacterDataSourceException.database(
+      throw ServerException.database(
         errorMsg,
         originalError: e,
       );
     } catch (e) {
       stopwatch.stop();
-      if (e is HistoricalCharacterDataSourceException) rethrow;
+      if (e is ServerException) rethrow;
 
       final errorStr = e.toString().toLowerCase();
       if (errorStr.contains('socketexception') ||
@@ -278,7 +238,7 @@ class HistoricalCharacterRemoteDataSourceImpl implements HistoricalCharacterRemo
           errorStr.contains('xmlhttprequest')) {
         const errorMsg = 'Falha de conectividade de rede ao comunicar com o servidor Supabase.';
         ChronosLogger.error(errorMsg, tag: _tag, error: e);
-        throw HistoricalCharacterDataSourceException.network(
+        throw ServerException.network(
           errorMsg,
           originalError: e,
         );
@@ -286,7 +246,7 @@ class HistoricalCharacterRemoteDataSourceImpl implements HistoricalCharacterRemo
 
       final errorMsg = 'Erro inesperado na fonte de dados de personagens históricos por slug: $e';
       ChronosLogger.error(errorMsg, tag: _tag, error: e);
-      throw HistoricalCharacterDataSourceException.unknown(
+      throw ServerException.unknown(
         errorMsg,
         originalError: e,
       );

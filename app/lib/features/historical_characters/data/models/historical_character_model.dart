@@ -1,3 +1,4 @@
+import 'package:chronos/core/base/base_model.dart';
 import '../../domain/entities/historical_character.dart';
 import 'package:chronos/domain/entities/publication_status.dart';
 
@@ -6,9 +7,13 @@ import 'package:chronos/domain/entities/publication_status.dart';
 /// Responsável exclusivo pela serialização/deserialização de JSON, comunicação
 /// com as camadas de entrada/saída, mapeamento estrutural e isolamento
 /// de detalhes do banco de dados (ex: Supabase).
-class HistoricalCharacterModel extends HistoricalCharacter {
+/// Implementa [BaseModel] para padronizar conversão JSON/Entity.
+class HistoricalCharacterModel extends HistoricalCharacter implements BaseModel<HistoricalCharacter> {
   const HistoricalCharacterModel({
     required super.id,
+    required super.active,
+    required super.createdAt,
+    required super.updatedAt,
     required super.slug,
     required super.nome,
     super.nomeOriginal,
@@ -28,15 +33,16 @@ class HistoricalCharacterModel extends HistoricalCharacter {
     super.imagemPrincipal,
     super.corIdentificacao,
     required super.publicationStatus,
-    required super.ativo,
-    required super.createdAt,
-    required super.updatedAt,
   });
 
   /// Reconstrói uma instância de [HistoricalCharacterModel] a partir de um registro relacional JSON.
+  @override
   factory HistoricalCharacterModel.fromJson(Map<String, dynamic> json) {
     return HistoricalCharacterModel(
       id: json['id'] as String,
+      active: json['ativo'] as bool,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
       slug: json['slug'] as String,
       nome: json['nome'] as String,
       nomeOriginal: json['nome_original'] as String?,
@@ -56,16 +62,17 @@ class HistoricalCharacterModel extends HistoricalCharacter {
       imagemPrincipal: json['imagem_principal'] as String?,
       corIdentificacao: json['cor_identificacao'] as String?,
       publicationStatus: PublicationStatus.fromValue(json['publication_status'] as String),
-      ativo: json['ativo'] as bool,
-      createdAt: DateTime.parse(json['created_at'] as String),
-      updatedAt: DateTime.parse(json['updated_at'] as String),
     );
   }
 
   /// Converte a instância atual de [HistoricalCharacterModel] em um mapa relacional JSON estrutural.
+  @override
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'ativo': active,
+      'created_at': createdAt.toIso8601String(),
+      'updated_at': updatedAt.toIso8601String(),
       'slug': slug,
       'nome': nome,
       'nome_original': nomeOriginal,
@@ -85,19 +92,20 @@ class HistoricalCharacterModel extends HistoricalCharacter {
       'imagem_principal': imagemPrincipal,
       'cor_identificacao': corIdentificacao,
       'publication_status': publicationStatus.value,
-      'ativo': ativo,
-      'created_at': createdAt.toIso8601String(),
-      'updated_at': updatedAt.toIso8601String(),
     };
   }
 
   /// Converte uma entidade limpa de domínio [HistoricalCharacter] para a representação de dados física [HistoricalCharacterModel].
+  @override
   factory HistoricalCharacterModel.fromEntity(HistoricalCharacter entity) {
     if (entity is HistoricalCharacterModel) {
       return entity;
     }
     return HistoricalCharacterModel(
       id: entity.id,
+      active: entity.active,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
       slug: entity.slug,
       nome: entity.nome,
       nomeOriginal: entity.nomeOriginal,
@@ -117,16 +125,17 @@ class HistoricalCharacterModel extends HistoricalCharacter {
       imagemPrincipal: entity.imagemPrincipal,
       corIdentificacao: entity.corIdentificacao,
       publicationStatus: entity.publicationStatus,
-      ativo: entity.ativo,
-      createdAt: entity.createdAt,
-      updatedAt: entity.updatedAt,
     );
   }
 
   /// Converte o modelo de persistência de dados para uma entidade pura do Domínio [HistoricalCharacter].
+  @override
   HistoricalCharacter toEntity() {
     return HistoricalCharacter(
       id: id,
+      active: active,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
       slug: slug,
       nome: nome,
       nomeOriginal: nomeOriginal,
@@ -146,15 +155,15 @@ class HistoricalCharacterModel extends HistoricalCharacter {
       imagemPrincipal: imagemPrincipal,
       corIdentificacao: corIdentificacao,
       publicationStatus: publicationStatus,
-      ativo: ativo,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
     );
   }
 
   @override
   HistoricalCharacterModel copyWith({
     String? id,
+    bool? active,
+    DateTime? createdAt,
+    DateTime? updatedAt,
     String? slug,
     String? nome,
     String? nomeOriginal,
@@ -174,12 +183,12 @@ class HistoricalCharacterModel extends HistoricalCharacter {
     String? imagemPrincipal,
     String? corIdentificacao,
     PublicationStatus? publicationStatus,
-    bool? ativo,
-    DateTime? createdAt,
-    DateTime? updatedAt,
   }) {
     return HistoricalCharacterModel(
       id: id ?? this.id,
+      active: active ?? this.active,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
       slug: slug ?? this.slug,
       nome: nome ?? this.nome,
       nomeOriginal: nomeOriginal ?? this.nomeOriginal,
@@ -199,9 +208,6 @@ class HistoricalCharacterModel extends HistoricalCharacter {
       imagemPrincipal: imagemPrincipal ?? this.imagemPrincipal,
       corIdentificacao: corIdentificacao ?? this.corIdentificacao,
       publicationStatus: publicationStatus ?? this.publicationStatus,
-      ativo: ativo ?? this.ativo,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 }
