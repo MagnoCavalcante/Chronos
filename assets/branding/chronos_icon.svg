@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#1E3A5F" rx="40"/>
+  
+  <!-- Vertical Timeline Line -->
+  <line x1="100" y1="25" x2="100" y2="175" stroke="#C9A227" stroke-width="6" stroke-linecap="round" stroke-dasharray="1 15"/>
+  
+  <!-- Outer C-shaped Arc representing 'C' and the passage of time -->
+  <path d="M 145 60 A 60 60 0 1 0 145 140" stroke="#F8F6F0" stroke-width="14" fill="none" stroke-linecap="round"/>
+  
+  <!-- Discrete Historical Event Markers -->
+  <circle cx="100" cy="55" r="8" fill="#C9A227"/>
+  <circle cx="100" cy="100" r="10" fill="#C9A227" stroke="#1E3A5F" stroke-width="4"/>
+  <circle cx="100" cy="145" r="8" fill="#C9A227"/>
+</svg>

@@ -153,6 +153,12 @@ O mecanismo de navegação unificado do CHRONOS baseia-se no primeiro motor de B
 - **Algoritmo de Scoring Recontrutivo**: Sistema de relevância com pesos para ranquear resultados (exato no título: +100, parcial no título: +50, subtítulo: +25, descrição: +10).
 - **Filtros por Categoria e Ordenações Complexas**: Oferece segmentação ágil de conteúdo e ordenações por Relevância, Ordem Alfabética e Ordem Cronológica (sincronizando anos negativos B.C. e positivos A.D. com perfeição).
 
+### 8.3 Branding & Design System Freezing (Sprint 5.2.3)
+A Sprint de Branding e Identidade Visual oficializa os padrões estéticos do CHRONOS e unifica todas as especificações sob o conceito "O Tempo em Camadas":
+- **Design Tokens Únicos**: Centralização das cores (`#1E3A5F` - Azul Profundo, `#C9A227` - Dourado Antigo, `#F8F6F0` - Canvas Off-white, `#1F2937` - Charcoal Text) e tipografias (`Cinzel` para títulos, `Inter` para interface, `JetBrains Mono` para cronologia e metadados).
+- **Congelamento Estético**: O Design System estabelecido passa a ser a única fonte de verdade para botões, cards, diálogos e cabeçalhos, bloqueando modificações ad-hoc que degradem a consistência visual.
+- **Vetores Oficiais de Marca**: Geração e organização dos logotipos institucionais e adaptativos em formato SVG escalável, garantindo excelente legibilidade desde favicons de 16px até telas de splash de alta densidade.
+
 ---
 
 ## 9. Evolução Futura da Arquitetura
