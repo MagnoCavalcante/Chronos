@@ -1,39 +1,32 @@
 # CHRONOS — Known Issues & Bug Tracking
-## Versão 1.0 — Incidentes e Melhorias Catalogadas (Sprint 5.2.5)
+## Versão 1.0 — Incidentes e Melhorias Catalogadas (Sprint 5.2.6)
 
-Este documento registra e prioriza os problemas técnicos ou oportunidades de usabilidade identificados no período de Beta Fechado do CHRONOS 1.0.0.
+Este documento registra, rastreia e consolida o status de todos os problemas técnicos, bugs ou oportunidades de usabilidade identificados ao longo do desenvolvimento e do Beta Fechado do CHRONOS 1.0.0.
 
 ---
 
-## 1. Classificação de Bugs e Problemas Conhecidos
+## 1. Classificação e Resolução de Bugs (Beta Fechado)
 
 ### Bug #051: Sutil Piscada na Imagem de Capa em Detalhes (Media Loading)
-- **Descrição**: No Redmi Note 10, ao abrir rapidamente a `EntityDetailsPage` sob conexões 3G limitadas, há uma sutil cintilação (piscada) na renderização da imagem histórica de capa antes de o esqueleto do `ChronosSkeleton` sumir por completo.
-- **Passos para Reprodução**:
-  1. Ativar throttling de rede móvel limitada.
-  2. Clicar em qualquer evento ou personagem histórico.
-  3. Observar a imagem do topo (Hero).
-- **Resultado Esperado**: Transição suave e contínua do placeholder de carregamento para a imagem real.
-- **Resultado Obtido**: Transição com piscada rápida de opacidade.
+- **Descrição**: No Redmi Note 10, ao abrir rapidamente a `EntityDetailsPage` sob conexões 3G limitadas, havia uma sutil cintilação (piscada) na renderização da imagem de capa antes da transição do esqueleto do `ChronosSkeleton`.
+- **Resultado Esperado**: Transição suave de opacidade e caching de imagens.
 - **Gravidade / Prioridade**: **Baixa**
-- **Ação**: Direcionado para polimento no ciclo de correções pós-RC (Sprint 5.2.6) através de caching de imagens no cliente.
+- **Status**: **RESOLVIDO (Sprint 5.2.6)**
+- **Resolução**: Implementada otimização de pré-carregamento de imagens (`precacheImage`) e transição suave com curvas de fade-in no carregamento de mídia na `EntityDetailsPage`.
 
 ---
 
 ### Bug #052: Scroll Vertical da Busca no Filtro de Categorias (Ajuste de UX)
-- **Descrição**: Ao alternar rapidamente entre filtros de categoria (ex: mudar de "Eras" para "Civilizações") após fazer uma rolagem longa na busca, o scroll permanece na posição atual em vez de retornar ao topo.
-- **Passos para Reprodução**:
-  1. Pesquisar por um termo genérico.
-  2. Rolar a listagem até o final.
-  3. Clicar no chip de categoria "Civilizações".
-- **Resultado Esperado**: O scroll deve retornar automaticamente para o topo (posição `0.0`) para que o usuário veja os primeiros resultados.
-- **Resultado Obtido**: A lista atualiza os dados, mas mantém o scroll no meio ou fim da tela.
+- **Descrição**: Ao alternar rapidamente entre filtros de categoria (ex: mudar de "Eras" para "Civilizações") após fazer uma rolagem longa na busca, o scroll permanecia na posição anterior ao invés de retornar ao topo.
+- **Resultado Esperado**: O scroll deve retornar automaticamente para o topo (posição `0.0`) para visualização clara dos primeiros resultados.
 - **Gravidade / Prioridade**: **Média**
-- **Ação**: Resolvido adicionando uma chamada de reset de scroll na controller de busca sempre que a categoria ativa for alterada.
+- **Status**: **RESOLVIDO (Sprint 5.2.6)**
+- **Resolução**: Adicionado comando explícito de reset de posição no controlador de busca (`_scrollController.jumpTo(0)`) sempre que um novo chip de categoria de filtragem for acionado pelo usuário.
 
 ---
 
-## 2. Oportunidades de Melhoria Planejadas (Versão 1.1)
+## 2. Oportunidades de Melhoria Planejadas (Versão 1.1 / Backlog v2)
 
 - **Sugestão #101 (Fuzzy Search)**: Integração de tolerância a pequenos erros de digitação (ex: "Mesopotamea" encontrar "Mesopotâmia") para aumentar a resiliência do mecanismo de busca em dispositivos móveis.
 - **Sugestão #102 (Indicadores de Progresso de Leitura)**: Adição de uma sutil barra de progresso horizontal no topo da página de detalhes universais para indicar o avanço da leitura do dossiê.
+- **Sugestão #103 (Caching Local de Metadados)**: Sincronização offline preliminar de textos rápidos utilizando persistência leve local no cliente.

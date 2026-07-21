@@ -47,6 +47,16 @@ docs/
 ### 5. `roadmap/`
 *   **Propósito:** O planejamento macro de lançamento do projeto. Dividido em sprints, trimestres (OKRs) e eras históricas (ex: Lançamento do Tema da Grécia Antiga, Roma Antiga, Idade Média, etc.).
 
+### 6. 🚀 `release-hardening/` (Raiz `/docs`)
+*   **Propósito:** Governança de software, garantia de qualidade, identidade visual e planejamento de distribuição para produção da versão 1.0.
+*   **Documentos Disponíveis:**
+    *   `CHANGELOG.md`: Histórico cronológico unificado de todas as versões do CHRONOS.
+    *   `RELEASE_NOTES_1_0.md`: Destaques, novidades e changelog detalhado da versão 1.0.0.
+    *   `KNOWN_ISSUES.md`: Registro de pendências e problemas de usabilidade mapeados conscientemente.
+    *   `BRAND_BOOK.md`: Fundamentos visuais, missão e diretrizes conceituais da marca.
+    *   `BRANDING_GUIDE.md`: Guia técnico de aplicação prática de logotipos, vetores e design tokens.
+    *   `ANDROID_RELEASE.md`: Manual oficial de engenharia de build, assinatura de pacotes (keystore) e otimizações de APK/AAB.
+
 ---
 
 ## 🛡️ Boas Práticas de Documentação
