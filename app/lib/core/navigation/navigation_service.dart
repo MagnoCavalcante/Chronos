@@ -79,14 +79,14 @@ class NavigationServiceImpl implements NavigationService {
       if (!isAllowed) {
         final redirect = guard.redirectRoute;
         if (redirect != null && redirect != routeName) {
-          ChronosLogger.warn(
+          ChronosLogger.warning(
             'Acesso negado para a rota "$routeName" pelo guarda ${guard.runtimeType}. Redirecionando para "$redirect"...',
             tag: 'NavigationService',
           );
           // Redireciona de forma assíncrona desacoplada
           unawaited(replace(redirect, arguments: arguments));
         } else {
-          ChronosLogger.warn(
+          ChronosLogger.warning(
             'Acesso negado para a rota "$routeName" pelo guarda ${guard.runtimeType}. Transição cancelada.',
             tag: 'NavigationService',
           );
@@ -134,7 +134,7 @@ class NavigationServiceImpl implements NavigationService {
     if (navigatorKey.currentState?.canPop() ?? false) {
       navigatorKey.currentState?.pop<T>(result);
     } else {
-      ChronosLogger.warn('back() abortado: Nenhuma rota anterior na pilha para desempilhar.', tag: 'NavigationService');
+      ChronosLogger.warning('back() abortado: Nenhuma rota anterior na pilha para desempilhar.', tag: 'NavigationService');
     }
   }
 

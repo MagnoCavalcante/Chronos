@@ -1,16 +1,18 @@
-/// Sistema centralizado de feature flags do CHRONOS.
+/// Controle reativo e centralizado de Feature Flags do ecossistema CHRONOS.
 class FeatureFlags {
-  const FeatureFlags._();
+  FeatureFlags._();
 
-  static const bool timeline3D = true;
-  static const bool graphEngine = true;
-  static const bool offlineMode = false;
+  /// Flags ativas no sistema
+  static const bool timeline3D = false;
+  static const bool graphEngine = false;
+  static const bool offlineMode = true;
   static const bool academicMode = false;
   static const bool experimentalSearch = false;
   static const bool futureAI = false;
 
-  static bool isEnabled(String key) {
-    switch (key) {
+  /// Verifica se uma funcionalidade específica está habilitada de forma dinâmica.
+  static bool isEnabled(String featureKey) {
+    switch (featureKey) {
       case 'timeline3D':
         return timeline3D;
       case 'graphEngine':

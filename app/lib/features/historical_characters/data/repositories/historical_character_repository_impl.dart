@@ -1,5 +1,4 @@
 import 'package:chronos/core/di/service_locator.dart';
-import 'package:chronos/core/errors/exceptions.dart';
 import 'package:chronos/core/errors/failure.dart';
 import 'package:chronos/core/utils/logger.dart';
 import 'package:chronos/core/utils/result.dart';
@@ -8,7 +7,6 @@ import '../../domain/repositories/historical_character_repository.dart';
 import '../datasources/historical_character_remote_datasource.dart';
 
 /// Implementação concreta do repositório de HistoricalCharacter na camada de Dados (Data Layer).
-/// O tratamento de erros é centralizado usando [ServerException] em vez de exceções customizadas.
 class HistoricalCharacterRepositoryImpl implements HistoricalCharacterRepository {
   final HistoricalCharacterRemoteDataSource _remoteDataSource;
   static const String _tag = 'HistoricalCharacterRepositoryImpl';
@@ -34,7 +32,7 @@ class HistoricalCharacterRepositoryImpl implements HistoricalCharacterRepository
       );
 
       return Result.success(List.unmodifiable(models));
-    } on ServerException catch (e) {
+    } on HistoricalCharacterDataSourceException catch (e) {
       stopwatch.stop();
       return Result.failure(_mapExceptionToFailure(e));
     } catch (e) {
@@ -61,7 +59,7 @@ class HistoricalCharacterRepositoryImpl implements HistoricalCharacterRepository
       );
 
       return Result.success(model);
-    } on ServerException catch (e) {
+    } on HistoricalCharacterDataSourceException catch (e) {
       stopwatch.stop();
       return Result.failure(_mapExceptionToFailure(e));
     } catch (e) {
@@ -88,7 +86,7 @@ class HistoricalCharacterRepositoryImpl implements HistoricalCharacterRepository
       );
 
       return Result.success(model);
-    } on ServerException catch (e) {
+    } on HistoricalCharacterDataSourceException catch (e) {
       stopwatch.stop();
       return Result.failure(_mapExceptionToFailure(e));
     } catch (e) {
@@ -97,7 +95,7 @@ class HistoricalCharacterRepositoryImpl implements HistoricalCharacterRepository
     }
   }
 
-  Failure _mapExceptionToFailure(ServerException e) {
+  Failure _mapExceptionToFailure(HistoricalCharacterDataSourceException e) {
     ChronosLogger.error(
       'Falha ocorrida na fonte de dados de personagens históricos. Tipo de Exceção: ${e.type}. Mensagem: ${e.message}',
       tag: _tag,
@@ -105,15 +103,15 @@ class HistoricalCharacterRepositoryImpl implements HistoricalCharacterRepository
     );
 
     switch (e.type) {
-      case ServerExceptionType.network:
+      case HistoricalCharacterDataSourceErrorType.network:
         return NetworkFailure(e.message, originalError: e.originalError);
-      case ServerExceptionType.authentication:
+      case HistoricalCharacterDataSourceErrorType.authentication:
         return AuthenticationFailure(e.message, originalError: e.originalError);
-      case ServerExceptionType.database:
+      case HistoricalCharacterDataSourceErrorType.database:
         return DatabaseFailure(e.message, originalError: e.originalError);
-      case ServerExceptionType.emptyResponse:
+      case HistoricalCharacterDataSourceErrorType.emptyResponse:
         return ValidationFailure(e.message, originalError: e);
-      case ServerExceptionType.unknown:
+      case HistoricalCharacterDataSourceErrorType.unknown:
         return UnknownFailure(e.message, originalError: e.originalError);
     }
   }
@@ -129,29 +127,5 @@ class HistoricalCharacterRepositoryImpl implements HistoricalCharacterRepository
       'Erro inesperado na ponte de dados do repositório: $e',
       originalError: e,
     );
-  }
-
-  @override
-  Future<Result<HistoricalCharacter>> getById(String id) {
-    // Não implementado para HistoricalCharacter - pode ser adicionado no futuro
-    throw UnimplementedError('getById não implementado para HistoricalCharacterRepository');
-  }
-
-  @override
-  Future<Result<void>> delete(String id) {
-    // Não implementado para HistoricalCharacter - pode ser adicionado no futuro
-    throw UnimplementedError('delete não implementado para HistoricalCharacterRepository');
-  }
-
-  @override
-  Future<Result<HistoricalCharacter>> save(HistoricalCharacter entity) {
-    // Não implementado para HistoricalCharacter - pode ser adicionado no futuro
-    throw UnimplementedError('save não implementado para HistoricalCharacterRepository');
-  }
-
-  @override
-  Future<Result<HistoricalCharacter>> update(HistoricalCharacter entity) {
-    // Não implementado para HistoricalCharacter - pode ser adicionado no futuro
-    throw UnimplementedError('update não implementado para HistoricalCharacterRepository');
   }
 }

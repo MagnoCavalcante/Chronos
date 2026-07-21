@@ -1,51 +1,15 @@
-/// Entidade base para todas as entidades de domínio no ecossistema CHRONOS.
-///
-/// Centraliza os atributos comuns a todas as entidades:
-/// - id: Identificador único
-/// - active: Status de ativação
-/// - createdAt: Timestamp de criação
-/// - updatedAt: Timestamp de última atualização
-///
-/// Fornece igualdade por valor baseada no [id] e imutabilidade.
-/// Não possui dependência de Supabase ou JSON.
+/// Classe base abstrata para todas as Entidades de Domínio do CHRONOS.
+/// Garante que todas as entidades possuam identificador único e suporte a comparação por igualdade.
 abstract class BaseEntity {
-  /// Identificador único da entidade.
   final String id;
 
-  /// Status de ativação da entidade.
-  final bool active;
+  const BaseEntity(this.id);
 
-  /// Timestamp de criação da entidade.
-  final DateTime createdAt;
-
-  /// Timestamp da última atualização da entidade.
-  final DateTime updatedAt;
-
-  const BaseEntity({
-    required this.id,
-    required this.active,
-    required this.createdAt,
-    required this.updatedAt,
-  });
-
-  /// Implementação de igualdade por valor baseada no [id].
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is BaseEntity && other.id == id;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is BaseEntity && runtimeType == other.runtimeType && id == other.id;
 
-  /// Implementação de hashCode baseada no [id].
   @override
   int get hashCode => id.hashCode;
-
-  /// Cria uma cópia desta entidade com as propriedades especificadas alteradas.
-  ///
-  /// As subclasses devem sobrescrever este método para incluir suas propriedades específicas.
-  BaseEntity copyWith({
-    String? id,
-    bool? active,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-  });
 }

@@ -1,86 +1,54 @@
+import '../../core/base/base_entity.dart';
 import 'publication_status.dart';
 
-/// Entidade de Domínio representando uma Civilização histórica no ecossistema CHRONOS.
-///
-/// Totalmente pura e desacoplada de frameworks ou bancos de dados físicos.
-class Civilization {
-  final String id;
+/// Entidade de Domínio representando uma Civilização no ecossistema CHRONOS.
+/// Herda de [BaseEntity] para manter a integridade com as regras de domínio.
+class Civilization extends BaseEntity {
   final String slug;
-  final String nome;
-  final String descricao;
-  final int inicioAno;
-  final int? fimAno;
+  final String name;
+  final String shortName;
+  final String description;
+  final String summary;
+  final int startYear;
+  final int? endYear;
   final PublicationStatus publicationStatus;
-  final bool ativo;
-  final DateTime createdAt;
-  final DateTime updatedAt;
 
   const Civilization({
-    required this.id,
+    required super.id,
     required this.slug,
-    required this.nome,
-    required this.descricao,
-    required this.inicioAno,
-    this.fimAno,
+    required this.name,
+    required this.shortName,
+    required this.description,
+    required this.summary,
+    required this.startYear,
+    this.endYear,
     required this.publicationStatus,
-    required this.ativo,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
-  Civilization copyWith({
-    String? id,
-    String? slug,
-    String? nome,
-    String? descricao,
-    int? inicioAno,
-    int? fimAno,
-    PublicationStatus? publicationStatus,
-    bool? ativo,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-  }) {
-    return Civilization(
-      id: id ?? this.id,
-      slug: slug ?? this.slug,
-      nome: nome ?? this.nome,
-      descricao: descricao ?? this.descricao,
-      inicioAno: inicioAno ?? this.inicioAno,
-      fimAno: fimAno ?? this.fimAno,
-      publicationStatus: publicationStatus ?? this.publicationStatus,
-      ativo: ativo ?? this.ativo,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-    );
-  }
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      super == other &&
+          other is Civilization &&
+          runtimeType == other.runtimeType &&
+          slug == other.slug &&
+          name == other.name &&
+          shortName == other.shortName &&
+          description == other.description &&
+          summary == other.summary &&
+          startYear == other.startYear &&
+          endYear == other.endYear &&
+          publicationStatus == other.publicationStatus;
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is Civilization &&
-        other.id == id &&
-        other.slug == slug &&
-        other.nome == nome &&
-        other.descricao == descricao &&
-        other.inicioAno == inicioAno &&
-        other.fimAno == fimAno &&
-        other.publicationStatus == publicationStatus &&
-        other.ativo == ativo &&
-        other.createdAt == createdAt &&
-        other.updatedAt == updatedAt;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-        slug.hashCode ^
-        nome.hashCode ^
-        descricao.hashCode ^
-        inicioAno.hashCode ^
-        fimAno.hashCode ^
-        publicationStatus.hashCode ^
-        ativo.hashCode ^
-        createdAt.hashCode ^
-        updatedAt.hashCode;
-  }
+  int get hashCode =>
+      super.hashCode ^
+      slug.hashCode ^
+      name.hashCode ^
+      shortName.hashCode ^
+      description.hashCode ^
+      summary.hashCode ^
+      startYear.hashCode ^
+      endYear.hashCode ^
+      publicationStatus.hashCode;
 }

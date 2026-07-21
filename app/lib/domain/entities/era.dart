@@ -1,12 +1,11 @@
-import '../core/base/base_entity.dart';
 import 'publication_status.dart';
 
 /// Entidade de Domínio que representa uma Era histórica no ecossistema CHRONOS.
 ///
 /// Totalmente pura e livre de qualquer dependência de frameworks ou de persistência.
 /// Implementa igualdade estrutural por valor e suporte a atualizações imutáveis.
-/// Extende [BaseEntity] para centralizar atributos comuns.
-class Era extends BaseEntity {
+class Era {
+  final String id;
   final String slug;
   final String nome;
   final String tituloCurto;
@@ -19,12 +18,12 @@ class Era extends BaseEntity {
   final String? iconKey;
   final String? coverImageUrl;
   final PublicationStatus publicationStatus;
+  final bool ativo;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   const Era({
-    required super.id,
-    required super.active,
-    required super.createdAt,
-    required super.updatedAt,
+    required this.id,
     required this.slug,
     required this.nome,
     required this.tituloCurto,
@@ -37,14 +36,14 @@ class Era extends BaseEntity {
     this.iconKey,
     this.coverImageUrl,
     required this.publicationStatus,
+    required this.ativo,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
-  @override
+  /// Cria uma cópia desta Era com as propriedades especificadas alteradas (Padrão Prototype).
   Era copyWith({
     String? id,
-    bool? active,
-    DateTime? createdAt,
-    DateTime? updatedAt,
     String? slug,
     String? nome,
     String? tituloCurto,
@@ -57,12 +56,12 @@ class Era extends BaseEntity {
     String? iconKey,
     String? coverImageUrl,
     PublicationStatus? publicationStatus,
+    bool? ativo,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) {
     return Era(
       id: id ?? this.id,
-      active: active ?? this.active,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
       slug: slug ?? this.slug,
       nome: nome ?? this.nome,
       tituloCurto: tituloCurto ?? this.tituloCurto,
@@ -75,6 +74,52 @@ class Era extends BaseEntity {
       iconKey: iconKey ?? this.iconKey,
       coverImageUrl: coverImageUrl ?? this.coverImageUrl,
       publicationStatus: publicationStatus ?? this.publicationStatus,
+      ativo: ativo ?? this.ativo,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Era &&
+        other.id == id &&
+        other.slug == slug &&
+        other.nome == nome &&
+        other.tituloCurto == tituloCurto &&
+        other.descricao == descricao &&
+        other.descricaoResumida == descricaoResumida &&
+        other.inicioAno == inicioAno &&
+        other.fimAno == fimAno &&
+        other.ordemCronologica == ordemCronologica &&
+        other.corHex == corHex &&
+        other.iconKey == iconKey &&
+        other.coverImageUrl == coverImageUrl &&
+        other.publicationStatus == publicationStatus &&
+        other.ativo == ativo &&
+        other.createdAt == createdAt &&
+        other.updatedAt == updatedAt;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+        slug.hashCode ^
+        nome.hashCode ^
+        tituloCurto.hashCode ^
+        descricao.hashCode ^
+        descricaoResumida.hashCode ^
+        inicioAno.hashCode ^
+        fimAno.hashCode ^
+        ordemCronologica.hashCode ^
+        corHex.hashCode ^
+        iconKey.hashCode ^
+        coverImageUrl.hashCode ^
+        publicationStatus.hashCode ^
+        ativo.hashCode ^
+        createdAt.hashCode ^
+        updatedAt.hashCode;
   }
 }

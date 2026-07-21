@@ -11,32 +11,6 @@ A camada de apresentação no CHRONOS é responsável pela interação direta co
 O fluxo de dados segue a arquitetura reativa unidirecional:
 
 ```text
-[ Screen / Widget ]
-       │
-       │ (1) Aciona load / refresh / retry
-       ▼
-[ Controller (BaseController + ViewStatus) ]
-       │
-       │ (2) Invoca case de uso e atualiza status
-       ▼
-[ ViewState: initial / loading / refreshing / success / empty / error ]
-       │
-       │ (3) Renderiza widget correspondente
-       ▼
-[ Chronos UI Components ]
-```
-
-Exemplo completo para a feature Historical Characters:
-
-```text
-HistoricalCharactersScreen
-  └─ usa HistoricalCharactersController
-  └─ consome ViewStatus via ListenableBuilder
-  └─ renderiza HistoricalCharacterLoading / HistoricalCharacterEmpty / HistoricalCharacterError / HistoricalCharacterCard
-  └─ utiliza NavigationService para transições sem Navigator direto
-```
-
-```text
 [ Tela / UI (Widgets) ] 
        │
        │ (1) Dispara ação de negócio (ex: load, refresh, retry)
@@ -125,43 +99,7 @@ Para manter o ecossistema CHRONOS uniforme e livre de anomalias operacionais, si
 
 ---
 
-## 6. Configuração Centralizada (Environment, BuildConfig e Feature Flags)
-
-Todas as features do CHRONOS devem consumir configuração por meio da infraestrutura oficial em [app/lib/core/config](../lib/core/config), nunca via valores hardcoded diretamente em telas, controllers ou widgets.
-
-### 6.1 Environment
-
-Os ambientes suportados são:
-- `development`
-- `staging`
-- `production`
-
-A seleção de ambiente é feita por `BuildConfig.environment` e a classe `ChronosEnvironment` centraliza o mapeamento oficial.
-
-### 6.2 BuildConfig
-
-O `BuildConfig` concentra:
-- URLs do Supabase
-- Chaves do Supabase
-- URL base de API futura
-- Endpoint de analytics
-- Timeouts
-- Flags de log e analytics
-
-### 6.3 Feature Flags
-
-A classe `FeatureFlags` centraliza a ativação/desativação de capacidades do ecossistema, como `timeline3D`, `graphEngine`, `offlineMode`, `academicMode`, `experimentalSearch` e `futureAI`.
-
-### 6.4 Regras de Arquitetura
-
-1. Nenhuma feature pode possuir URL hardcoded.
-2. Nenhuma screen pode conhecer o ambiente diretamente.
-3. Toda configuração deve ser lida via `BuildConfig` ou `FeatureFlags`.
-4. Novas features geradas pelo generator devem incluir um arquivo de configuração próprio que consuma `BuildConfig` e `FeatureFlags`.
-
----
-
-## 7. Camada de Navegação (Navigation Layer)
+## 6. Camada de Navegação (Navigation Layer)
 
 O CHRONOS possui uma camada de roteamento e navegação totalmente desacoplada e modularizada, projetada para respeitar os limites de separação de conceitos da Clean Architecture.
 
@@ -207,4 +145,23 @@ A Navigation Layer é dividida em quatro componentes bem-definidos:
      onGenerateRoute: AppRouter.onGenerateRoute,
    )
    ```
+
+---
+
+## 7. Configurações Globais e Variáveis de Ambiente
+
+O CHRONOS possui uma infraestrutura de configuração desacoplada e segura para múltiplos ambientes, garantindo que credenciais e chaves nunca fiquem expostas ou hardcoded.
+
+### 7.1 Estrutura de Configuração (`core/config/`)
+
+1. **`Environment` (`environment.dart`)**: Enumeração dos ambientes suportados (`development`, `staging`, `production`).
+2. **`BuildConfig` (`build_config.dart`)**: Objeto centralizador imutável de configurações físicas (Supabase URL, Anon Key, timeouts, logging). Inicializado uma única vez no boot da aplicação.
+3. **`FeatureFlags` (`feature_flags.dart`)**: Chaves liga/desliga para controle reativo e isolamento de funcionalidades experimentais ou futuras (ex: `timeline3D`, `offlineMode`).
+4. **`AppConstants` (`app_constants.dart`)**: Constantes puras de negócio, paginação, mensagens estruturadas de erro e timeouts gerais.
+
+### 7.2 Regras de Ouro de Configuração
+
+- **Isolamento de Credenciais**: Nenhuma URL ou chave API pode ser definida como string direta nas telas, controllers ou datasources. Toda leitura deve passar por `BuildConfig.instance`.
+- **Múltiplos Ambientes**: O `main.dart` configura dinamicamente o `BuildConfig` lendo variáveis em tempo de compilação (`--dart-define` ou `fromEnvironment`).
+
 

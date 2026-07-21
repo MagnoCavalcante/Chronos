@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'dart:io';
 import 'src/feature_context.dart';
 import 'src/template_builders/builders.dart';
@@ -120,11 +118,6 @@ void main(List<String> args) {
     ReadmeTemplateBuilder().build(context),
   );
 
-  _writeFile(
-    '$basePath/config/${context.featureName}_config.dart',
-    _buildFeatureConfigFile(context),
-  );
-
   // 12. Migration & Seed
   _writeFile(
     '$basePath/data/migrations/migration.sql',
@@ -235,23 +228,6 @@ class ${context.featurePascal}Routes {
   static Map<String, WidgetBuilder> get routes => {
         root: (context) => const ${context.featurePascal}Screen(),
       };
-}
-''';
-}
-
-String _buildFeatureConfigFile(FeatureContext context) {
-  return '''import 'package:chronos/core/config/build_config.dart';
-import 'package:chronos/core/config/feature_flags.dart';
-
-/// Configuração de feature gerada automaticamente para ${context.featurePascal}.
-class ${context.featurePascal}Config {
-  const ${context.featurePascal}Config._();
-
-  static const String featureKey = '${context.featureName}';
-
-  static bool get isEnabled => FeatureFlags.isEnabled(featureKey);
-  static Duration get requestTimeout => const Duration(seconds: 15);
-  static String get apiBaseUrl => BuildConfig.apiBaseUrl;
 }
 ''';
 }
@@ -533,7 +509,9 @@ void _registerInServiceLocator(FeatureContext context) {
   // 2. Inserir a chamada de registro no final do setupServiceLocator
   final lastBraceIndex = content.lastIndexOf('}');
   if (lastBraceIndex != -1) {
-    content = '${content.substring(0, lastBraceIndex)}  $registerCall\n${content.substring(lastBraceIndex)}';
+    content = content.substring(0, lastBraceIndex) +
+        '  $registerCall\n' +
+        content.substring(lastBraceIndex);
   }
 
   file.writeAsStringSync(content);
@@ -560,14 +538,16 @@ void _registerInAppRoutes(FeatureContext context) {
   content = importLine + content;
 
   // 2. Inserir o spread operator dentro do mapa de rotas
-  const target = 'RouteNames.historicalCharacters: (context) => const HistoricalCharactersScreen(),';
+  final target = 'RouteNames.historicalCharacters: (context) => const HistoricalCharactersScreen(),';
   if (content.contains(target)) {
     content = content.replaceFirst(target, '$target\n        $spreadCall');
   } else {
     final mapIndex = content.indexOf('routes => {');
     if (mapIndex != -1) {
       final insertIndex = content.indexOf('{', mapIndex) + 1;
-      content = '${content.substring(0, insertIndex)}\n        $spreadCall${content.substring(insertIndex)}';
+      content = content.substring(0, insertIndex) +
+          '\n        $spreadCall' +
+          content.substring(insertIndex);
     }
   }
 

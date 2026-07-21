@@ -23,22 +23,22 @@ abstract class ChronosRadius {
   static const BorderRadius borderRadiusCircular = BorderRadius.all(Radius.circular(circular));
 
   // RoundedRectangleBorder correspondentes para facilitar o uso em Cards e Buttons
-  static const RoundedRectangleBorder shapeXS = RoundedRectangleBorder(
+  static final RoundedRectangleBorder shapeXS = RoundedRectangleBorder(
     borderRadius: borderRadiusXS,
   );
-  static const RoundedRectangleBorder shapeSM = RoundedRectangleBorder(
+  static final RoundedRectangleBorder shapeSM = RoundedRectangleBorder(
     borderRadius: borderRadiusSM,
   );
-  static const RoundedRectangleBorder shapeMD = RoundedRectangleBorder(
+  static final RoundedRectangleBorder shapeMD = RoundedRectangleBorder(
     borderRadius: borderRadiusMD,
   );
-  static const RoundedRectangleBorder shapeLG = RoundedRectangleBorder(
+  static final RoundedRectangleBorder shapeLG = RoundedRectangleBorder(
     borderRadius: borderRadiusLG,
   );
-  static const RoundedRectangleBorder shapeXL = RoundedRectangleBorder(
+  static final RoundedRectangleBorder shapeXL = RoundedRectangleBorder(
     borderRadius: borderRadiusXL,
   );
-  static const RoundedRectangleBorder shapeCircular = RoundedRectangleBorder(
+  static final RoundedRectangleBorder shapeCircular = RoundedRectangleBorder(
     borderRadius: borderRadiusCircular,
   );
 }

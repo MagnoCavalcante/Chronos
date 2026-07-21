@@ -133,7 +133,29 @@ O CHRONOS utiliza o PostgreSQL nativo do Supabase com uma modelagem otimizada pa
 
 ---
 
-## 8. Evolução Futura da Arquitetura
+## 8. Módulos da Camada de Experiência (Epic 3)
+
+### 8.1 Universal Entity Details (Sprint 5.1.1)
+Uma das maiores inovações de interface do CHRONOS é o componente universal de visualização rica de entidades (**`EntityDetailsPage`**).
+- **Consumo do Entity Rendering Engine**: O detalhamento visual de qualquer entidade (Era, Evento, Personagem, etc.) consome dinamicamente o motor de renderização comum. Isso unifica o visual e evita duplicações.
+- **Estruturação Modular**: A visualização de detalhes é segregada em widgets altamente especializados e desacoplados:
+  - `EntityDetailsHeader`: Renderização de capas, títulos, anos de vigência e badges rápidos.
+  - `EntityDetailsContent`: Corpo principal de texto com descrições detalhadas suportando RichText ou Markdown.
+  - `EntityDetailsGallery`: Visualização em grade e carrossel de fotos, gravuras e pinturas históricas.
+  - `EntityDetailsMetadata`: Exibição de pares de chaves-valores estruturadas (tipo, material, localizações).
+  - `EntityDetailsActions`: Botões para salvar em dossiês, exportar para PDF ou escutar via áudio sintético.
+  - `EntityDetailsRelated`: Lista deslizante de relações causais e geográficas descobertas.
+
+### 8.2 Global Search Engine MVP (Sprint 5.2.0)
+O mecanismo de navegação unificado do CHRONOS baseia-se no primeiro motor de Busca Global multiplataforma de dados históricos.
+- **Agregação de Controladores em Índice Único**: O `ChronosSearchController` consome reativamente os estados carregados de todos os domínios (Eras, Eventos, Personagens, Civilizações, Artefatos, Localizações) para orquestrar as buscas sem acoplamento direto de rede.
+- **Incremental Debounce**: Entrada de texto tratada com temporizador assíncrono de **300ms**, minimizando re-indexações e garantindo fluidez perfeita de 60fps/120fps.
+- **Algoritmo de Scoring Recontrutivo**: Sistema de relevância com pesos para ranquear resultados (exato no título: +100, parcial no título: +50, subtítulo: +25, descrição: +10).
+- **Filtros por Categoria e Ordenações Complexas**: Oferece segmentação ágil de conteúdo e ordenações por Relevância, Ordem Alfabética e Ordem Cronológica (sincronizando anos negativos B.C. e positivos A.D. com perfeição).
+
+---
+
+## 9. Evolução Futura da Arquitetura
 
 O design arquitetural adotado no CHRONOS foi projetado com alta modularidade, permitindo que o sistema cresça e adote novas topologias sem quebras ou necessidade de reescrever o código base existente:
 

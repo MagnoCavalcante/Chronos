@@ -13,21 +13,11 @@ class SupabaseConfig {
   /// Evita instanciação acidental desta classe utilitária de configuração.
   const SupabaseConfig._();
 
-  /// URL de endpoint da API RESTful do Supabase.
-  ///
-  /// Futuramente, este valor será injetado em tempo de compilação via variáveis de ambiente
-  /// (ex: `--dart-define=SUPABASE_URL=valor`) para segregação de ambientes (Staging/Production).
-  ///
-  /// [SUPABASE_URL] representa a constante de ambiente correspondente.
-  static String get supabaseUrl => BuildConfig.supabaseUrl;
+  /// URL de endpoint da API RESTful do Supabase vindo do BuildConfig centralizado.
+  static String get supabaseUrl => BuildConfig.instance.supabaseUrl;
 
-  /// Chave Pública Anônima (Anon Key) para acesso às tabelas do Supabase que obedecem à RLS.
-  ///
-  /// Futuramente, este valor será injetado em tempo de compilação via variáveis de ambiente
-  /// (ex: `--dart-define=SUPABASE_ANON_KEY=valor`) para segregação de chaves por ambiente.
-  ///
-  /// [SUPABASE_ANON_KEY] representa a constante de ambiente correspondente.
-  static String get supabaseAnonKey => BuildConfig.supabaseAnonKey;
+  /// Chave Pública Anônima (Anon Key) vinda do BuildConfig centralizado.
+  static String get supabaseAnonKey => BuildConfig.instance.supabaseAnonKey;
 
   /// Status interno que armazena se o cliente foi inicializado com sucesso.
   static bool _isInitialized = false;
@@ -53,7 +43,7 @@ class SupabaseConfig {
     try {
       await Supabase.initialize(
         url: supabaseUrl,
-        publishableKey: supabaseAnonKey,
+        anonKey: supabaseAnonKey,
       );
       _isInitialized = true;
       _initializationError = null;

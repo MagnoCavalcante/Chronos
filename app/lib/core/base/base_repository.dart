@@ -1,35 +1,22 @@
+import '../errors/failure.dart';
 import '../utils/result.dart';
 
-/// Repositório base para todos os repositórios no ecossistema CHRONOS.
-///
-/// Define um contrato genérico contendo operações comuns que podem ser
-/// utilizadas pelas diferentes Features.
-///
-/// Caso alguma operação não seja utilizada por determinada Feature,
-/// ela poderá ser sobrescrita ou não implementada lançando [UnimplementedError].
-abstract class BaseRepository<T> {
-  /// Retorna todos os registros da entidade.
-  ///
-  /// Encapsula o resultado em [Result] para tratamento seguro de erros.
-  Future<Result<List<T>>> getAll();
+/// Classe base abstrata para todos os Repositórios no CHRONOS.
+/// Fornece métodos utilitários comuns de tratamento e mapeamento seguro de exceções.
+abstract class BaseRepository {
+  const BaseRepository();
 
-  /// Retorna um registro específico pelo seu identificador único.
-  ///
-  /// Encapsula o resultado em [Result] para tratamento seguro de erros.
-  Future<Result<T>> getById(String id);
-
-  /// Deleta um registro específico pelo seu identificador único.
-  ///
-  /// Encapsula o resultado em [Result] para tratamento seguro de erros.
-  Future<Result<void>> delete(String id);
-
-  /// Salva um novo registro ou atualiza um existente.
-  ///
-  /// Encapsula o resultado em [Result] para tratamento seguro de erros.
-  Future<Result<T>> save(T entity);
-
-  /// Atualiza um registro existente.
-  ///
-  /// Encapsula o resultado em [Result] para tratamento seguro de erros.
-  Future<Result<T>> update(T entity);
+  /// Executa uma operação assíncrona de dados encapsulando o resultado em [Result],
+  /// convertendo exceções físicas do provedor em [Failure] tipadas de domínio.
+  Future<Result<T>> safeCall<T>(
+    Future<T> Function() call, {
+    required Failure Function(Object error, StackTrace stackTrace) onError,
+  }) async {
+    try {
+      final value = await call();
+      return Result.success(value);
+    } catch (e, stackTrace) {
+      return Result.failure(onError(e, stackTrace));
+    }
+  }
 }

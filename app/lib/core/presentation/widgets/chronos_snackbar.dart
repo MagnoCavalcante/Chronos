@@ -32,6 +32,7 @@ abstract class ChronosSnackBar {
         icon = Icons.warning_amber_rounded;
         break;
       case ChronosSnackBarType.info:
+      default:
         color = ChronosColors.info;
         icon = Icons.info_outline_rounded;
         break;

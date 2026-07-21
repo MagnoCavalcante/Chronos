@@ -30,6 +30,7 @@ class ChronosBottomSheet extends StatelessWidget {
       context: context,
       isScrollControlled: isScrollControlled,
       backgroundColor: ChronosColors.surface,
+      surfaceTintColor: ChronosColors.transparent,
       elevation: 5,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -57,7 +58,7 @@ class ChronosBottomSheet extends StatelessWidget {
                 width: 38,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: ChronosColors.borderLight.withValues(alpha: 0.5),
+                  color: ChronosColors.borderLight.withOpacity(0.5),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),

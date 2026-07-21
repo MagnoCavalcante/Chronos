@@ -49,10 +49,13 @@ class CivilizationDataSourceException implements Exception {
 /// Contrato de fonte de dados remota de Civilization (Civilizations).
 abstract class CivilizationRemoteDataSource {
   /// Recupera todos(as) os(as) Civilizations ativos(as) e publicados(as).
-  ///
-  /// Retorna uma lista imutável de [CivilizationModel].
-  /// Lança uma [CivilizationDataSourceException] em caso de falha física ou de rede.
   Future<List<CivilizationModel>> getAllCivilizations();
+
+  /// Recupera uma Civilização específica por seu identificador único.
+  Future<CivilizationModel> getById(String id);
+
+  /// Recupera uma Civilização específica por seu slug único.
+  Future<CivilizationModel> getBySlug(String slug);
 }
 
 /// Implementação concreta da fonte de dados remota de Civilizations utilizando o cliente oficial do Supabase.
@@ -71,7 +74,6 @@ class CivilizationRemoteDataSourceImpl implements CivilizationRemoteDataSource {
       final List<dynamic> response = await _client
           .from('civilizations')
           .select()
-          .eq('active', true)
           .eq('publication_status', PublicationStatus.published.value)
           .order('name', ascending: true);
 
@@ -115,7 +117,125 @@ class CivilizationRemoteDataSourceImpl implements CivilizationRemoteDataSource {
           errorStr.contains('connection failed') ||
           errorStr.contains('network') ||
           errorStr.contains('xmlhttprequest')) {
-        const errorMsg = 'Falha de conectividade de rede ao comunicar com o servidor Supabase.';
+        final errorMsg = 'Falha de conectividade de rede ao comunicar com o servidor Supabase.';
+        ChronosLogger.error(errorMsg, tag: _tag, error: e);
+        throw CivilizationDataSourceException.network(
+          errorMsg,
+          originalError: e,
+        );
+      }
+
+      final errorMsg = 'Erro inesperado na fonte de dados de civilizations: $e';
+      ChronosLogger.error(errorMsg, tag: _tag, error: e);
+      throw CivilizationDataSourceException.unknown(
+        errorMsg,
+        originalError: e,
+      );
+    }
+  }
+
+  @override
+  Future<CivilizationModel> getById(String id) async {
+    ChronosLogger.info('Iniciando consulta remota de civilization por id: $id...', tag: _tag);
+
+    try {
+      final List<dynamic> response = await _client
+          .from('civilizations')
+          .select()
+          .eq('id', id)
+          .limit(1);
+
+      if (response.isEmpty) {
+        final errorMsg = 'Nenhum(a) Civilization foi localizado(a) com ID: $id.';
+        ChronosLogger.warn(errorMsg, tag: _tag);
+        throw CivilizationDataSourceException.emptyResponse(errorMsg);
+      }
+
+      return CivilizationModel.fromJson(response.first as Map<String, dynamic>);
+    } on PostgrestException catch (e) {
+      if (e.code == '42501' || e.code == 'PGRST301') {
+        final errorMsg = 'Acesso não autorizado aos dados de civilizations: ${e.message}';
+        ChronosLogger.error(errorMsg, tag: _tag, error: e);
+        throw CivilizationDataSourceException.authentication(
+          errorMsg,
+          originalError: e,
+        );
+      }
+      
+      final errorMsg = 'Erro de banco de dados ao buscar civilization por ID: ${e.message} (Código: ${e.code})';
+      ChronosLogger.error(errorMsg, tag: _tag, error: e);
+      throw CivilizationDataSourceException.database(
+        errorMsg,
+        originalError: e,
+      );
+    } catch (e) {
+      if (e is CivilizationDataSourceException) rethrow;
+
+      final errorStr = e.toString().toLowerCase();
+      if (errorStr.contains('socketexception') ||
+          errorStr.contains('connection failed') ||
+          errorStr.contains('network') ||
+          errorStr.contains('xmlhttprequest')) {
+        final errorMsg = 'Falha de conectividade de rede ao comunicar com o servidor Supabase.';
+        ChronosLogger.error(errorMsg, tag: _tag, error: e);
+        throw CivilizationDataSourceException.network(
+          errorMsg,
+          originalError: e,
+        );
+      }
+
+      final errorMsg = 'Erro inesperado na fonte de dados de civilizations: $e';
+      ChronosLogger.error(errorMsg, tag: _tag, error: e);
+      throw CivilizationDataSourceException.unknown(
+        errorMsg,
+        originalError: e,
+      );
+    }
+  }
+
+  @override
+  Future<CivilizationModel> getBySlug(String slug) async {
+    ChronosLogger.info('Iniciando consulta remota de civilization por slug: $slug...', tag: _tag);
+
+    try {
+      final List<dynamic> response = await _client
+          .from('civilizations')
+          .select()
+          .eq('slug', slug)
+          .limit(1);
+
+      if (response.isEmpty) {
+        final errorMsg = 'Nenhum(a) Civilization foi localizado(a) com Slug: $slug.';
+        ChronosLogger.warn(errorMsg, tag: _tag);
+        throw const CivilizationDataSourceException.emptyResponse('Civilization não encontrado.');
+      }
+
+      return CivilizationModel.fromJson(response.first as Map<String, dynamic>);
+    } on PostgrestException catch (e) {
+      if (e.code == '42501' || e.code == 'PGRST301') {
+        final errorMsg = 'Acesso não autorizado aos dados de civilizations: ${e.message}';
+        ChronosLogger.error(errorMsg, tag: _tag, error: e);
+        throw CivilizationDataSourceException.authentication(
+          errorMsg,
+          originalError: e,
+        );
+      }
+      
+      final errorMsg = 'Erro de banco de dados ao buscar civilization por Slug: ${e.message} (Código: ${e.code})';
+      ChronosLogger.error(errorMsg, tag: _tag, error: e);
+      throw CivilizationDataSourceException.database(
+        errorMsg,
+        originalError: e,
+      );
+    } catch (e) {
+      if (e is CivilizationDataSourceException) rethrow;
+
+      final errorStr = e.toString().toLowerCase();
+      if (errorStr.contains('socketexception') ||
+          errorStr.contains('connection failed') ||
+          errorStr.contains('network') ||
+          errorStr.contains('xmlhttprequest')) {
+        final errorMsg = 'Falha de conectividade de rede ao comunicar com o servidor Supabase.';
         ChronosLogger.error(errorMsg, tag: _tag, error: e);
         throw CivilizationDataSourceException.network(
           errorMsg,

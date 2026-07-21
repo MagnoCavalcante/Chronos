@@ -4,7 +4,7 @@ import 'package:chronos/core/errors/failure.dart';
 import 'package:chronos/domain/entities/publication_status.dart';
 import '../presentation/controllers/civilizations_controller.dart';
 import '../domain/entities/civilization.dart';
-import '../domain/usecases/get_civilizations_usecase.dart';
+import '../domain/usecases/get_all_civilizations.dart';
 import '../domain/repositories/civilization_repository.dart';
 
 class FakeCivilizationRepository implements CivilizationRepository {
@@ -13,31 +13,39 @@ class FakeCivilizationRepository implements CivilizationRepository {
   FakeCivilizationRepository(this.result);
 
   @override
-  Future<Result<List<Civilization>>> getAllCivilizations() async {
+  Future<Result<List<Civilization>>> getAllPublished() async {
     return result;
+  }
+
+  @override
+  Future<Result<Civilization>> getById(String id) async {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Result<Civilization>> getBySlug(String slug) async {
+    throw UnimplementedError();
   }
 }
 
 void main() {
   group('CivilizationsController Tests', () {
-    final now = DateTime.now();
-    final entitySample = Civilization(
+    const entitySample = Civilization(
       id: '1',
       slug: 'slug',
       name: 'Nome',
-      shortName: 'N',
+      shortName: 'Short',
       description: 'Desc',
-      summary: 'Resumo',
+      summary: 'Summ',
+      startYear: 100,
+      endYear: 200,
       publicationStatus: PublicationStatus.published,
-      active: true,
-      createdAt: now,
-      updatedAt: now,
     );
 
     test('should load items successfully', () async {
       final fakeRepo = FakeCivilizationRepository(Result.success([entitySample]));
-      final useCase = GetCivilizationsUseCase(repository: fakeRepo);
-      final controller = CivilizationsController(useCase: useCase);
+      final useCase = GetAllCivilizations(fakeRepo);
+      final controller = CivilizationsController(getAllCivilizations: useCase);
 
       await controller.loadCivilizations();
 
@@ -50,8 +58,8 @@ void main() {
       final fakeRepo = FakeCivilizationRepository(
         const Result.failure(DatabaseFailure('Error loading data')),
       );
-      final useCase = GetCivilizationsUseCase(repository: fakeRepo);
-      final controller = CivilizationsController(useCase: useCase);
+      final useCase = GetAllCivilizations(fakeRepo);
+      final controller = CivilizationsController(getAllCivilizations: useCase);
 
       await controller.loadCivilizations();
 

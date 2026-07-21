@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/di/service_locator.dart';
 import '../../core/theme/theme.dart';
 import '../../core/presentation/widgets/widgets.dart';
+import '../../domain/entities/era.dart';
 import '../../domain/entities/event.dart';
 import '../controllers/historical_events_controller.dart';
 import '../widgets/historical_event_card.dart';
@@ -33,7 +34,7 @@ class _ErasTimelinePlaceholderSheet extends StatelessWidget {
       children: [
         const Icon(ChronosIcons.event, size: 54, color: ChronosColors.textMuted),
         const SizedBox(height: ChronosSpacing.md),
-        const Text(
+        Text(
           'Visualização em Linha do Tempo',
           style: ChronosTypography.titleLarge,
         ),
@@ -60,7 +61,7 @@ class _ErasMapPlaceholderSheet extends StatelessWidget {
       children: [
         const Icon(ChronosIcons.location, size: 54, color: ChronosColors.textMuted),
         const SizedBox(height: ChronosSpacing.md),
-        const Text(
+        Text(
           'Visualização em Mapa Geográfico',
           style: ChronosTypography.titleLarge,
         ),
@@ -78,6 +79,7 @@ class _ErasMapPlaceholderSheet extends StatelessWidget {
 
 class _HistoricalEventsScreenState extends State<HistoricalEventsScreen> {
   late final HistoricalEventsController _controller;
+  static const String _tag = 'HistoricalEventsScreen';
 
   @override
   void initState() {
@@ -138,7 +140,9 @@ class _HistoricalEventsScreenState extends State<HistoricalEventsScreen> {
       child: Column(
         children: [
           const ChronosSearchBar(
+            enabled: false,
             hintText: 'Buscar eventos por termo ou época...',
+            helperText: '* Pesquisa textual indexada será liberada na Sprint 5.0',
           ),
           const SizedBox(height: ChronosSpacing.md),
           SingleChildScrollView(
@@ -147,8 +151,8 @@ class _HistoricalEventsScreenState extends State<HistoricalEventsScreen> {
               children: [
                 ChronosChip(
                   label: 'Linha do Tempo',
-                  leadingIcon: ChronosIcons.event,
-                  onTap: () {
+                  avatar: const Icon(ChronosIcons.event, size: 14, color: ChronosColors.accent),
+                  onPressed: () {
                     ChronosBottomSheet.show(
                       context,
                       child: const _ErasTimelinePlaceholderSheet(),
@@ -158,8 +162,8 @@ class _HistoricalEventsScreenState extends State<HistoricalEventsScreen> {
                 const SizedBox(width: ChronosSpacing.sm),
                 ChronosChip(
                   label: 'Visualizar no Mapa',
-                  leadingIcon: ChronosIcons.location,
-                  onTap: () {
+                  avatar: const Icon(ChronosIcons.location, size: 14, color: ChronosColors.accent),
+                  onPressed: () {
                     ChronosBottomSheet.show(
                       context,
                       child: const _ErasMapPlaceholderSheet(),
@@ -169,8 +173,8 @@ class _HistoricalEventsScreenState extends State<HistoricalEventsScreen> {
                 const SizedBox(width: ChronosSpacing.sm),
                 ChronosChip(
                   label: 'Filtro: Tipo (Em breve)',
-                  leadingIcon: Icons.filter_list_rounded,
-                  onTap: () {
+                  avatar: const Icon(Icons.filter_list_rounded, size: 14, color: ChronosColors.textMuted),
+                  onPressed: () {
                     ChronosSnackBar.show(
                       context,
                       message: 'A funcionalidade "Filtro: Tipo" será entregue no módulo de refinamento cronológico.',
@@ -180,8 +184,8 @@ class _HistoricalEventsScreenState extends State<HistoricalEventsScreen> {
                 const SizedBox(width: ChronosSpacing.sm),
                 ChronosChip(
                   label: 'Filtro: Era (Em breve)',
-                  leadingIcon: Icons.history_toggle_off_rounded,
-                  onTap: () {
+                  avatar: const Icon(Icons.history_toggle_off_rounded, size: 14, color: ChronosColors.textMuted),
+                  onPressed: () {
                     ChronosSnackBar.show(
                       context,
                       message: 'A funcionalidade "Filtro: Era" será entregue no módulo de refinamento cronológico.',
