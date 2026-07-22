@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/theme.dart';
 import '../../../core/presentation/widgets/widgets.dart';
 import 'timeline_controller.dart';
+import 'timeline_item.dart';
 
 /// Painel de filtragem avançada para a Linha do Tempo.
-///
-/// Permite selecionar filtros por Era e por intervalo de período (anos)
-/// utilizando um seletor visual deslizante reativo.
 class TimelineFilters extends StatefulWidget {
   final TimelineController controller;
 
@@ -20,52 +18,44 @@ class TimelineFilters extends StatefulWidget {
 }
 
 class _TimelineFiltersState extends State<TimelineFilters> {
-  String? _selectedEraId;
+  late TimelineItemType _selectedCategory;
   late double _startYear;
   late double _endYear;
-
   late double _minLimit;
   late double _maxLimit;
+
+  final Map<String, (int start, int end)> _periodPresets = {
+    'Pré-História': (-5000, -3000),
+    'Antiguidade': (-3000, 476),
+    'Idade Média': (476, 1453),
+    'Idade Moderna': (1453, 1789),
+    'Idade Contemporânea': (1789, 2100),
+  };
 
   @override
   void initState() {
     super.initState();
-    _selectedEraId = widget.controller.selectedEraId;
+    _selectedCategory = widget.controller.selectedCategory;
     _minLimit = widget.controller.minPossibleYear.toDouble();
     _maxLimit = widget.controller.maxPossibleYear.toDouble();
-
-    // Garante que o limite superior é maior que o inferior
-    if (_maxLimit <= _minLimit) {
-      _maxLimit = _minLimit + 100.0;
-    }
-
-    _startYear = (widget.controller.startYear ?? widget.controller.minPossibleYear)
-        .toDouble()
-        .clamp(_minLimit, _maxLimit);
-    _endYear = (widget.controller.endYear ?? widget.controller.maxPossibleYear)
-        .toDouble()
-        .clamp(_minLimit, _maxLimit);
-
-    if (_startYear > _endYear) {
-      _startYear = _minLimit;
-      _endYear = _maxLimit;
-    }
+    _startYear = widget.controller.startYear.toDouble();
+    _endYear = widget.controller.endYear.toDouble();
   }
 
   String _formatYear(double yearVal) {
-    final int yr = yearVal.toInt();
+    final yr = yearVal.toInt();
     return yr < 0 ? '${yr.abs()} a.C.' : '$yr d.C.';
   }
 
   void _apply() {
-    widget.controller.selectEra(_selectedEraId);
+    widget.controller.selectCategory(_selectedCategory);
     widget.controller.setPeriod(_startYear.toInt(), _endYear.toInt());
     Navigator.of(context).pop();
   }
 
   void _reset() {
     setState(() {
-      _selectedEraId = null;
+      _selectedCategory = TimelineItemType.all;
       _startYear = _minLimit;
       _endYear = _maxLimit;
     });
@@ -75,25 +65,11 @@ class _TimelineFiltersState extends State<TimelineFilters> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    final List<DropdownMenuItem<String>> dropdownItems = [
-      const DropdownMenuItem<String>(
-        value: null,
-        child: Text('Todas as Eras'),
-      ),
-      ...widget.controller.eras.map((era) => DropdownMenuItem<String>(
-            value: era.id,
-            child: Text(era.nome),
-          )),
-    ];
-
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Título do Painel
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -106,38 +82,68 @@ class _TimelineFiltersState extends State<TimelineFilters> {
           ),
           ChronosSpacing.vSizedBoxLG,
 
-          // Filtro 1: Seleção de Era
           Text(
-            'Filtrar por Era Histórica',
+            'Categoria',
             style: ChronosTypography.bodyMedium.copyWith(
               fontWeight: FontWeight.bold,
               color: ChronosColors.textPrimary,
             ),
           ),
           ChronosSpacing.vSizedBoxSM,
-          ChronosDropdown<String>(
-            value: _selectedEraId,
-            items: dropdownItems,
-            labelText: 'Selecione uma Era específica',
-            onChanged: (val) {
-              setState(() {
-                _selectedEraId = val;
-              });
-            },
+          Wrap(
+            spacing: ChronosSpacing.sm,
+            runSpacing: ChronosSpacing.sm,
+            children: [
+              _CategoryChip(
+                label: 'Todos',
+                selected: _selectedCategory == TimelineItemType.all,
+                onTap: () => setState(() => _selectedCategory = TimelineItemType.all),
+              ),
+              ...widget.controller.categories.map((category) {
+                return _CategoryChip(
+                  label: category.label,
+                  selected: _selectedCategory == category,
+                  onTap: () => setState(() => _selectedCategory = category),
+                );
+              }),
+            ],
           ),
           ChronosSpacing.vSizedBoxLG,
 
-          // Filtro 2: Período Cronológico (Anos)
+          Text(
+            'Períodos Históricos',
+            style: ChronosTypography.bodyMedium.copyWith(
+              fontWeight: FontWeight.bold,
+              color: ChronosColors.textPrimary,
+            ),
+          ),
+          ChronosSpacing.vSizedBoxSM,
+          Wrap(
+            spacing: ChronosSpacing.sm,
+            runSpacing: ChronosSpacing.sm,
+            children: _periodPresets.entries.map((entry) {
+              return ActionChip(
+                label: Text(entry.key),
+                onPressed: () => setState(() {
+                  _startYear = entry.value.$1.toDouble();
+                  _endYear = entry.value.$2.toDouble();
+                }),
+              );
+            }).toList(),
+          ),
+          ChronosSpacing.vSizedBoxLG,
+
+          Text(
+            'Período Personalizado',
+            style: ChronosTypography.bodyMedium.copyWith(
+              fontWeight: FontWeight.bold,
+              color: ChronosColors.textPrimary,
+            ),
+          ),
+          ChronosSpacing.vSizedBoxSM,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Período Cronológico',
-                style: ChronosTypography.bodyMedium.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: ChronosColors.textPrimary,
-                ),
-              ),
               Text(
                 '${_formatYear(_startYear)} — ${_formatYear(_endYear)}',
                 style: ChronosTypography.codeSmall.copyWith(
@@ -147,17 +153,13 @@ class _TimelineFiltersState extends State<TimelineFilters> {
               ),
             ],
           ),
-          ChronosSpacing.vSizedBoxSM,
           RangeSlider(
             values: RangeValues(_startYear, _endYear),
             min: _minLimit,
             max: _maxLimit,
             activeColor: ChronosColors.accent,
             inactiveColor: ChronosColors.border,
-            labels: RangeLabels(
-              _formatYear(_startYear),
-              _formatYear(_endYear),
-            ),
+            labels: RangeLabels(_formatYear(_startYear), _formatYear(_endYear)),
             onChanged: (values) {
               setState(() {
                 _startYear = values.start;
@@ -165,7 +167,6 @@ class _TimelineFiltersState extends State<TimelineFilters> {
               });
             },
           ),
-          ChronosSpacing.vSizedBoxSM,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -175,42 +176,47 @@ class _TimelineFiltersState extends State<TimelineFilters> {
           ),
           ChronosSpacing.vSizedBoxXL,
 
-          // Ações do Filtro
           Row(
             children: [
               Expanded(
                 child: OutlinedButton(
                   onPressed: _reset,
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: ChronosColors.textPrimary,
-                    side: const BorderSide(color: ChronosColors.border),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text('Restaurar Padrão'),
+                  child: const Text('Restaurar'),
                 ),
               ),
               ChronosSpacing.hSizedBoxMD,
               Expanded(
                 child: ElevatedButton(
                   onPressed: _apply,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: ChronosColors.accent,
-                    foregroundColor: ChronosColors.background,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text('Aplicar Filtros'),
+                  style: ElevatedButton.styleFrom(backgroundColor: ChronosColors.accent),
+                  child: const Text('Aplicar'),
                 ),
               ),
             ],
           ),
         ],
       ),
+    );
+  }
+}
+
+class _CategoryChip extends StatelessWidget {
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  const _CategoryChip({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ChoiceChip(
+      label: Text(label),
+      selected: selected,
+      onSelected: (_) => onTap(),
     );
   }
 }

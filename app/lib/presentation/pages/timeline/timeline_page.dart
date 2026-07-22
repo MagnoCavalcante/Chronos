@@ -75,51 +75,22 @@ class _TimelinePageState extends State<TimelinePage> {
       );
     }
 
-    // Se as listas originais de Eras e Eventos estão vazias no banco de dados
-    if (_controller.eras.isEmpty && _controller.events.isEmpty) {
-      return ChronosEmptyView(
-        icon: Icons.history_rounded,
-        title: 'Acervo Histórico Vazio',
-        description: 'Não foram encontradas eras ou eventos carregados no banco local.',
-        action: ChronosButton(
-          label: 'Recarregar Banco',
-          onPressed: _controller.carregarDados,
-          variant: ChronosButtonVariant.text,
-        ),
-      );
-    }
-
-    // Se os filtros resultaram em uma lista vazia
-    if (_controller.filteredItems.isEmpty &&
-        (!_controller.groupByEra || _controller.groupedFilteredItems.isEmpty)) {
-      return Column(
-        children: [
-          TimelineHeader(controller: _controller),
-          Expanded(
-            child: ChronosEmptyView(
-              icon: Icons.search_off_rounded,
-              title: 'Nenhum registro no período',
-              description: 'Tente expandir o intervalo de anos, escolher outra Era ou limpar a busca.',
-              action: ChronosButton(
-                label: 'Limpar Filtros',
-                onPressed: _controller.resetFilters,
-                variant: ChronosButtonVariant.text,
-              ),
-            ),
-          ),
-        ],
-      );
-    }
-
-    // Fluxo ideal com dados disponíveis
     return Column(
       children: [
-        // Cabeçalho unificado com barra de pesquisa e botões de controle
         TimelineHeader(controller: _controller),
-
-        // Lista conectada de nós cronológicos
         Expanded(
-          child: TimelineList(controller: _controller),
+          child: _controller.filteredItems.isEmpty
+              ? ChronosEmptyView(
+                  icon: Icons.search_off_rounded,
+                  title: 'Nenhum registro no período',
+                  description: 'Tente expandir o intervalo de anos, escolher outra categoria ou limpar a busca.',
+                  action: ChronosButton(
+                    label: 'Limpar Filtros',
+                    onPressed: _controller.resetFilters,
+                    variant: ChronosButtonVariant.text,
+                  ),
+                )
+              : TimelineList(controller: _controller),
         ),
       ],
     );
