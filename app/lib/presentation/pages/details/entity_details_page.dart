@@ -15,6 +15,7 @@ import 'entity_details_gallery.dart';
 import 'entity_details_metadata.dart';
 import 'entity_details_actions.dart';
 import 'entity_details_related.dart';
+import '../../widgets/discovery_line.dart';
 
 /// Tela unificada e dinâmica de detalhes de entidades históricas do CHRONOS.
 ///
@@ -87,18 +88,23 @@ class EntityDetailsPage extends StatelessWidget {
           ),
         ),
       ),
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final bool isLargeScreen = constraints.maxWidth >= 800;
+      body: Stack(
+        children: [
+          SafeArea(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final bool isLargeScreen = constraints.maxWidth >= 800;
 
-            if (isLargeScreen) {
-              return _buildTwoColumnLayout(context, display, metadata, eraColor);
-            } else {
-              return _buildSingleColumnLayout(context, display, metadata, eraColor);
-            }
-          },
-        ),
+                if (isLargeScreen) {
+                  return _buildTwoColumnLayout(context, display, metadata, eraColor);
+                } else {
+                  return _buildSingleColumnLayout(context, display, metadata, eraColor);
+                }
+              },
+            ),
+          ),
+          _DiscoveryTracker(entity: entity, display: display),
+        ],
       ),
     );
   }
@@ -126,7 +132,9 @@ class EntityDetailsPage extends StatelessWidget {
           EntityDetailsContent(entity: entity, color: eraColor),
           EntityDetailsGallery(entity: entity, color: eraColor),
           EntityDetailsMetadata(entity: entity, metadata: metadata, color: eraColor),
-          EntityDetailsRelated(entity: entity, color: eraColor),
+          EntityDetailsRelated(entity: entity, display: display, color: eraColor),
+          ChronosSpacing.vSizedBoxLG,
+          const DiscoveryLine(),
         ],
       ),
     );
@@ -155,7 +163,9 @@ class EntityDetailsPage extends StatelessWidget {
                 const ChronosDivider(),
                 EntityDetailsContent(entity: entity, color: eraColor),
                 EntityDetailsGallery(entity: entity, color: eraColor),
-                EntityDetailsRelated(entity: entity, color: eraColor),
+                EntityDetailsRelated(entity: entity, display: display, color: eraColor),
+                ChronosSpacing.vSizedBoxLG,
+                const DiscoveryLine(),
               ],
             ),
           ),
@@ -187,4 +197,69 @@ class EntityDetailsPage extends StatelessWidget {
       ],
     );
   }
+}
+
+/// Widget invisível que registra o passo atual na Linha de Descoberta.
+class _DiscoveryTracker extends StatefulWidget {
+  final dynamic entity;
+  final ChronosEntityDisplay display;
+
+  const _DiscoveryTracker({required this.entity, required this.display});
+
+  @override
+  State<_DiscoveryTracker> createState() => _DiscoveryTrackerState();
+}
+
+class _DiscoveryTrackerState extends State<_DiscoveryTracker> {
+  @override
+  void initState() {
+    super.initState();
+    _track();
+  }
+
+  Future<void> _track() async {
+    final id = _resolveId(widget.entity);
+    final type = _resolveType(widget.entity);
+    if (id == null || type == null) return;
+
+    await DiscoveryLineService().add(DiscoveryStep(
+      entityType: type,
+      entityId: id,
+      title: widget.display.title,
+      imageUrl: widget.display.imageUrl,
+      color: _toHex(widget.display.color),
+    ));
+  }
+
+  String? _resolveId(dynamic entity) {
+    if (entity is Map<String, dynamic>) return entity['id'] as String?;
+    try { return entity.id as String?; } catch (_) {}
+    return null;
+  }
+
+  String? _resolveType(dynamic entity) {
+    String? type;
+    if (entity is Map<String, dynamic>) {
+      type = entity['entity_type'] as String?;
+    }
+    try { type ??= entity.entityType as String?; } catch (_) {}
+    try { type ??= EntityRegistry().resolveEntityType(entity); } catch (_) {}
+    if (type == null) return null;
+    return _toSnakeCase(type);
+  }
+
+  String _toSnakeCase(String input) {
+    return input
+        .replaceAllMapped(RegExp(r'[A-Z]'), (m) => '_${m[0]!.toLowerCase()}')
+        .toLowerCase();
+  }
+
+  String? _toHex(Color? color) {
+    if (color == null) return null;
+    final value = color.value;
+    return '#${(value & 0xFFFFFF).toRadixString(16).padLeft(6, '0')}';
+  }
+
+  @override
+  Widget build(BuildContext context) => const SizedBox.shrink();
 }
