@@ -4,7 +4,7 @@ import 'package:chronos/core/errors/failure.dart';
 import 'package:chronos/core/utils/logger.dart';
 import 'package:chronos/core/utils/result.dart';
 import 'package:chronos/core/presentation/base_controller.dart';
-import 'package:chronos/domain/entities/civilization.dart';
+import '../../domain/entities/civilization.dart';
 import '../../domain/usecases/get_all_civilizations.dart';
 import '../../domain/usecases/get_civilization_by_id.dart';
 import '../../domain/usecases/get_civilization_by_slug.dart';

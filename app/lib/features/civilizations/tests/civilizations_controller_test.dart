@@ -3,8 +3,10 @@ import 'package:chronos/core/utils/result.dart';
 import 'package:chronos/core/errors/failure.dart';
 import 'package:chronos/domain/entities/publication_status.dart';
 import '../presentation/controllers/civilizations_controller.dart';
-import 'package:chronos/domain/entities/civilization.dart';
+import '../domain/entities/civilization.dart';
 import '../domain/usecases/get_all_civilizations.dart';
+import '../domain/usecases/get_civilization_by_id.dart';
+import '../domain/usecases/get_civilization_by_slug.dart';
 import '../domain/repositories/civilization_repository.dart';
 
 class FakeCivilizationRepository extends CivilizationRepository {
@@ -45,7 +47,11 @@ void main() {
     test('should load items successfully', () async {
       final fakeRepo = FakeCivilizationRepository(Result.success([entitySample]));
       final useCase = GetAllCivilizations(fakeRepo);
-      final controller = CivilizationsController(getAllCivilizations: useCase);
+      final controller = CivilizationsController(
+        getAllCivilizations: useCase,
+        getCivilizationById: GetCivilizationById(fakeRepo),
+        getCivilizationBySlug: GetCivilizationBySlug(fakeRepo),
+      );
 
       await controller.loadCivilizations();
 
@@ -59,7 +65,11 @@ void main() {
         const Result.failure(DatabaseFailure('Error loading data')),
       );
       final useCase = GetAllCivilizations(fakeRepo);
-      final controller = CivilizationsController(getAllCivilizations: useCase);
+      final controller = CivilizationsController(
+        getAllCivilizations: useCase,
+        getCivilizationById: GetCivilizationById(fakeRepo),
+        getCivilizationBySlug: GetCivilizationBySlug(fakeRepo),
+      );
 
       await controller.loadCivilizations();
 

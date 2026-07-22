@@ -5,6 +5,8 @@ import 'package:chronos/domain/entities/publication_status.dart';
 import '../presentation/controllers/historical_characters_controller.dart';
 import '../domain/entities/historical_character.dart';
 import '../domain/usecases/get_all_historical_characters.dart';
+import '../domain/usecases/get_historical_character_by_id.dart';
+import '../domain/usecases/get_historical_character_by_slug.dart';
 import '../domain/repositories/historical_character_repository.dart';
 
 class FakeHistoricalCharacterRepository implements HistoricalCharacterRepository {
@@ -55,7 +57,11 @@ void main() {
     test('should load items successfully', () async {
       final fakeRepo = FakeHistoricalCharacterRepository(Result.success([entitySample]));
       final useCase = GetAllHistoricalCharacters(repository: fakeRepo);
-      final controller = HistoricalCharactersController(useCase: useCase);
+      final controller = HistoricalCharactersController(
+        useCase: useCase,
+        getByIdUseCase: GetHistoricalCharacterById(repository: fakeRepo),
+        getBySlugUseCase: GetHistoricalCharacterBySlug(repository: fakeRepo),
+      );
 
       await controller.loadHistoricalCharacters();
 
@@ -69,7 +75,11 @@ void main() {
         const Result.failure(DatabaseFailure('Error loading data')),
       );
       final useCase = GetAllHistoricalCharacters(repository: fakeRepo);
-      final controller = HistoricalCharactersController(useCase: useCase);
+      final controller = HistoricalCharactersController(
+        useCase: useCase,
+        getByIdUseCase: GetHistoricalCharacterById(repository: fakeRepo),
+        getBySlugUseCase: GetHistoricalCharacterBySlug(repository: fakeRepo),
+      );
 
       await controller.loadHistoricalCharacters();
 

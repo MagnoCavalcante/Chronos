@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:chronos/core/di/service_locator.dart';
 import 'package:chronos/core/utils/logger.dart';
-import 'package:chronos/domain/entities/civilization.dart';
+import '../../domain/entities/civilization.dart';
 import '../controllers/civilizations_controller.dart';
 import '../widgets/civilization_card.dart';
 import '../widgets/civilizations_empty.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../presentation/pages/navigation/app_shell.dart';
-import '../../presentation/screens/connection_test_screen.dart';
 import '../../presentation/screens/eras_screen.dart';
 import '../../presentation/screens/historical_events_screen.dart';
 import '../../features/historical_characters/presentation/screens/historical_characters_screen.dart';

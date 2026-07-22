@@ -1,4 +1,4 @@
-import 'package:chronos/domain/entities/civilization.dart';
+import '../../domain/entities/civilization.dart';
 import 'package:chronos/domain/entities/publication_status.dart';
 
 /// Modelo de Persistência (Data Model) que mapeia a estrutura física da tabela 'civilizations'.

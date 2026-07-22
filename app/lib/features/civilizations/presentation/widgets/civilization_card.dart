@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:chronos/domain/entities/civilization.dart';
+import '../../domain/entities/civilization.dart';
 
 class CivilizationCard extends StatelessWidget {
   final Civilization item;

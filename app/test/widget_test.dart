@@ -8,9 +8,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:chronos/core/di/service_locator.dart';
 import 'package:chronos/main.dart';
 
 void main() {
+  setUp(setupServiceLocator);
+
   testWidgets('App smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const ChronosApp());

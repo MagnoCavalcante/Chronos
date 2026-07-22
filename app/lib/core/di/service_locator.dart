@@ -101,6 +101,7 @@ T locate<T extends Object>() => ServiceLocator.instance.get<T>();
 /// Inicializa e registra todos os componentes oficiais de dependência do ecossistema CHRONOS.
 void setupServiceLocator() {
   final sl = ServiceLocator.instance;
+  sl.reset();
 
   // 0. Infraestrutura Global e Navegação
   sl.registerLazySingleton<NavigationService>(() => NavigationServiceImpl());

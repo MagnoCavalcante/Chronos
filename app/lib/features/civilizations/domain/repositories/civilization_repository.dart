@@ -1,6 +1,6 @@
 import 'package:chronos/core/base/base_repository.dart';
 import 'package:chronos/core/utils/result.dart';
-import 'package:chronos/domain/entities/civilization.dart';
+import '../entities/civilization.dart';
 
 /// Contrato (Interface) de Repositório de Civilization para o ecossistema CHRONOS.
 abstract class CivilizationRepository extends BaseRepository {

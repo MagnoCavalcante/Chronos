@@ -168,3 +168,39 @@ O design arquitetural adotado no CHRONOS foi projetado com alta modularidade, pe
 *   **Camada de API Dedicada**: Caso o projeto necessite de processos de segurança avançados ou integrações governamentais de grande escala, um servidor intermediário de API em Go ou Node.js pode ser facilmente adicionado entre o Supabase e o aplicativo, bastando implementar um novo DataSource na camada de dados (`Data`) sem alterar as lógicas de Domínio ou de Apresentação.
 *   **Mecanismo Offline-First**: Caso o ecossistema incorpore sincronização bidirecional complexa para tablets e computadores, as interfaces dos Repositórios suportarão a substituição ou combinação do DataSource remoto pelo banco de dados local unificado (como SQLite/Isar), mantendo as regras visuais intactas.
 *   **Múltiplas Fontes de Integração**: Novas integrações de dados, como bibliotecas universitárias internacionais e arquivos em formato livre, podem ser conectadas ao CHRONOS adicionando-se novos adaptadores na camada de dados, garantindo que o sistema permaneça agnóstico a fornecedores únicos e pronto para acompanhar as necessidades das próximas décadas.
+
+---
+
+## 10. Implementação Atual e Consolidação (Sprint 5.4.RF)
+
+A implementação atual usa `ChangeNotifier`/`ListenableBuilder` para estado, `MaterialApp`/`AppRouter` para rotas e o `ServiceLocator` interno para composição de dependências. Riverpod e GoRouter são referências históricas deste documento, não dependências do aplicativo atual.
+
+### 10.1 Bootstrap e DI
+
+1. `main.dart` inicializa `BuildConfig`, Supabase e `setupServiceLocator()`.
+2. `setupServiceLocator()` reinicializa o container antes de registrar serviços, assegurando bootstrap idempotente para execução e testes.
+3. Data sources, repositórios e use cases são lazy singletons; controllers são factories.
+4. Features autocontidas registram suas dependências por módulos de DI.
+
+### 10.2 Estrutura de Módulo Canônica
+
+O módulo de Civilizações é a referência feature-first consolidada:
+
+```text
+features/civilizations/
+├── data/           # Modelos, datasource Supabase e implementação de repositório
+├── domain/         # Entidade, contrato de repositório e use cases
+├── presentation/   # Controller, tela e widgets
+├── di/             # Registros da feature
+└── routes/         # Contribuição de rota ao AppRouter
+```
+
+A implementação legada duplicada de Civilizações foi removida. Novos módulos devem seguir essa separação e depender de `core/` apenas para infraestrutura compartilhada.
+
+### 10.3 Navegação
+
+`RouteNames` define os nomes; `AppRouter` registra os builders; `NavigationService` encapsula as transições fora da UI. O `AppShell` conserva a navegação por abas. Rotas de recursos futuros permanecem registradas para preservar o comportamento atual, enquanto rotas e telas técnicas não acessíveis foram removidas.
+
+### 10.4 Testes
+
+O smoke test inicializa a DI antes de construir `ChronosApp`. Testes de controllers recebem colaboradores via construtor e não dependem de registros globais implícitos. A migração física dos testes de feature para `test/features/` está registrada em `TECH_DEBT.md`.

@@ -1,10 +1,19 @@
 # CHRONOS: Fundação do Aplicativo Móvel (Sprint 3.1)
 
-Este diretório contém a base arquitetural estruturada para a aplicação móvel **CHRONOS**, desenvolvida utilizando o framework **Flutter** e a linguagem **Dart**.
+Este diretório contém a aplicação móvel **CHRONOS**, desenvolvida com **Flutter** e **Dart**. A base atual usa Clean Architecture híbrida, Service Locator interno e módulos feature-first para domínios consolidados.
 
 A fundação foi projetada seguindo as melhores práticas de engenharia de software para sistemas móveis corporativos, garantindo que o aplicativo cresça de forma sustentável, testável e sem gargalos de acoplamento à medida que novas features forem integradas.
 
 ---
+
+## Estado atual da arquitetura
+
+- **Bootstrap:** `main.dart` inicializa configuração, Supabase e `setupServiceLocator()` antes de construir `ChronosApp`.
+- **DI:** `core/di/service_locator.dart` centraliza registros. Serviços de infraestrutura são lazy singletons; controllers são factories.
+- **Navegação:** `core/navigation/app_router.dart` é a fonte de verdade das rotas nominais. A navegação por abas é mantida por `AppShell`.
+- **Features consolidadas:** `features/civilizations/` é a única implementação de Civilizações e contém `data/`, `domain/`, `presentation/`, `di/` e `routes/`.
+- **Fluxo de dados:** `presentation → use case → repository → datasource → Supabase`; modelos convertem JSON e entidades permanecem no domínio.
+- **Testes:** o smoke test está em `test/`; testes de features existentes estão em `lib/features/**/tests` e devem migrar para `test/features/` em sprint futura.
 
 ## 🧭 Estrutura de Diretórios Inicial
 
@@ -43,20 +52,15 @@ A divisão entre `core/`, `features/` e `shared/` resolve o maior problema de ap
 *   **`features/`**: Utiliza a abordagem **Feature-First**. Módulos como `timeline`, `maps`, `dossiers` e `auth` ficarão completamente autocontidos. Cada um deles terá suas próprias camadas internas (UI, domínio e dados), evitando que uma mudança no motor do mapa afete, por exemplo, a tela de login.
 *   **`shared/`**: Evita a duplicação de componentes, garantindo que botões, cartões de dossiês e layouts de erro possuam consistência de design em todo o aplicativo.
 
-### 2. Estilo de Código e Garantia de Qualidade
-*   O arquivo `analysis_options.yaml` foi configurado com regras de análise estática rigorosas (`flutter_lints`).
-*   Regras como `avoid_print`, `prefer_const_constructors` e `always_declare_return_types` garantem que o código permaneça limpo, livre de gargalos comuns de renderização (através do uso correto de construtores constantes) e perfeitamente tipado para compilações de produção altamente otimizadas.
+### 2. Qualidade e dependências
 
-### 3. Manifesto de Dependências Limpo (`pubspec.yaml`)
-*   Mantido exclusivamente com as dependências centrais (`flutter` e `flutter_lints`), permitindo que a fundação seja validada e compilada de maneira limpa e previsível.
-*   Estruturação prévia da declaração de assets (`assets/images/` e `assets/icons/`), estabelecendo o padrão de carregamento de recursos visuais estáticos.
+- A validação é executada com `flutter analyze` e `flutter test`.
+- As dependências ativas são `flutter`, `supabase_flutter`, `flutter_test` e `flutter_lints`.
+- O controle de estado usa `ChangeNotifier`/`ListenableBuilder`; o roteamento usa `MaterialApp` e `AppRouter`. Riverpod e GoRouter não fazem parte da implementação atual.
 
----
+### 3. Documentação de referência
 
-## 🚀 Próximos Passos (Próxima Sprint)
-
-Na próxima sprint, avançaremos para a **Sprint 3.2**, onde começaremos a introduzir as camadas ativas de dados e interação:
-1.  **Integração com Supabase Client**: Adição e configuração do pacote `supabase_flutter` para estabelecer comunicação nativa com nosso banco de dados PostgreSQL.
-2.  **Gerenciamento de Estado Reativo**: Configuração do `flutter_riverpod` como o motor de gerenciamento de estado e injeção de dependências do aplicativo.
-3.  **Roteamento Avançado**: Implementação do `go_router` para gerenciar transições suaves e roteamento profundo baseado em links do Supabase.
-4.  **Desenvolvimento do Primeiro Protótipo Visual da Linha do Tempo**: Criação dos primeiros layouts reativos baseados nos dados históricos reais providos pelo banco.
+- `docs/ARCHITECTURE.md`: princípios e fluxo arquitetural.
+- `PROJECT_AUDIT.md`: inventário funcional e lacunas de produto.
+- `TECH_DEBT.md`: débitos remanescentes, impacto e planejamento.
+- `REFACTORING_REPORT.md`: consolidações estruturais da Sprint 5.4.RF.

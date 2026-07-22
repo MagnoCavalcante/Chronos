@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:chronos/domain/entities/publication_status.dart';
 import '../data/models/civilization_model.dart';
-import 'package:chronos/domain/entities/civilization.dart';
+import '../domain/entities/civilization.dart';
 
 void main() {
   group('CivilizationModel Tests', () {
