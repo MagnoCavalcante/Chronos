@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../core/crud/crud_module_configs.dart';
+import '../../core/crud/crud_screen.dart';
 import '../../presentation/pages/navigation/app_shell.dart';
 import '../../presentation/screens/eras_screen.dart';
-import '../../presentation/screens/historical_events_screen.dart';
-import '../../features/historical_characters/presentation/screens/historical_characters_screen.dart';
-import '../../features/civilizations/routes/civilizations_routes.dart';
 import '../presentation/widgets/widgets.dart';
 import '../theme/theme.dart';
 import 'route_names.dart';
@@ -22,26 +21,12 @@ class AppRouter {
   static Map<String, WidgetBuilder> get routes => {
         RouteNames.home: (context) => const AppShell(),
         RouteNames.eras: (context) => const ErasScreen(),
-        RouteNames.events: (context) => const HistoricalEventsScreen(),
-        RouteNames.historicalCharacters: (context) => const HistoricalCharactersScreen(),
-        
-        // Rotas das Sprints Futuras mapeadas para telas de aviso polidas e interativas
-        ...CivilizationsRoutes.routes,
-        RouteNames.artifacts: (context) => const _FutureSprintPlaceholderScreen(
-              title: 'Artefatos Históricos',
-              description: 'O catálogo e visualizador 3D de relíquias arqueológicas, manuscritos e invenções serão introduzidos na Sprint 5.3.',
-              icon: Icons.hourglass_empty_rounded,
-            ),
-        RouteNames.locations: (context) => const _FutureSprintPlaceholderScreen(
-              title: 'Localizações e Georeferenciamento',
-              description: 'A visualização espacial e mapeamento interativo de rotas comerciais antigas estarão disponíveis na Sprint 5.4.',
-              icon: Icons.public_rounded,
-            ),
-        RouteNames.sources: (context) => const _FutureSprintPlaceholderScreen(
-              title: 'Fontes & Referências',
-              description: 'O validador de fontes primárias, registros de historiadores clássicos e confiabilidade de dados chega na Sprint 5.5.',
-              icon: Icons.auto_stories_rounded,
-            ),
+        RouteNames.civilizations: (context) => CrudScreen(config: CrudModuleConfigs.civilizations),
+        RouteNames.historicalCharacters: (context) => CrudScreen(config: CrudModuleConfigs.historicalCharacters),
+        RouteNames.events: (context) => CrudScreen(config: CrudModuleConfigs.historicalEvents),
+        RouteNames.artifacts: (context) => CrudScreen(config: CrudModuleConfigs.artifacts),
+        RouteNames.locations: (context) => CrudScreen(config: CrudModuleConfigs.historicalLocations),
+        RouteNames.sources: (context) => CrudScreen(config: CrudModuleConfigs.historicalSources),
         RouteNames.settings: (context) => const _FutureSprintPlaceholderScreen(
               title: 'Configurações do CHRONOS',
               description: 'O painel de preferências, sincronização offline de dados e ajustes visuais será liberado na Sprint 5.6.',
