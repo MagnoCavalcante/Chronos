@@ -191,6 +191,20 @@ class SearchResultCard extends StatelessWidget {
     );
   }
 
+  String _normalize(String text) {
+    const withDiacritics =
+        'áàãâäéèêëíìîïóòõôöúùûüçÇñÑÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÔÖÚÙÛÜ';
+    const without =
+        'aaaaaeeeeiiiiooooouuuucCnNAAAAAEEEEIIIIOOOOOUUUUU';
+    final buffer = StringBuffer();
+    for (final rune in text.toLowerCase().trim().runes) {
+      final char = String.fromCharCode(rune);
+      final index = withDiacritics.indexOf(char);
+      buffer.write(index >= 0 ? without[index] : char);
+    }
+    return buffer.toString();
+  }
+
   Widget _buildHighlightedText(
     String text,
     String query,
@@ -198,7 +212,8 @@ class SearchResultCard extends StatelessWidget {
     TextStyle highlightStyle, {
     int maxLines = 1,
   }) {
-    if (query.trim().isEmpty) {
+    final normalizedQuery = _normalize(query);
+    if (normalizedQuery.isEmpty) {
       return Text(
         text,
         style: baseStyle,
@@ -207,12 +222,11 @@ class SearchResultCard extends StatelessWidget {
       );
     }
 
-    final queryLower = query.toLowerCase().trim();
-    final textLower = text.toLowerCase();
+    final normalizedText = _normalize(text);
 
     final List<TextSpan> spans = [];
     int start = 0;
-    int indexOfQuery = textLower.indexOf(queryLower, start);
+    int indexOfQuery = normalizedText.indexOf(normalizedQuery, start);
 
     while (indexOfQuery != -1) {
       if (indexOfQuery > start) {
@@ -222,11 +236,11 @@ class SearchResultCard extends StatelessWidget {
         ));
       }
       spans.add(TextSpan(
-        text: text.substring(indexOfQuery, indexOfQuery + queryLower.length),
+        text: text.substring(indexOfQuery, indexOfQuery + normalizedQuery.length),
         style: highlightStyle,
       ));
-      start = indexOfQuery + queryLower.length;
-      indexOfQuery = textLower.indexOf(queryLower, start);
+      start = indexOfQuery + normalizedQuery.length;
+      indexOfQuery = normalizedText.indexOf(normalizedQuery, start);
     }
 
     if (start < text.length) {

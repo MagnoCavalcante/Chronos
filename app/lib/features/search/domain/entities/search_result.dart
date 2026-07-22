@@ -1,6 +1,7 @@
 enum SearchCategory {
   all('Todos', null),
   characters('Personagens', 'historical_character'),
+  eras('Eras', 'era'),
   civilizations('Civilizações', 'civilization'),
   events('Eventos', 'historical_event'),
   artifacts('Artefatos', 'artifact'),
@@ -38,7 +39,7 @@ class SearchQuery {
     this.category = SearchCategory.all,
     this.sort = SearchSort.relevance,
     this.page = 0,
-    this.pageSize = 30,
+    this.pageSize = 20,
   });
 
   int get offset => page * pageSize;

@@ -32,6 +32,8 @@ DROP POLICY IF EXISTS policy_historical_sources_select_public ON historical_sour
 CREATE POLICY policy_historical_sources_select_public
 ON historical_sources FOR SELECT USING (true);
 
+CREATE EXTENSION IF NOT EXISTS unaccent;
+
 DROP FUNCTION IF EXISTS search_chronos(TEXT, TEXT, TEXT, INTEGER, INTEGER);
 
 CREATE OR REPLACE FUNCTION search_chronos(
@@ -57,7 +59,7 @@ LANGUAGE SQL
 STABLE
 AS $$
 WITH parameters AS (
-    SELECT NULLIF(BTRIM(p_query), '') AS query
+    SELECT NULLIF(regexp_replace(BTRIM(unaccent(p_query)), '\s+', ' ', 'g'), '') AS query
 ), records AS (
     SELECT
         'historical_character'::TEXT AS entity_type,
@@ -69,43 +71,48 @@ WITH parameters AS (
         EXTRACT(YEAR FROM c.data_nascimento)::BIGINT AS chronology_value,
         c.created_at,
         COALESCE((SELECT ARRAY_AGG(et.tag ORDER BY et.tag) FROM entity_tags et WHERE et.entity_type = 'historical_character' AND et.entity_id = c.id), ARRAY[]::TEXT[]) AS tags,
-        CASE WHEN c.nome ILIKE (SELECT query || '%' FROM parameters) THEN 100 WHEN c.nome ILIKE (SELECT '%' || query || '%' FROM parameters) THEN 70 ELSE 20 END AS relevance
+        CASE WHEN unaccent(c.nome) ILIKE (SELECT query || '%' FROM parameters) THEN 100 WHEN unaccent(c.nome) ILIKE (SELECT '%' || query || '%' FROM parameters) THEN 70 ELSE 20 END AS relevance
     FROM historical_characters c
     WHERE c.ativo = true AND c.publication_status = 'published'
     UNION ALL
     SELECT 'civilization', c.id, c.name, COALESCE(c.short_name, c.name), c.summary, NULL, c.start_year::BIGINT, c.created_at,
         COALESCE((SELECT ARRAY_AGG(et.tag ORDER BY et.tag) FROM entity_tags et WHERE et.entity_type = 'civilization' AND et.entity_id = c.id), ARRAY[]::TEXT[]),
-        CASE WHEN c.name ILIKE (SELECT query || '%' FROM parameters) THEN 100 WHEN c.name ILIKE (SELECT '%' || query || '%' FROM parameters) THEN 70 ELSE 20 END
+        CASE WHEN unaccent(c.name) ILIKE (SELECT query || '%' FROM parameters) THEN 100 WHEN unaccent(c.name) ILIKE (SELECT '%' || query || '%' FROM parameters) THEN 70 ELSE 20 END
     FROM civilizations c WHERE c.ativo = true AND c.publication_status = 'published'
     UNION ALL
     SELECT 'historical_event', e.id, e.titulo, e.titulo_curto, e.descricao_resumida, NULL, e.start_year, e.created_at,
         COALESCE((SELECT ARRAY_AGG(et.tag ORDER BY et.tag) FROM entity_tags et WHERE et.entity_type = 'historical_event' AND et.entity_id = e.id), ARRAY[]::TEXT[]),
-        CASE WHEN e.titulo ILIKE (SELECT query || '%' FROM parameters) THEN 100 WHEN e.titulo ILIKE (SELECT '%' || query || '%' FROM parameters) THEN 70 ELSE 20 END
+        CASE WHEN unaccent(e.titulo) ILIKE (SELECT query || '%' FROM parameters) THEN 100 WHEN unaccent(e.titulo) ILIKE (SELECT '%' || query || '%' FROM parameters) THEN 70 ELSE 20 END
     FROM historical_events e WHERE e.ativo = true AND e.publication_status = 'published'
+    UNION ALL
+    SELECT 'era', e.id, e.nome, COALESCE(e.titulo_curto, e.nome), e.descricao_resumida, NULL, e.inicio_ano::BIGINT, e.created_at,
+        COALESCE((SELECT ARRAY_AGG(et.tag ORDER BY et.tag) FROM entity_tags et WHERE et.entity_type = 'era' AND et.entity_id = e.id), ARRAY[]::TEXT[]),
+        CASE WHEN unaccent(e.nome) ILIKE (SELECT query || '%' FROM parameters) THEN 100 WHEN unaccent(e.nome) ILIKE (SELECT '%' || query || '%' FROM parameters) THEN 70 ELSE 20 END
+    FROM eras e WHERE e.ativo = true AND e.publication_status = 'published'
     UNION ALL
     SELECT 'artifact', a.id, a.name, COALESCE(a.short_name, a.artifact_type), a.summary, a.cover_image_url, a.estimated_year::BIGINT, a.created_at,
         COALESCE((SELECT ARRAY_AGG(et.tag ORDER BY et.tag) FROM entity_tags et WHERE et.entity_type = 'artifact' AND et.entity_id = a.id), ARRAY[]::TEXT[]),
-        CASE WHEN a.name ILIKE (SELECT query || '%' FROM parameters) THEN 100 WHEN a.name ILIKE (SELECT '%' || query || '%' FROM parameters) THEN 70 ELSE 20 END
+        CASE WHEN unaccent(a.name) ILIKE (SELECT query || '%' FROM parameters) THEN 100 WHEN unaccent(a.name) ILIKE (SELECT '%' || query || '%' FROM parameters) THEN 70 ELSE 20 END
     FROM artifacts a WHERE a.ativo = true AND a.publication_status = 'published'
     UNION ALL
     SELECT 'historical_location', l.id, l.name, COALESCE(l.short_name, l.modern_country), l.summary, l.cover_image_url, l.start_year::BIGINT, l.created_at,
         COALESCE((SELECT ARRAY_AGG(et.tag ORDER BY et.tag) FROM entity_tags et WHERE et.entity_type = 'historical_location' AND et.entity_id = l.id), ARRAY[]::TEXT[]),
-        CASE WHEN l.name ILIKE (SELECT query || '%' FROM parameters) THEN 100 WHEN l.name ILIKE (SELECT '%' || query || '%' FROM parameters) THEN 70 ELSE 20 END
+        CASE WHEN unaccent(l.name) ILIKE (SELECT query || '%' FROM parameters) THEN 100 WHEN unaccent(l.name) ILIKE (SELECT '%' || query || '%' FROM parameters) THEN 70 ELSE 20 END
     FROM historical_locations l WHERE l.ativo = true AND l.publication_status = 'published'
     UNION ALL
     SELECT 'historical_source', s.id, s.titulo, COALESCE(s.autor, 'Fonte Histórica'), COALESCE(s.descricao_resumida, s.descricao), NULL, NULL, s.created_at,
         COALESCE((SELECT ARRAY_AGG(et.tag ORDER BY et.tag) FROM entity_tags et WHERE et.entity_type = 'historical_source' AND et.entity_id = s.id), ARRAY[]::TEXT[]),
-        CASE WHEN s.titulo ILIKE (SELECT query || '%' FROM parameters) THEN 100 WHEN s.titulo ILIKE (SELECT '%' || query || '%' FROM parameters) THEN 70 ELSE 20 END
+        CASE WHEN unaccent(s.titulo) ILIKE (SELECT query || '%' FROM parameters) THEN 100 WHEN unaccent(s.titulo) ILIKE (SELECT '%' || query || '%' FROM parameters) THEN 70 ELSE 20 END
     FROM historical_sources s WHERE s.ativo = true AND s.publication_status = 'published'
 ), filtered AS (
     SELECT * FROM records r, parameters p
     WHERE (p_category IS NULL OR p_category = '' OR r.entity_type = p_category)
       AND (
           p.query IS NULL
-          OR r.title ILIKE '%' || p.query || '%'
-          OR r.subtitle ILIKE '%' || p.query || '%'
-          OR r.summary ILIKE '%' || p.query || '%'
-          OR EXISTS (SELECT 1 FROM UNNEST(r.tags) tag WHERE tag ILIKE '%' || p.query || '%')
+          OR unaccent(r.title) ILIKE '%' || p.query || '%'
+          OR unaccent(r.subtitle) ILIKE '%' || p.query || '%'
+          OR unaccent(r.summary) ILIKE '%' || p.query || '%'
+          OR EXISTS (SELECT 1 FROM UNNEST(r.tags) tag WHERE unaccent(tag) ILIKE '%' || p.query || '%')
           OR r.chronology_value::TEXT = p.query
       )
 )

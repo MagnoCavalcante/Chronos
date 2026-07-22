@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/theme.dart';
+import '../../../features/search/domain/entities/search_result.dart';
 import '../../../features/search/presentation/controllers/search_controller.dart';
 import 'search_result_card.dart';
 import 'search_empty.dart';
@@ -8,6 +9,9 @@ import 'search_empty.dart';
 class SearchResults extends StatelessWidget {
   final List<SearchResultItem> results;
   final String query;
+  final List<String> history;
+  final List<String> popularSearches;
+  final ValueChanged<String>? onSuggestionSelected;
   final VoidCallback? onClearFilters;
   final Future<void> Function()? onLoadMore;
 
@@ -15,6 +19,9 @@ class SearchResults extends StatelessWidget {
     super.key,
     required this.results,
     required this.query,
+    this.history = const [],
+    this.popularSearches = const [],
+    this.onSuggestionSelected,
     this.onClearFilters,
     this.onLoadMore,
   });
@@ -24,6 +31,9 @@ class SearchResults extends StatelessWidget {
     if (results.isEmpty) {
       return SearchEmpty(
         query: query,
+        history: history,
+        popularSearches: popularSearches,
+        onSuggestionSelected: onSuggestionSelected,
         onClearFilters: onClearFilters,
       );
     }
@@ -55,21 +65,52 @@ class SearchResults extends StatelessWidget {
               }
               return false;
             },
-            child: ListView.builder(
+            child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: ChronosSpacing.md),
-              itemCount: results.length,
-              itemBuilder: (context, index) {
-                final item = results[index];
-                return SearchResultCard(
-                  key: ValueKey('${item.display.id}_${item.display.type}'),
-                  item: item,
-                  query: query,
-                );
-              },
+              children: _buildSections(results),
             ),
           ),
         ),
       ],
     );
+  }
+
+  List<Widget> _buildSections(List<SearchResultItem> items) {
+    final groups = <String, List<SearchResultItem>>{};
+    for (final item in items) {
+      groups.putIfAbsent(item.display.type ?? 'Outros', () => []).add(item);
+    }
+    final orderedLabels = SearchCategory.values
+        .where((c) => c != SearchCategory.all)
+        .map((c) => c.label)
+        .toList();
+
+    final sections = <Widget>[];
+    for (final label in orderedLabels) {
+      final group = groups[label];
+      if (group == null || group.isEmpty) continue;
+      sections.add(
+        Padding(
+          padding: const EdgeInsets.only(top: ChronosSpacing.md, bottom: ChronosSpacing.xs),
+          child: Text(
+            label.toUpperCase(),
+            style: ChronosTypography.bodySmall.copyWith(
+              fontWeight: FontWeight.bold,
+              color: ChronosColors.textMuted,
+            ),
+          ),
+        ),
+      );
+      for (final item in group) {
+        sections.add(
+          SearchResultCard(
+            key: ValueKey('${item.display.id}_${item.display.type}'),
+            item: item,
+            query: query,
+          ),
+        );
+      }
+    }
+    return sections;
   }
 }

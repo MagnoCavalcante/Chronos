@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/theme.dart';
+import '../../../core/presentation/widgets/chronos_chip.dart';
 import '../../../core/presentation/widgets/chronos_empty_state.dart';
 
 /// Tela ou estado de busca vazia, cobrindo dois cenários:
@@ -7,11 +8,17 @@ import '../../../core/presentation/widgets/chronos_empty_state.dart';
 /// 2. Estado de Sem Resultados (com query que não encontrou correspondências).
 class SearchEmpty extends StatelessWidget {
   final String query;
+  final List<String> history;
+  final List<String> popularSearches;
+  final ValueChanged<String>? onSuggestionSelected;
   final VoidCallback? onClearFilters;
 
   const SearchEmpty({
     super.key,
     required this.query,
+    this.history = const [],
+    this.popularSearches = const [],
+    this.onSuggestionSelected,
     this.onClearFilters,
   });
 
@@ -20,9 +27,8 @@ class SearchEmpty extends StatelessWidget {
     final bool isInitialState = query.trim().isEmpty;
 
     if (isInitialState) {
-      return Container(
+      return SingleChildScrollView(
         padding: const EdgeInsets.all(ChronosSpacing.xl),
-        alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,6 +70,18 @@ class SearchEmpty extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
+            if (history.isNotEmpty) ...[
+              ChronosSpacing.vSizedBoxLG,
+              _buildSectionTitle('Pesquisas recentes'),
+              ChronosSpacing.vSizedBoxSM,
+              _buildChips(history),
+            ],
+            if (popularSearches.isNotEmpty) ...[
+              ChronosSpacing.vSizedBoxLG,
+              _buildSectionTitle('Pesquisas populares'),
+              ChronosSpacing.vSizedBoxSM,
+              _buildChips(popularSearches),
+            ],
           ],
         ),
       );
@@ -111,6 +129,35 @@ class SearchEmpty extends StatelessWidget {
             ],
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        title,
+        style: ChronosTypography.bodyMedium.copyWith(
+          fontWeight: FontWeight.bold,
+          color: ChronosColors.textPrimary,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildChips(List<String> items) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Wrap(
+        spacing: ChronosSpacing.sm,
+        runSpacing: ChronosSpacing.sm,
+        children: items.map((item) {
+          return ChronosChip(
+            label: item,
+            onTap: onSuggestionSelected == null ? null : () => onSuggestionSelected!(item),
+          );
+        }).toList(),
       ),
     );
   }

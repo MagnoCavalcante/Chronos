@@ -23,7 +23,7 @@ class SearchInputBar extends StatelessWidget {
       child: ChronosSearchBar(
         onChanged: onChanged,
         initialValue: query,
-        hintText: 'Pesquisar personagens, civilizações, eventos, locais, artefatos e fontes...',
+        hintText: 'Pesquisar personagens, eras, civilizações, eventos, locais, artefatos e fontes...',
       ),
     );
   }

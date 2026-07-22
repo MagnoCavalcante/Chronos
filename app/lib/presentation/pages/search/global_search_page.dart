@@ -104,6 +104,9 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
     return SearchResults(
       results: _controller.filteredResults,
       query: _controller.query,
+      history: _controller.searchHistory,
+      popularSearches: _controller.popularSearches,
+      onSuggestionSelected: _controller.selectSuggestion,
       onLoadMore: _controller.loadMore,
       onClearFilters: () {
         _controller.updateQuery('');
