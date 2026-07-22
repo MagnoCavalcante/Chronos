@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/chronos_empty_view.dart';
+import '../favorites/favorites_page.dart';
 import '../home/home_page.dart';
 import '../timeline/timeline_page.dart';
 import '../search/global_search_page.dart';
@@ -83,11 +84,7 @@ extension ChronosTabExtension on ChronosTab {
       case ChronosTab.busca:
         return const GlobalSearchPage();
       case ChronosTab.favoritos:
-        return const ChronosEmptyView(
-          icon: Icons.bookmark_border_rounded,
-          title: 'Cofre de Relíquias',
-          description: 'Guarde seus artefatos, eras e personalidades históricas prediletas para consulta offline rápida.',
-        );
+        return const FavoritesPage();
       case ChronosTab.configuracoes:
         return const ChronosEmptyView(
           icon: Icons.settings_rounded,

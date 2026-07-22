@@ -39,6 +39,16 @@ class CrudRepository extends BaseRepository {
     );
   }
 
+  Future<Result<List<Map<String, dynamic>>>> getRecent(int limit, {String orderBy = 'created_at'}) async {
+    return safeCall<List<Map<String, dynamic>>>(
+      () async {
+        final response = await _table.select().order(orderBy, ascending: false).limit(limit);
+        return response;
+      },
+      onError: (e, s) => _mapError(e),
+    );
+  }
+
   Future<Result<Map<String, dynamic>>> getById(String id) async {
     return safeCall<Map<String, dynamic>>(
       () async {
