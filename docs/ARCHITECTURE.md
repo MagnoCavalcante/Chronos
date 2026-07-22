@@ -204,3 +204,7 @@ A implementação legada duplicada de Civilizações foi removida. Novos módulo
 ### 10.4 Testes
 
 O smoke test inicializa a DI antes de construir `ChronosApp`. Testes de controllers recebem colaboradores via construtor e não dependem de registros globais implícitos. A migração física dos testes de feature para `test/features/` está registrada em `TECH_DEBT.md`.
+
+### 10.5 Global Search Engine
+
+A feature `features/search/` segue o fluxo `presentation → use case → repository → datasource → Supabase RPC`. A função `search_chronos` normaliza Personagens, Civilizações, Eventos, Artefatos, Localizações e Fontes em uma resposta paginada. Texto, tags e período são filtrados no banco; debounce, estado de tela e lazy loading pertencem ao controller de apresentação. A especificação operacional está em `SEARCH_ENGINE.md`.

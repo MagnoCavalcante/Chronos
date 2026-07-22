@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/theme.dart';
 import '../../../core/presentation/widgets/chronos_card.dart';
 import '../../widgets/browser/entity_card.dart';
+import '../../engine/entity_registry.dart';
 import '../details/entity_details_page.dart';
-import 'search_controller.dart';
+import '../../../features/search/presentation/controllers/search_controller.dart';
 
 /// Card individual de resultado de busca global.
 ///
@@ -38,7 +39,10 @@ class SearchResultCard extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => EntityDetailsPage(entity: item.originalEntity),
+                builder: (context) => EntityDetailsPage(
+                  entity: item.originalEntity,
+                  descriptor: EntityRegistry().getDescriptor(item.entityType),
+                ),
               ),
             );
           },

@@ -4,7 +4,7 @@ import '../../../core/theme/theme.dart';
 import '../../../core/presentation/widgets/chronos_page.dart';
 import '../../widgets/chronos_loading_view.dart';
 import '../../widgets/chronos_error_view.dart';
-import 'search_controller.dart';
+import '../../../features/search/presentation/controllers/search_controller.dart';
 import 'search_bar.dart';
 import 'search_filters.dart';
 import 'search_results.dart';
@@ -37,6 +37,12 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ChronosColors.background,
@@ -46,11 +52,7 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
           return ChronosPage(
             scrollable: false, // Controle de scroll interno nas sub-visões
             padding: EdgeInsets.zero,
-            onRefresh: () async {
-              _controller.dispose();
-              final newController = locate<ChronosSearchController>();
-              await newController.initialize();
-            },
+            onRefresh: _controller.refresh,
             child: Column(
               children: [
                 // Barra Superior de Entrada de Pesquisa
@@ -102,10 +104,11 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
     return SearchResults(
       results: _controller.filteredResults,
       query: _controller.query,
+      onLoadMore: _controller.loadMore,
       onClearFilters: () {
         _controller.updateQuery('');
         _controller.updateCategory('Todos');
-        _controller.updateSort('Relevância');
+        _controller.updateSort('Mais relevantes');
       },
     );
   }

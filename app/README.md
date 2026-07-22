@@ -64,3 +64,4 @@ A divisão entre `core/`, `features/` e `shared/` resolve o maior problema de ap
 - `PROJECT_AUDIT.md`: inventário funcional e lacunas de produto.
 - `TECH_DEBT.md`: débitos remanescentes, impacto e planejamento.
 - `REFACTORING_REPORT.md`: consolidações estruturais da Sprint 5.4.RF.
+- `SEARCH_ENGINE.md`: arquitetura, consultas e operação da Busca Global.

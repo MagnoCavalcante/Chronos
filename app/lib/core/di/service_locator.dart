@@ -30,7 +30,7 @@ import '../../presentation/controllers/eras_controller.dart';
 import '../../presentation/controllers/historical_events_controller.dart';
 import '../../presentation/controllers/artifacts_controller.dart';
 import '../../presentation/controllers/historical_locations_controller.dart';
-import '../../presentation/pages/search/search_controller.dart';
+import '../../features/search/di/search_di.dart';
 
 /// Um Service Locator leve, puro-Dart e tipado para o ecossistema CHRONOS.
 /// 
@@ -157,8 +157,8 @@ void setupServiceLocator() {
     getLocationsByType: sl.get<GetLocationsByType>(),
     getLocationsWithinBounds: sl.get<GetLocationsWithinBounds>(),
   ));
-  sl.registerFactory<ChronosSearchController>(() => ChronosSearchController());
   HistoricalCharactersDI.register();
   CivilizationsDI.register();
+  SearchDI.register();
 }
 

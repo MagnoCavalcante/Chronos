@@ -25,12 +25,15 @@ class SearchFilters extends StatelessWidget {
     'Civilizações',
     'Artefatos',
     'Localizações',
+    'Fontes',
   ];
 
   static const List<String> _sortOptions = [
-    'Relevância',
-    'Alfabética',
-    'Cronológica',
+    'Mais relevantes',
+    'Nome A-Z',
+    'Nome Z-A',
+    'Mais recentes',
+    'Mais antigos',
   ];
 
   @override
