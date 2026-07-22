@@ -43,9 +43,9 @@ class EntityDetailsHeader extends StatelessWidget {
                   vertical: ChronosSpacing.xxs,
                 ),
                 decoration: BoxDecoration(
-                  color: eraColor.withOpacity(0.12),
+                  color: eraColor.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(ChronosRadius.sm),
-                  border: Border.all(color: eraColor.withOpacity(0.3), width: 1),
+                  border: Border.all(color: eraColor.withValues(alpha: 0.3), width: 1),
                 ),
                 child: Text(
                   display.type!.toUpperCase(),

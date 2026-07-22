@@ -32,7 +32,7 @@ class SearchResultCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(bottom: ChronosSpacing.md),
         child: ChronosCard(
-          borderColor: themeColor.withOpacity(0.2),
+          borderColor: themeColor.withValues(alpha: 0.2),
           padding: const EdgeInsets.all(ChronosSpacing.md),
           onTap: () {
             Navigator.push(
@@ -61,9 +61,9 @@ class SearchResultCard extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
-                            color: themeColor.withOpacity(0.08),
+                            color: themeColor.withValues(alpha: 0.08),
                             borderRadius: BorderRadius.circular(ChronosRadius.xs),
-                            border: Border.all(color: themeColor.withOpacity(0.2), width: 0.5),
+                            border: Border.all(color: themeColor.withValues(alpha: 0.2), width: 0.5),
                           ),
                           child: Text(
                             display.type?.toUpperCase() ?? 'KNOWLEDGE',
@@ -103,7 +103,7 @@ class SearchResultCard extends StatelessWidget {
                       ChronosTypography.bodyMedium.copyWith(
                         fontWeight: FontWeight.bold,
                         color: ChronosColors.accent,
-                        backgroundColor: ChronosColors.accent.withOpacity(0.1),
+                        backgroundColor: ChronosColors.accent.withValues(alpha: 0.1),
                       ),
                     ),
 
@@ -132,7 +132,7 @@ class SearchResultCard extends StatelessWidget {
                         ChronosTypography.bodySmall.copyWith(
                           color: ChronosColors.textPrimary,
                           fontWeight: FontWeight.bold,
-                          backgroundColor: ChronosColors.accent.withOpacity(0.12),
+                          backgroundColor: ChronosColors.accent.withValues(alpha: 0.12),
                         ),
                         maxLines: 2,
                       ),
@@ -175,9 +175,9 @@ class SearchResultCard extends StatelessWidget {
       width: 52,
       height: 52,
       decoration: BoxDecoration(
-        color: themeColor.withOpacity(0.08),
+        color: themeColor.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(ChronosRadius.sm),
-        border: Border.all(color: themeColor.withOpacity(0.15), width: 1.0),
+        border: Border.all(color: themeColor.withValues(alpha: 0.15), width: 1.0),
       ),
       child: Icon(
         display.icon ?? Icons.layers_outlined,

@@ -84,7 +84,7 @@ class EntityCard extends StatelessWidget {
         child: ChronosCard(
           borderColor: isSelected
               ? ChronosColors.accent
-              : themeColor.withOpacity(0.2),
+              : themeColor.withValues(alpha: 0.2),
           borderWidth: isSelected ? 2.0 : 1.0,
           padding: EdgeInsets.zero,
           onTap: selectionMode
@@ -389,7 +389,7 @@ class EntityCard extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
+        color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(ChronosRadius.sm),
       ),
       child: Icon(
@@ -436,11 +436,11 @@ class EntityCard extends StatelessWidget {
     return Container(
       height: 120,
       width: double.infinity,
-      color: themeColor.withOpacity(0.05),
+      color: themeColor.withValues(alpha: 0.05),
       child: Center(
         child: Icon(
           display.icon ?? Icons.layers_outlined,
-          color: themeColor.withOpacity(0.3),
+          color: themeColor.withValues(alpha: 0.3),
           size: 40,
         ),
       ),
@@ -451,11 +451,11 @@ class EntityCard extends StatelessWidget {
     return Container(
       height: 200,
       width: double.infinity,
-      color: themeColor.withOpacity(0.05),
+      color: themeColor.withValues(alpha: 0.05),
       child: Center(
         child: Icon(
           display.icon ?? Icons.layers_outlined,
-          color: themeColor.withOpacity(0.3),
+          color: themeColor.withValues(alpha: 0.3),
           size: 60,
         ),
       ),

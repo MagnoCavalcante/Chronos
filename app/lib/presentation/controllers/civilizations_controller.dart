@@ -89,7 +89,6 @@ class CivilizationsController extends BaseController<List<Civilization>> {
           },
           onFailure: (failure) => Result.failure(failure),
         );
-        });
       },
       tag: 'CivilizationsController',
     );

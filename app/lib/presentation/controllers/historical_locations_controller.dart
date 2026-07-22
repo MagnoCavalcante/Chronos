@@ -71,10 +71,13 @@ class HistoricalLocationsController extends BaseController<List<HistoricalLocati
     final result = await execute(
       () async {
         final usecaseResult = await _getLocationById(id);
-        return usecaseResult.map((location) {
-          _selectedLocation = location;
-          return [location];
-        });
+        return usecaseResult.fold(
+          onSuccess: (location) {
+            _selectedLocation = location;
+            return Result.success([location]);
+          },
+          onFailure: (failure) => Result.failure(failure),
+        );
       },
       tag: 'HistoricalLocationsController',
     );
@@ -91,10 +94,13 @@ class HistoricalLocationsController extends BaseController<List<HistoricalLocati
     final result = await execute(
       () async {
         final usecaseResult = await _getLocationBySlug(slug);
-        return usecaseResult.map((location) {
-          _selectedLocation = location;
-          return [location];
-        });
+        return usecaseResult.fold(
+          onSuccess: (location) {
+            _selectedLocation = location;
+            return Result.success([location]);
+          },
+          onFailure: (failure) => Result.failure(failure),
+        );
       },
       tag: 'HistoricalLocationsController',
     );

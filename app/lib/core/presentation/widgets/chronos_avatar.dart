@@ -86,7 +86,7 @@ class ChronosAvatar extends StatelessWidget {
       initials = initials.toUpperCase();
 
       return Container(
-        color: accentCol.withOpacity(0.12),
+        color: accentCol.withValues(alpha: 0.12),
         child: Center(
           child: Text(
             initials,

@@ -56,7 +56,7 @@ class TimelineList extends StatelessWidget {
                 vertical: ChronosSpacing.md,
               ),
               child: ChronosCard(
-                borderColor: eraColor.withOpacity(0.4),
+                borderColor: eraColor.withValues(alpha: 0.4),
                 borderWidth: 2.0,
                 padding: const EdgeInsets.all(ChronosSpacing.md),
                 onTap: () => _showDetails(context, TimelineDisplayItem.fromEra(era, eraColor)),
@@ -190,7 +190,7 @@ class TimelineList extends StatelessWidget {
                 Container(
                   width: 2,
                   height: 24,
-                  color: index > 0 ? item.color.withOpacity(0.5) : Colors.transparent,
+                  color: index > 0 ? item.color.withValues(alpha: 0.5) : Colors.transparent,
                 ),
                 // O nó circular representativo
                 Container(
@@ -205,7 +205,7 @@ class TimelineList extends StatelessWidget {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: item.color.withOpacity(0.3),
+                        color: item.color.withValues(alpha: 0.3),
                         blurRadius: 6,
                         spreadRadius: 1,
                       ),
@@ -216,7 +216,7 @@ class TimelineList extends StatelessWidget {
                 Expanded(
                   child: Container(
                     width: 2,
-                    color: index < totalCount - 1 ? item.color.withOpacity(0.5) : Colors.transparent,
+                    color: index < totalCount - 1 ? item.color.withValues(alpha: 0.5) : Colors.transparent,
                   ),
                 ),
               ],
@@ -229,7 +229,7 @@ class TimelineList extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: ChronosSpacing.xs),
               child: ChronosCard(
-                borderColor: item.color.withOpacity(0.2),
+                borderColor: item.color.withValues(alpha: 0.2),
                 borderWidth: isEra ? 1.5 : 1.0,
                 padding: const EdgeInsets.all(ChronosSpacing.md),
                 onTap: () => _showDetails(context, item),
@@ -246,7 +246,7 @@ class TimelineList extends StatelessWidget {
                             vertical: ChronosSpacing.xxs,
                           ),
                           decoration: BoxDecoration(
-                            color: item.color.withOpacity(0.1),
+                            color: item.color.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(ChronosRadius.xs),
                           ),
                           child: Text(

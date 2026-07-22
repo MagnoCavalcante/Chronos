@@ -106,17 +106,17 @@ class _ConnectionTestScreenState extends State<ConnectionTestScreen> {
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: _hasNetworkSuccess
-                        ? emeraldGreen.withOpacity(0.08)
+                        ? emeraldGreen.withValues(alpha: 0.08)
                         : (_isNetworkChecking
-                            ? Colors.cyanAccent.withOpacity(0.08)
-                            : Colors.redAccent.withOpacity(0.08)),
+                            ? Colors.cyanAccent.withValues(alpha: 0.08)
+                            : Colors.redAccent.withValues(alpha: 0.08)),
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: _hasNetworkSuccess
-                          ? emeraldGreen.withOpacity(0.3)
+                          ? emeraldGreen.withValues(alpha: 0.3)
                           : (_isNetworkChecking
-                              ? Colors.cyanAccent.withOpacity(0.3)
-                              : Colors.redAccent.withOpacity(0.3)),
+                              ? Colors.cyanAccent.withValues(alpha: 0.3)
+                              : Colors.redAccent.withValues(alpha: 0.3)),
                       width: 1.5,
                     ),
                   ),
@@ -162,7 +162,7 @@ class _ConnectionTestScreenState extends State<ConnectionTestScreen> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1E293B).withOpacity(0.5), // Slate 800 with transparency
+                    color: const Color(0xFF1E293B).withValues(alpha: 0.5), // Slate 800 with transparency
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: Colors.white10),
                   ),
@@ -282,9 +282,9 @@ class _ConnectionTestScreenState extends State<ConnectionTestScreen> {
                           width: double.infinity,
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: Colors.redAccent.withOpacity(0.05),
+                            color: Colors.redAccent.withValues(alpha: 0.05),
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.redAccent.withOpacity(0.15)),
+                            border: Border.all(color: Colors.redAccent.withValues(alpha: 0.15)),
                           ),
                           child: Text(
                             _errorMessage!,
@@ -313,9 +313,9 @@ class _ConnectionTestScreenState extends State<ConnectionTestScreen> {
                           width: double.infinity,
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: (_hasNetworkSuccess ? emeraldGreen : (_networkErrorType == 'auth_failed' ? Colors.orangeAccent : Colors.redAccent)).withOpacity(0.05),
+                            color: (_hasNetworkSuccess ? emeraldGreen : (_networkErrorType == 'auth_failed' ? Colors.orangeAccent : Colors.redAccent)).withValues(alpha: 0.05),
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: (_hasNetworkSuccess ? emeraldGreen : (_networkErrorType == 'auth_failed' ? Colors.orangeAccent : Colors.redAccent)).withOpacity(0.15)),
+                            border: Border.all(color: (_hasNetworkSuccess ? emeraldGreen : (_networkErrorType == 'auth_failed' ? Colors.orangeAccent : Colors.redAccent)).withValues(alpha: 0.15)),
                           ),
                           child: Text(
                             _networkDetailMessage!,
@@ -350,7 +350,7 @@ class _ConnectionTestScreenState extends State<ConnectionTestScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1E293B),
                     foregroundColor: Colors.white,
-                    disabledBackgroundColor: const Color(0xFF1E293B).withOpacity(0.5),
+                    disabledBackgroundColor: const Color(0xFF1E293B).withValues(alpha: 0.5),
                     disabledForegroundColor: Colors.white24,
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                     shape: RoundedRectangleBorder(
@@ -438,7 +438,7 @@ class _ConnectionTestScreenState extends State<ConnectionTestScreen> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF0F172A).withOpacity(0.7),
+                    color: const Color(0xFF0F172A).withValues(alpha: 0.7),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: Colors.white10),
                   ),

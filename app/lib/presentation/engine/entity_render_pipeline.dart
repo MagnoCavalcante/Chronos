@@ -233,8 +233,8 @@ class InteractionResolutionStage implements PipelineStage {
             context.onNavigate!(entity);
           }
         },
-        splashColor: descriptor.color.withOpacity(0.08),
-        highlightColor: descriptor.color.withOpacity(0.04),
+        splashColor: descriptor.color.withValues(alpha: 0.08),
+        highlightColor: descriptor.color.withValues(alpha: 0.04),
         child: current,
       ),
     );

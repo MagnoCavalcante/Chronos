@@ -23,7 +23,7 @@ class HistoricalCharacterError extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.redAccent.withOpacity(0.08),
+                color: Colors.redAccent.withValues(alpha: 0.08),
                 shape: BoxShape.circle,
               ),
               child: const Icon(

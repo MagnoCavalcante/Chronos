@@ -201,7 +201,7 @@ class _EntityFiltersSheetState extends State<EntityFiltersSheet> {
                   );
                 });
               },
-              selectedColor: ChronosColors.accent.withOpacity(0.12),
+              selectedColor: ChronosColors.accent.withValues(alpha: 0.12),
               labelStyle: ChronosTypography.codeSmall.copyWith(
                 color: isSelected ? ChronosColors.accent : ChronosColors.textSecondary,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
@@ -317,7 +317,7 @@ class _EntityFiltersSheetState extends State<EntityFiltersSheet> {
                   );
                 });
               },
-              selectedColor: ChronosColors.accent.withOpacity(0.12),
+              selectedColor: ChronosColors.accent.withValues(alpha: 0.12),
               labelStyle: ChronosTypography.bodySmall.copyWith(
                 color: isSelected ? ChronosColors.accent : ChronosColors.textSecondary,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
@@ -361,7 +361,7 @@ class _EntityFiltersSheetState extends State<EntityFiltersSheet> {
                   );
                 });
               },
-              selectedColor: ChronosColors.accent.withOpacity(0.12),
+              selectedColor: ChronosColors.accent.withValues(alpha: 0.12),
               labelStyle: ChronosTypography.bodySmall.copyWith(
                 color: isSelected ? ChronosColors.accent : ChronosColors.textSecondary,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,

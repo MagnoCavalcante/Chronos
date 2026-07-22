@@ -58,7 +58,7 @@ class HistoricalCharacterCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: accentColor.withOpacity(0.35),
+          color: accentColor.withValues(alpha: 0.35),
           width: 1.5,
         ),
       ),
@@ -112,7 +112,7 @@ class HistoricalCharacterCard extends StatelessWidget {
                               fontSize: 10,
                               letterSpacing: 0.8,
                               fontWeight: FontWeight.bold,
-                              color: accentColor.withOpacity(0.9),
+                              color: accentColor.withValues(alpha: 0.9),
                             ),
                           ),
                         ],
@@ -136,7 +136,7 @@ class HistoricalCharacterCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: 13.5,
-                  color: Colors.white.withOpacity(0.75),
+                  color: Colors.white.withValues(alpha: 0.75),
                   height: 1.35,
                 ),
               ),
@@ -183,7 +183,7 @@ class HistoricalCharacterCard extends StatelessWidget {
                                 'Era: ${era?.nome ?? "Desconhecida"}',
                                 style: TextStyle(
                                   fontSize: 11.5,
-                                  color: accentColor.withOpacity(0.85),
+                                  color: accentColor.withValues(alpha: 0.85),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -260,7 +260,7 @@ class HistoricalCharacterCard extends StatelessWidget {
       width: 50,
       height: 50,
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
+        color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Icon(

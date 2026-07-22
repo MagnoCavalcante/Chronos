@@ -61,7 +61,7 @@ abstract class ChronosTheme {
       ),
 
       // Configuração de Cards
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: ChronosColors.surface,
         elevation: 2,
         margin: EdgeInsets.zero,

@@ -28,7 +28,7 @@ class ChronosStatusChip extends StatelessWidget {
     switch (normalizedStatus) {
       case 'published':
       case 'publicado':
-        backgroundColor = ChronosColors.success.withOpacity(0.1);
+        backgroundColor = ChronosColors.success.withValues(alpha: 0.1);
         textColor = ChronosColors.success;
         icon = Icons.check_circle_rounded;
         label = 'Publicado';
@@ -36,14 +36,14 @@ class ChronosStatusChip extends StatelessWidget {
       case 'review':
       case 'revisão':
       case 'analise':
-        backgroundColor = ChronosColors.warning.withOpacity(0.1);
+        backgroundColor = ChronosColors.warning.withValues(alpha: 0.1);
         textColor = ChronosColors.warning;
         icon = Icons.rate_review_rounded;
         label = 'Em Revisão';
         break;
       case 'archived':
       case 'arquivado':
-        backgroundColor = ChronosColors.textMuted.withOpacity(0.1);
+        backgroundColor = ChronosColors.textMuted.withValues(alpha: 0.1);
         textColor = ChronosColors.textMuted;
         icon = Icons.archive_rounded;
         label = 'Arquivado';
@@ -51,7 +51,7 @@ class ChronosStatusChip extends StatelessWidget {
       case 'draft':
       case 'rascunho':
       default:
-        backgroundColor = ChronosColors.info.withOpacity(0.1);
+        backgroundColor = ChronosColors.info.withValues(alpha: 0.1);
         textColor = ChronosColors.info;
         icon = Icons.edit_note_rounded;
         label = 'Rascunho';
@@ -70,7 +70,7 @@ class ChronosStatusChip extends StatelessWidget {
           color: backgroundColor,
           borderRadius: ChronosRadius.borderRadiusCircular,
           border: Border.all(
-            color: textColor.withOpacity(0.2),
+            color: textColor.withValues(alpha: 0.2),
             width: 1.0,
           ),
         ),

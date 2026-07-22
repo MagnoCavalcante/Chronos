@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../domain/entities/civilization.dart';
+import 'package:chronos/domain/entities/civilization.dart';
 
 class CivilizationCard extends StatelessWidget {
   final Civilization item;
@@ -27,7 +27,7 @@ class CivilizationCard extends StatelessWidget {
           child: Row(
             children: [
               CircleAvatar(
-                backgroundColor: Colors.amberAccent.withOpacity(0.1),
+                backgroundColor: Colors.amberAccent.withValues(alpha: 0.1),
                 child: const Icon(Icons.explore_outlined, color: Colors.amberAccent),
               ),
               const SizedBox(width: 16),

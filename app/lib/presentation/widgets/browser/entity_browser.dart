@@ -466,9 +466,9 @@ class _EntityBrowserState<T> extends State<EntityBrowser<T>> {
         vertical: 4,
       ),
       decoration: BoxDecoration(
-        color: ChronosColors.accent.withOpacity(0.08),
+        color: ChronosColors.accent.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(ChronosRadius.sm),
-        border: Border.all(color: ChronosColors.accent.withOpacity(0.3), width: 0.5),
+        border: Border.all(color: ChronosColors.accent.withValues(alpha: 0.3), width: 0.5),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

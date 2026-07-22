@@ -18,7 +18,7 @@ class EntityDetailsActions extends StatelessWidget {
   void _showActionFeedback(BuildContext context, String actionName, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: ChronosColors.surfaceDark,
+        backgroundColor: ChronosColors.surface,
         behavior: SnackBarBehavior.floating,
         content: Row(
           children: [
@@ -126,7 +126,7 @@ class EntityDetailsActions extends StatelessWidget {
       label: Text(label),
       style: OutlinedButton.styleFrom(
         foregroundColor: ChronosColors.textPrimary,
-        side: BorderSide(color: color.withOpacity(0.3)),
+        side: BorderSide(color: color.withValues(alpha: 0.3)),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),

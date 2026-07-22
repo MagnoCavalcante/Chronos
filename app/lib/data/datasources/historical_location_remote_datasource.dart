@@ -286,7 +286,7 @@ class HistoricalLocationRemoteDataSourceImpl extends HistoricalLocationRemoteDat
 
   /// Centraliza o mapeamento de exceções inesperadas e de rede.
   Never _handleGenericException(Object e, String context) {
-    if (e is ServerException) rethrow;
+    if (e is ServerException) throw e;
 
     final errorStr = e.toString().toLowerCase();
     if (errorStr.contains('socketexception') ||

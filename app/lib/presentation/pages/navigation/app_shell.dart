@@ -150,7 +150,7 @@ class _AppShellState extends State<AppShell> {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 4.0),
                         child: Material(
-                          color: isSelected ? ChronosColors.accent.withOpacity(0.08) : Colors.transparent,
+                          color: isSelected ? ChronosColors.accent.withValues(alpha: 0.08) : Colors.transparent,
                           borderRadius: BorderRadius.circular(8.0),
                           child: ListTile(
                             dense: true,
@@ -250,7 +250,7 @@ class _AppShellState extends State<AppShell> {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: ChronosColors.accent.withOpacity(0.12),
+              color: ChronosColors.accent.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(8),
             ),
             child: const Icon(

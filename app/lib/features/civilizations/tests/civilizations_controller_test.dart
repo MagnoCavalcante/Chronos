@@ -3,11 +3,11 @@ import 'package:chronos/core/utils/result.dart';
 import 'package:chronos/core/errors/failure.dart';
 import 'package:chronos/domain/entities/publication_status.dart';
 import '../presentation/controllers/civilizations_controller.dart';
-import '../domain/entities/civilization.dart';
+import 'package:chronos/domain/entities/civilization.dart';
 import '../domain/usecases/get_all_civilizations.dart';
 import '../domain/repositories/civilization_repository.dart';
 
-class FakeCivilizationRepository implements CivilizationRepository {
+class FakeCivilizationRepository extends CivilizationRepository {
   final Result<List<Civilization>> result;
 
   FakeCivilizationRepository(this.result);

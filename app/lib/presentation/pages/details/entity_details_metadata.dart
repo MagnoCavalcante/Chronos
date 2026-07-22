@@ -211,7 +211,7 @@ class EntityDetailsMetadata extends StatelessWidget {
           ),
         ),
         ChronosCard(
-          borderColor: color.withOpacity(0.15),
+          borderColor: color.withValues(alpha: 0.15),
           padding: const EdgeInsets.all(ChronosSpacing.md),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

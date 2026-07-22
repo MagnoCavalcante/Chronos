@@ -204,7 +204,7 @@ class HomePage extends StatelessWidget {
   Widget _buildFeatureCard(BuildContext context, _FeatureItem feature) {
     return ChronosCard(
       margin: const EdgeInsets.only(bottom: ChronosSpacing.md),
-      borderColor: feature.accentColor.withOpacity(0.2),
+      borderColor: feature.accentColor.withValues(alpha: 0.2),
       borderWidth: 1.0,
       padding: const EdgeInsets.all(ChronosSpacing.lg),
       onTap: () {
@@ -216,7 +216,7 @@ class HomePage extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: feature.accentColor.withOpacity(0.08),
+              color: feature.accentColor.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(

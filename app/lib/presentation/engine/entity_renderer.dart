@@ -53,7 +53,7 @@ class EntityRenderer extends StatelessWidget {
         );
 
     // 2. Resolve o contexto de renderização
-    final resolvedContext = context ??
+    final resolvedContext = this.context ??
         EntityRenderContext(
           theme: Theme.of(context),
           screenSize: EntityRenderContext.getScreenSize(MediaQuery.of(context).size.width),
@@ -324,7 +324,7 @@ class EntityRenderer extends StatelessWidget {
     final firstVal = tFields.isNotEmpty ? _extractValue(entity, tFields.first.key) : 'Indeterminado';
 
     return ChronosCard(
-      borderColor: descriptor.color.withOpacity(0.4),
+      borderColor: descriptor.color.withValues(alpha: 0.4),
       padding: const EdgeInsets.all(ChronosSpacing.md),
       child: Row(
         children: [
@@ -367,7 +367,7 @@ class EntityRenderer extends StatelessWidget {
     final lng = mFields.length > 1 ? _extractValue(entity, 'longitude') : null;
 
     return ChronosCard(
-      borderColor: Colors.green.withOpacity(0.4),
+      borderColor: Colors.green.withValues(alpha: 0.4),
       padding: const EdgeInsets.all(ChronosSpacing.md),
       child: Row(
         children: [
@@ -406,7 +406,7 @@ class EntityRenderer extends StatelessWidget {
     EntityRenderContext context,
   ) {
     return ChronosCard(
-      borderColor: Colors.purple.withOpacity(0.4),
+      borderColor: Colors.purple.withValues(alpha: 0.4),
       padding: const EdgeInsets.all(ChronosSpacing.md),
       child: Row(
         children: [
@@ -447,7 +447,7 @@ class EntityRenderer extends StatelessWidget {
     final compFields = metadata.comparableFields;
 
     return ChronosCard(
-      borderColor: descriptor.color.withOpacity(0.5),
+      borderColor: descriptor.color.withValues(alpha: 0.5),
       padding: const EdgeInsets.all(ChronosSpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -483,7 +483,7 @@ class EntityRenderer extends StatelessWidget {
       decoration: BoxDecoration(
         color: ChronosColors.surface,
         borderRadius: BorderRadius.circular(ChronosRadius.sm),
-        border: Border.all(color: descriptor.color.withOpacity(0.4)),
+        border: Border.all(color: descriptor.color.withValues(alpha: 0.4)),
         boxShadow: const [
           BoxShadow(color: Colors.black12, blurRadius: 4.0, offset: Offset(0, 2)),
         ],
@@ -539,7 +539,7 @@ class EntityRenderer extends StatelessWidget {
       leading: Container(
         padding: const EdgeInsets.all(ChronosSpacing.xs),
         decoration: BoxDecoration(
-          color: descriptor.color.withOpacity(0.1),
+          color: descriptor.color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(ChronosRadius.xs),
         ),
         child: Icon(descriptor.icon, color: descriptor.color, size: 18),
@@ -571,13 +571,13 @@ class EntityRenderer extends StatelessWidget {
         gradient: LinearGradient(
           colors: [
             ChronosColors.surface,
-            descriptor.color.withOpacity(0.04),
+            descriptor.color.withValues(alpha: 0.04),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(ChronosRadius.md),
-        border: Border.all(color: descriptor.color.withOpacity(0.5), width: 1.5),
+        border: Border.all(color: descriptor.color.withValues(alpha: 0.5), width: 1.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -597,7 +597,7 @@ class EntityRenderer extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
-                  color: ChronosColors.accent.withOpacity(0.12),
+                  color: ChronosColors.accent.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(ChronosRadius.xs),
                 ),
                 child: Text(

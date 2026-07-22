@@ -89,7 +89,7 @@ class EntityDetailsContent extends StatelessWidget {
         if (resumo != null && resumo.isNotEmpty) ...[
           _buildSectionHeader('Resumo Executivo'),
           ChronosCard(
-            borderColor: color.withOpacity(0.2),
+            borderColor: color.withValues(alpha: 0.2),
             padding: const EdgeInsets.all(ChronosSpacing.md),
             child: Text(
               resumo,
@@ -132,8 +132,8 @@ class EntityDetailsContent extends StatelessWidget {
         if (curiosidades != null && curiosidades.isNotEmpty) ...[
           _buildSectionHeader('Curiosidades & Fatos'),
           ChronosCard(
-            backgroundColor: color.withOpacity(0.05),
-            borderColor: color.withOpacity(0.3),
+            color: color.withValues(alpha: 0.05),
+            borderColor: color.withValues(alpha: 0.3),
             padding: const EdgeInsets.all(ChronosSpacing.md),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,

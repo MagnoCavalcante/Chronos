@@ -7,21 +7,21 @@ import 'chronos_colors.dart';
 abstract class ChronosShadows {
   // Sombras individuais
   static final BoxShadow shadowSM = BoxShadow(
-    color: ChronosColors.black.withOpacity(0.15),
+    color: ChronosColors.black.withValues(alpha: 0.15),
     offset: const Offset(0, 1),
     blurRadius: 3,
     spreadRadius: 0,
   );
 
   static final BoxShadow shadowMD = BoxShadow(
-    color: ChronosColors.black.withOpacity(0.25),
+    color: ChronosColors.black.withValues(alpha: 0.25),
     offset: const Offset(0, 4),
     blurRadius: 6,
     spreadRadius: -1,
   );
 
   static final BoxShadow shadowLG = BoxShadow(
-    color: ChronosColors.black.withOpacity(0.4),
+    color: ChronosColors.black.withValues(alpha: 0.4),
     offset: const Offset(0, 10),
     blurRadius: 15,
     spreadRadius: -3,

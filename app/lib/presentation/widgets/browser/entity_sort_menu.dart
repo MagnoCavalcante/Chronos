@@ -70,7 +70,7 @@ class EntitySortMenu extends StatelessWidget {
       icon: const Icon(Icons.sort_rounded, color: ChronosColors.textPrimary),
       tooltip: 'Ordenar Registros',
       onSelected: onSelected,
-      backgroundColor: ChronosColors.surface,
+      color: ChronosColors.surface,
       elevation: 3.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(ChronosRadius.md),

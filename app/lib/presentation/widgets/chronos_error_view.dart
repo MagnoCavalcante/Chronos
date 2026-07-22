@@ -42,7 +42,7 @@ class ChronosErrorView extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(ChronosSpacing.md),
                 decoration: BoxDecoration(
-                  color: ChronosColors.error.withOpacity(0.1),
+                  color: ChronosColors.error.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(

@@ -14,7 +14,7 @@ class Civilization extends BaseEntity {
   final PublicationStatus publicationStatus;
 
   const Civilization({
-    required super.id,
+    required String id,
     required this.slug,
     required this.name,
     required this.shortName,
@@ -23,7 +23,7 @@ class Civilization extends BaseEntity {
     required this.startYear,
     this.endYear,
     required this.publicationStatus,
-  });
+  }) : super(id);
 
   @override
   bool operator ==(Object other) =>

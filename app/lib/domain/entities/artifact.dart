@@ -20,7 +20,7 @@ class Artifact extends BaseEntity {
   final PublicationStatus publicationStatus;
 
   const Artifact({
-    required super.id,
+    required String id,
     required this.slug,
     required this.name,
     required this.shortName,
@@ -34,7 +34,7 @@ class Artifact extends BaseEntity {
     required this.currentLocation,
     required this.coverImageUrl,
     required this.publicationStatus,
-  });
+  }) : super(id);
 
   @override
   bool operator ==(Object other) =>

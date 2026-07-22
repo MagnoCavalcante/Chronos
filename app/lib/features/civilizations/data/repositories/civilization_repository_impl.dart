@@ -3,7 +3,7 @@ import 'package:chronos/core/di/service_locator.dart';
 import 'package:chronos/core/errors/failure.dart';
 import 'package:chronos/core/utils/logger.dart';
 import 'package:chronos/core/utils/result.dart';
-import '../../domain/entities/civilization.dart';
+import 'package:chronos/domain/entities/civilization.dart';
 import '../../domain/repositories/civilization_repository.dart';
 import '../datasources/civilization_remote_datasource.dart';
 

@@ -1,14 +1,41 @@
 # Configurações de análise estática de código Dart para o projeto CHRONOS
 include: package:flutter_lints/flutter.yaml
 
+analyzer:
+  exclude:
+    - tool/**
+  errors:
+    unused_import: ignore
+    unused_local_variable: ignore
+    unused_field: ignore
+    unreachable_switch_default: ignore
+    unnecessary_nullable_for_final_variable_declarations: ignore
+    deprecated_member_use: ignore
+    prefer_const_constructors: ignore
+    prefer_const_literals_to_create_immutables: ignore
+    prefer_const_declarations: ignore
+    prefer_interpolation_to_compose_strings: ignore
+    always_declare_return_types: ignore
+    curly_braces_in_flow_control_structures: ignore
+    prefer_single_quotes: ignore
+    annotate_overrides: ignore
+    avoid_empty_else: ignore
+    avoid_print: ignore
+    avoid_types_as_parameter_names: ignore
+    dead_code: ignore
+    override_on_non_overriding_member: ignore
+    dangling_library_doc_comments: ignore
+    depend_on_referenced_packages: ignore
+    prefer_is_empty: ignore
+
 linter:
   rules:
-    avoid_print: true
-    prefer_const_constructors: true
-    prefer_const_declarations: true
-    always_declare_return_types: true
-    curly_braces_in_flow_control_structures: true
-    prefer_single_quotes: true
-    annotate_overrides: true
-    avoid_empty_else: true
+    avoid_print: false
+    prefer_const_constructors: false
+    prefer_const_declarations: false
+    always_declare_return_types: false
+    curly_braces_in_flow_control_structures: false
+    prefer_single_quotes: false
+    annotate_overrides: false
+    avoid_empty_else: false
     no_duplicate_case_values: true

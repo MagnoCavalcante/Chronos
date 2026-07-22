@@ -35,7 +35,7 @@ class ChronosLoadingView extends StatelessWidget {
                 Icon(
                   icon,
                   size: 40,
-                  color: ChronosColors.accent.withOpacity(0.6),
+                  color: ChronosColors.accent.withValues(alpha: 0.6),
                 ),
                 ChronosSpacing.vSizedBoxMD,
               ],

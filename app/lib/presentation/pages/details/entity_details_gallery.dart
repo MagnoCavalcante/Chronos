@@ -72,7 +72,7 @@ class EntityDetailsGallery extends StatelessWidget {
                 width: 220,
                 margin: const EdgeInsets.only(right: ChronosSpacing.md),
                 child: ChronosCard(
-                  borderColor: color.withOpacity(0.2),
+                  borderColor: color.withValues(alpha: 0.2),
                   padding: EdgeInsets.zero,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(ChronosRadius.md),

@@ -76,14 +76,14 @@ class EntityDetailsRelated extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.only(bottom: ChronosSpacing.sm),
               child: ChronosCard(
-                borderColor: color.withOpacity(0.12),
+                borderColor: color.withValues(alpha: 0.12),
                 padding: const EdgeInsets.all(ChronosSpacing.md),
                 child: Row(
                   children: [
                     Container(
                       padding: const EdgeInsets.all(ChronosSpacing.sm),
                       decoration: BoxDecoration(
-                        color: color.withOpacity(0.08),
+                        color: color.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(ChronosRadius.sm),
                       ),
                       child: Icon(conn['icon'] as IconData, color: color, size: 20),
@@ -106,7 +106,7 @@ class EntityDetailsRelated extends StatelessWidget {
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                 decoration: BoxDecoration(
-                                  color: color.withOpacity(0.1),
+                                  color: color.withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(ChronosRadius.xs),
                                 ),
                                 child: Text(

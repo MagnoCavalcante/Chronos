@@ -59,10 +59,13 @@ class CivilizationsController extends BaseController<List<Civilization>> {
     final result = await execute(
       () async {
         final usecaseResult = await _getCivilizationById(id);
-        return usecaseResult.map((civilization) {
-          _selectedCivilization = civilization;
-          return [civilization];
-        });
+        return usecaseResult.fold(
+          onSuccess: (civilization) {
+            _selectedCivilization = civilization;
+            return Result.success([civilization]);
+          },
+          onFailure: (failure) => Result.failure(failure),
+        );
       },
       tag: 'CivilizationsController',
     );
@@ -79,10 +82,13 @@ class CivilizationsController extends BaseController<List<Civilization>> {
     final result = await execute(
       () async {
         final usecaseResult = await _getCivilizationBySlug(slug);
-        return usecaseResult.map((civilization) {
-          _selectedCivilization = civilization;
-          return [civilization];
-        });
+        return usecaseResult.fold(
+          onSuccess: (civilization) {
+            _selectedCivilization = civilization;
+            return Result.success([civilization]);
+          },
+          onFailure: (failure) => Result.failure(failure),
+        );
       },
       tag: 'CivilizationsController',
     );

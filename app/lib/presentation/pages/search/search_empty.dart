@@ -30,10 +30,10 @@ class SearchEmpty extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(ChronosSpacing.lg),
               decoration: BoxDecoration(
-                color: ChronosColors.accent.withOpacity(0.08),
+                color: ChronosColors.accent.withValues(alpha: 0.08),
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: ChronosColors.accent.withOpacity(0.15),
+                  color: ChronosColors.accent.withValues(alpha: 0.15),
                   width: 1.0,
                 ),
               ),

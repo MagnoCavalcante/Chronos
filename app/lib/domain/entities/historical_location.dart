@@ -55,7 +55,7 @@ class HistoricalLocation extends BaseEntity {
   final PublicationStatus publicationStatus;
 
   const HistoricalLocation({
-    required super.id,
+    required String id,
     required this.slug,
     required this.name,
     required this.shortName,
@@ -71,7 +71,7 @@ class HistoricalLocation extends BaseEntity {
     this.endYear,
     required this.coverImageUrl,
     required this.publicationStatus,
-  });
+  }) : super(id);
 
   @override
   bool operator ==(Object other) =>

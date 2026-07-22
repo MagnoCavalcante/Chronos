@@ -25,10 +25,10 @@ class SearchLoading extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Ícone / Círculo de Placeholder
-                const ChronosSkeleton(
+                ChronosSkeleton(
                   width: 40,
                   height: 40,
-                  borderRadius: 20,
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 ChronosSpacing.hSizedBoxMD,
                 // Bloco de conteúdo de texto

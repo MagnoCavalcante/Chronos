@@ -133,7 +133,7 @@ class _FutureSprintPlaceholderScreen extends StatelessWidget {
                 width: 72,
                 height: 72,
                 decoration: BoxDecoration(
-                  color: ChronosColors.accent.withOpacity(0.12),
+                  color: ChronosColors.accent.withValues(alpha: 0.12),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -163,7 +163,7 @@ class _FutureSprintPlaceholderScreen extends StatelessWidget {
                 icon: const Icon(Icons.arrow_back_rounded),
                 label: const Text('Retornar à Base'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: ChronosColors.cardBackground,
+                  backgroundColor: ChronosColors.surface,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
                   shape: RoundedRectangleBorder(
