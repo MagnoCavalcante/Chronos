@@ -60,9 +60,10 @@ class TimelineHeader extends StatelessWidget {
                 ),
               ),
               if (isFilterActive)
-                ChronosButton.text(
+                ChronosButton(
                   label: 'Limpar',
                   onPressed: controller.resetFilters,
+                  variant: ChronosButtonVariant.text,
                 ),
             ],
           ),
@@ -85,38 +86,26 @@ class TimelineHeader extends StatelessWidget {
                 // Ordenação rápida
                 ChronosChip(
                   label: controller.isAscending ? 'Mais Antigo primeiro' : 'Mais Recente primeiro',
-                  avatar: Icon(
-                    controller.isAscending ? Icons.arrow_upward_rounded : Icons.arrow_downward_rounded,
-                    size: 14,
-                    color: ChronosColors.accent,
-                  ),
-                  onPressed: controller.toggleOrder,
+                  leadingIcon: controller.isAscending ? Icons.arrow_upward_rounded : Icons.arrow_downward_rounded,
+                  onTap: controller.toggleOrder,
                 ),
                 const SizedBox(width: ChronosSpacing.sm),
 
                 // Agrupamento por Era
                 ChronosChip(
                   label: controller.groupByEra ? 'Agrupado por Era' : 'Fluxo Contínuo',
-                  avatar: Icon(
-                    controller.groupByEra ? Icons.grid_view_rounded : Icons.splitscreen_rounded,
-                    size: 14,
-                    color: controller.groupByEra ? ChronosColors.accent : ChronosColors.textMuted,
-                  ),
-                  selected: controller.groupByEra,
-                  onPressed: () => controller.setGroupByEra(!controller.groupByEra),
+                  leadingIcon: controller.groupByEra ? Icons.grid_view_rounded : Icons.splitscreen_rounded,
+                  isSelected: controller.groupByEra,
+                  onTap: () => controller.setGroupByEra(!controller.groupByEra),
                 ),
                 const SizedBox(width: ChronosSpacing.sm),
 
                 // Filtros avançados
                 ChronosChip(
                   label: 'Filtros Avançados',
-                  avatar: Icon(
-                    Icons.tune_rounded,
-                    size: 14,
-                    color: isFilterActive ? ChronosColors.accent : ChronosColors.textMuted,
-                  ),
-                  selected: isFilterActive,
-                  onPressed: () {
+                  leadingIcon: Icons.tune_rounded,
+                  isSelected: isFilterActive,
+                  onTap: () {
                     ChronosBottomSheet.show(
                       context,
                       child: TimelineFilters(controller: controller),

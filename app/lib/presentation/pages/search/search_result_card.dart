@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/theme.dart';
 import '../../../core/presentation/widgets/chronos_card.dart';
-import '../browser/entity_card.dart';
+import '../../widgets/browser/entity_card.dart';
 import '../details/entity_details_page.dart';
 import 'search_controller.dart';
 

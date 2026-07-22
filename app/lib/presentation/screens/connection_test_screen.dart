@@ -237,7 +237,7 @@ class _ConnectionTestScreenState extends State<ConnectionTestScreen> {
                           else
                             Icon(
                               _hasNetworkSuccess
-                                  ? Icons.g_network_connected_rounded
+                                  ? Icons.check_circle_rounded
                                   : Icons.signal_cellular_connected_no_internet_4_bar_rounded,
                               color: _hasNetworkSuccess
                                   ? emeraldGreen
@@ -419,7 +419,7 @@ class _ConnectionTestScreenState extends State<ConnectionTestScreen> {
                     ChronosLogger.info('Navegando para Civilizações via NavigationService...', tag: 'Navigation');
                     navigationService.openCivilization();
                   },
-                  icon: const Icon(Icons.gavel_rounded, color: Colors.emeraldAccent),
+                  icon: const Icon(Icons.gavel_rounded, color: Colors.greenAccent),
                   label: const Text('Visualizar Civilizações'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF0F172A),
@@ -427,7 +427,7 @@ class _ConnectionTestScreenState extends State<ConnectionTestScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
-                      side: const BorderSide(color: Colors.emeraldAccent, width: 1.2),
+                      side: const BorderSide(color: Colors.greenAccent, width: 1.2),
                     ),
                   ),
                 ),

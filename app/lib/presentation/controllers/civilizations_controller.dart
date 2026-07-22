@@ -55,14 +55,17 @@ class CivilizationsController extends BaseController<List<Civilization>> {
   /// Executa o carregamento de uma civilização pelo ID único.
   Future<void> loadCivilization(String id) async {
     ChronosLogger.info('Iniciando o carregamento da Civilização por ID: $id...', tag: 'CivilizationsController');
-    
+
     final result = await execute(
       () async {
         final usecaseResult = await _getCivilizationById(id);
-        return usecaseResult.map((civilization) {
-          _selectedCivilization = civilization;
-          return [civilization];
-        });
+        return usecaseResult.fold(
+          onSuccess: (civilization) {
+            _selectedCivilization = civilization;
+            return Result.success([civilization]);
+          },
+          onFailure: (failure) => Result.failure(failure),
+        );
       },
       tag: 'CivilizationsController',
     );
@@ -75,13 +78,17 @@ class CivilizationsController extends BaseController<List<Civilization>> {
   /// Executa o carregamento de uma civilização pelo slug único.
   Future<void> loadCivilizationBySlug(String slug) async {
     ChronosLogger.info('Iniciando o carregamento da Civilização por Slug: $slug...', tag: 'CivilizationsController');
-    
+
     final result = await execute(
       () async {
         final usecaseResult = await _getCivilizationBySlug(slug);
-        return usecaseResult.map((civilization) {
-          _selectedCivilization = civilization;
-          return [civilization];
+        return usecaseResult.fold(
+          onSuccess: (civilization) {
+            _selectedCivilization = civilization;
+            return Result.success([civilization]);
+          },
+          onFailure: (failure) => Result.failure(failure),
+        );
         });
       },
       tag: 'CivilizationsController',

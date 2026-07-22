@@ -4,11 +4,11 @@ import '../../../core/di/service_locator.dart';
 import '../../../core/utils/logger.dart';
 import '../../engine/entity_registry.dart';
 import '../../engine/entity_renderer.dart';
-import '../browser/entity_card.dart';
-import '../eras_controller.dart';
-import '../historical_events_controller.dart';
-import '../artifacts_controller.dart';
-import '../historical_locations_controller.dart';
+import '../../widgets/browser/entity_card.dart';
+import '../../controllers/eras_controller.dart';
+import '../../controllers/historical_events_controller.dart';
+import '../../controllers/artifacts_controller.dart';
+import '../../controllers/historical_locations_controller.dart';
 import '../../../features/historical_characters/presentation/controllers/historical_characters_controller.dart';
 import '../../../features/civilizations/presentation/controllers/civilizations_controller.dart';
 

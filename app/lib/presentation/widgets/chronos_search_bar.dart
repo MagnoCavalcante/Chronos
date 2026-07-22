@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/chronos_colors.dart';
 import '../../core/theme/chronos_icons.dart';
-import '../../core/theme/chronos_radius.dart';
-import '../../core/theme/chronos_spacing.dart';
 import '../../core/theme/chronos_typography.dart';
 
 /// Campo de busca reativo e reutilizável do ecossistema CHRONOS.
@@ -77,7 +75,7 @@ class _ChronosSearchBarState extends State<ChronosSearchBar> {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      searchField: true,
+      textField: true,
       label: 'Campo de Pesquisa',
       hint: widget.hintText ?? 'Buscar no tempo...',
       child: Container(

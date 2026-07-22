@@ -20,6 +20,10 @@ class ChronosResponsive extends StatelessWidget {
   static const double mobileMax = 600.0;
   static const double tabletMax = 1024.0;
 
+  // Aliases para compatibilidade
+  static const double mobileBreakpoint = mobileMax;
+  static const double tabletBreakpoint = tabletMax;
+
   static bool isMobile(BuildContext context) =>
       MediaQuery.of(context).size.width < mobileMax;
 

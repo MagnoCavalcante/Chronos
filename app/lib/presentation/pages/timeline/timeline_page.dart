@@ -81,9 +81,10 @@ class _TimelinePageState extends State<TimelinePage> {
         icon: Icons.history_rounded,
         title: 'Acervo Histórico Vazio',
         description: 'Não foram encontradas eras ou eventos carregados no banco local.',
-        action: ChronosButton.text(
+        action: ChronosButton(
           label: 'Recarregar Banco',
           onPressed: _controller.carregarDados,
+          variant: ChronosButtonVariant.text,
         ),
       );
     }
@@ -99,9 +100,10 @@ class _TimelinePageState extends State<TimelinePage> {
               icon: Icons.search_off_rounded,
               title: 'Nenhum registro no período',
               description: 'Tente expandir o intervalo de anos, escolher outra Era ou limpar a busca.',
-              action: ChronosButton.text(
+              action: ChronosButton(
                 label: 'Limpar Filtros',
                 onPressed: _controller.resetFilters,
+                variant: ChronosButtonVariant.text,
               ),
             ),
           ),

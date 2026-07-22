@@ -58,7 +58,7 @@ class _ErasScreenState extends State<ErasScreen> {
   Widget _buildBodyContent() {
     if (_controller.isLoading) {
       return const ChronosLoading(
-        description: 'Carregando Eras do CHRONOS...',
+        message: 'Carregando Eras do CHRONOS...',
       );
     }
 

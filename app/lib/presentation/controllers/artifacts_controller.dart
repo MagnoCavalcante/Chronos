@@ -63,14 +63,17 @@ class ArtifactsController extends BaseController<List<Artifact>> {
   /// Executa o carregamento de um artefato pelo ID único.
   Future<void> loadArtifact(String id) async {
     ChronosLogger.info('Iniciando o carregamento do Artefato por ID: $id...', tag: 'ArtifactsController');
-    
+
     final result = await execute(
       () async {
         final usecaseResult = await _getArtifactById(id);
-        return usecaseResult.map((artifact) {
-          _selectedArtifact = artifact;
-          return [artifact];
-        });
+        return usecaseResult.fold(
+          onSuccess: (artifact) {
+            _selectedArtifact = artifact;
+            return Result.success([artifact]);
+          },
+          onFailure: (failure) => Result.failure(failure),
+        );
       },
       tag: 'ArtifactsController',
     );
@@ -83,14 +86,17 @@ class ArtifactsController extends BaseController<List<Artifact>> {
   /// Executa o carregamento de um artefato pelo slug único.
   Future<void> loadArtifactBySlug(String slug) async {
     ChronosLogger.info('Iniciando o carregamento do Artefato por Slug: $slug...', tag: 'ArtifactsController');
-    
+
     final result = await execute(
       () async {
         final usecaseResult = await _getArtifactBySlug(slug);
-        return usecaseResult.map((artifact) {
-          _selectedArtifact = artifact;
-          return [artifact];
-        });
+        return usecaseResult.fold(
+          onSuccess: (artifact) {
+            _selectedArtifact = artifact;
+            return Result.success([artifact]);
+          },
+          onFailure: (failure) => Result.failure(failure),
+        );
       },
       tag: 'ArtifactsController',
     );
