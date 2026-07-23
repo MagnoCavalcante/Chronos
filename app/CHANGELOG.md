@@ -2,6 +2,19 @@
 
 Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 
+## [8.2.0] - 2026-07-23
+
+### Learning Engine V1
+- **StudyTrackerService** - Histórico automático com tempo de leitura, frequência e último acesso
+- **SpacedRepetitionService** - Revisão espaçada SM-2 (1, 3, 7, 15, 30 dias)
+- **QuizEngineService** - Quiz inteligente com acertos, erros e tempo de resposta
+- **GoalsService** - Metas de estudo personalizáveis (minutos, personagens, eventos)
+- **AchievementsService** - Badges, XP, 6 níveis, desafios diários e semanais
+- **StatsService** - Horas estudadas, dias consecutivos, horário favorito, evolução semanal/mensal
+- **RecommendationService** - Recomendações baseadas no histórico (integrado com Knowledge Graph)
+- **9 tabelas Supabase** - study_history, study_progress, study_reviews, quiz_questions, quiz_answers, study_goals, achievements, user_study_stats, study_challenges
+- **33 novos testes** - 299 testes totais, flutter analyze 0 issues
+
 ## [8.1.0] - 2026-07-23
 
 ### Knowledge Graph & Navegação Inteligente
