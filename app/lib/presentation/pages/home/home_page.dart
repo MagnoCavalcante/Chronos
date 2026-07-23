@@ -66,6 +66,21 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildContinueStudyingCard(HomeItem item) {
+    return ChronosCard(
+      onTap: () => _openItem(item),
+      child: ListTile(
+        leading: const Icon(Icons.play_circle_fill_rounded, color: ChronosColors.accent, size: 40),
+        title: Text(item.title, style: ChronosTypography.bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+        subtitle: Text(
+          item.category ?? 'Em estudo',
+          style: ChronosTypography.bodySmall.copyWith(color: ChronosColors.textSecondary),
+        ),
+        trailing: const Icon(Icons.chevron_right_rounded, color: ChronosColors.textMuted),
+      ),
+    );
+  }
+
   void _surpriseMe() {
     _controller.surpriseMe().then((_) {
       final surprise = _controller.state.surprise;
@@ -102,6 +117,18 @@ class _HomePageState extends State<HomePage> {
           ChronosSpacing.vSizedBoxLG,
           _buildSearchBar(context),
           ChronosSpacing.vSizedBoxLG,
+          if (state.continueStudying != null) ...[
+            const ChronosSectionHeader(title: 'Continue Estudando', icon: Icons.play_circle_fill_rounded),
+            ChronosSpacing.vSizedBoxSM,
+            _buildContinueStudyingCard(state.continueStudying!),
+            ChronosSpacing.vSizedBoxLG,
+          ],
+          if (state.recommendations.isNotEmpty || state.isLoading) ...[
+            const ChronosSectionHeader(title: 'Recomendado para você', icon: Icons.lightbulb_rounded),
+            ChronosSpacing.vSizedBoxSM,
+            _buildHorizontalList(state.recommendations, loading: state.isLoading),
+            ChronosSpacing.vSizedBoxLG,
+          ],
           if (state.continueExploring.isNotEmpty || state.isLoading) ...[
             const ChronosSectionHeader(title: 'Continue Explorando', icon: Icons.history_rounded),
             ChronosSpacing.vSizedBoxSM,

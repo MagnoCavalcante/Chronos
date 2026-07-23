@@ -2,6 +2,8 @@ import 'dart:math';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../config/supabase_config.dart';
 import '../crud/crud_repository.dart';
+import '../relationships/relationship_engine.dart';
+import '../study/progress_repository.dart';
 import '../utils/logger.dart';
 import 'home_item.dart';
 
@@ -137,6 +139,71 @@ class HomeRepository {
     final items = await _fetchCategory(config, limit: 100);
     if (items.isEmpty) return null;
     return items[Random().nextInt(items.length)];
+  }
+
+  /// Retorna o item mais recente em progresso de estudo.
+  Future<HomeItem?> getContinueStudying() async {
+    final client = _client;
+    if (client == null) return null;
+    try {
+      final progress = await ProgressRepository(client: client).getContinueStudying();
+      if (progress == null) return null;
+      _CategoryConfig? config;
+      for (final c in _categories) {
+        if (c.tableName == progress.entityType) {
+          config = c;
+          break;
+        }
+      }
+      if (config == null) {
+        return HomeItem(
+          entityType: progress.entityType,
+          entityId: progress.entityId,
+          title: 'Continue estudando',
+          category: progress.entityType,
+        );
+      }
+      final result = await CrudRepository(tableName: config.tableName).getById(progress.entityId);
+      return result.fold(
+        onSuccess: (row) => _mapRow(row, config!),
+        onFailure: (_) => HomeItem(
+          entityType: progress.entityType,
+          entityId: progress.entityId,
+          title: 'Continue estudando',
+          category: config!.label,
+        ),
+      );
+    } catch (e) {
+      ChronosLogger.error('Erro ao carregar continue estudando: $e', tag: _tag, error: e);
+      return null;
+    }
+  }
+
+  /// Retorna recomendações baseadas no item em estudo atual.
+  Future<List<HomeItem>> getRecommendations() async {
+    final client = _client;
+    if (client == null) return [];
+    try {
+      final progress = await ProgressRepository(client: client).getContinueStudying();
+      if (progress == null) return [];
+      final engine = RelationshipEngine();
+      final suggestions = await engine.suggestions(
+        entityType: progress.entityType,
+        entityId: progress.entityId,
+        count: 10,
+      );
+      return suggestions.map((item) => HomeItem(
+        entityType: item.entityType,
+        entityId: item.id,
+        title: item.title,
+        imageUrl: item.imageUrl,
+        category: item.relationType,
+        chronology: item.periodLabel,
+      )).toList();
+    } catch (e) {
+      ChronosLogger.error('Erro ao carregar recomendações: $e', tag: _tag, error: e);
+      return [];
+    }
   }
 
   /// Registra um acesso para o histórico e incrementa popularidade.

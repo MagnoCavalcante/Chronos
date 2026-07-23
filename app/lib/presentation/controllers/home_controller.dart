@@ -10,6 +10,8 @@ class HomeState {
   final List<HomeItem> continueExploring;
   final List<HomeItem> highlights;
   final List<HomeItem> favorites;
+  final HomeItem? continueStudying;
+  final List<HomeItem> recommendations;
   final HomeItem? surprise;
   final Map<String, List<HomeItem>> categories;
 
@@ -19,6 +21,8 @@ class HomeState {
     this.continueExploring = const [],
     this.highlights = const [],
     this.favorites = const [],
+    this.continueStudying,
+    this.recommendations = const [],
     this.surprise,
     this.categories = const {},
   });
@@ -29,6 +33,8 @@ class HomeState {
     List<HomeItem>? continueExploring,
     List<HomeItem>? highlights,
     List<HomeItem>? favorites,
+    HomeItem? continueStudying,
+    List<HomeItem>? recommendations,
     HomeItem? surprise,
     Map<String, List<HomeItem>>? categories,
     bool clearError = false,
@@ -39,6 +45,8 @@ class HomeState {
       continueExploring: continueExploring ?? this.continueExploring,
       highlights: highlights ?? this.highlights,
       favorites: favorites ?? this.favorites,
+      continueStudying: continueStudying ?? this.continueStudying,
+      recommendations: recommendations ?? this.recommendations,
       surprise: surprise ?? this.surprise,
       categories: categories ?? this.categories,
     );
@@ -60,6 +68,8 @@ class HomeController extends ChangeNotifier {
     notifyListeners();
 
     try {
+      final continueStudying = await _repository.getContinueStudying();
+      final recommendations = await _repository.getRecommendations();
       final results = await Future.wait([
         _repository.getContinueExploring(limit: 10),
         _repository.getHighlights(limit: 10),
@@ -77,6 +87,8 @@ class HomeController extends ChangeNotifier {
         continueExploring: results[0] as List<HomeItem>,
         highlights: results[1] as List<HomeItem>,
         favorites: results[2] as List<HomeItem>,
+        continueStudying: continueStudying,
+        recommendations: recommendations,
         surprise: results[3] as HomeItem?,
         categories: {
           'Civilizações': results[4] as List<HomeItem>,
