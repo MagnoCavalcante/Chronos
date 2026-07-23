@@ -2,6 +2,19 @@
 
 Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 
+## [8.3.0] - 2026-07-23
+
+### Learning Paths (Trilhas de Aprendizagem)
+- **PathProgressService** - Start path, complete content, unlock modules sequencialmente
+- **CertificateService** - Geração automática de certificados ao concluir trilha
+- **PathRecommendationService** - Recomendações baseadas em categorias relacionadas
+- **6 tabelas Supabase** - learning_paths, path_modules, path_contents, path_progress, module_progress, path_certificates
+- **8 trilhas seed** - Egito, Roma, Grécia, Idade Média, Renascimento, Rev. Francesa, WW2, Brasil Colonial
+- **Desbloqueio sequencial** - Módulos bloqueados até completar o anterior
+- **12 categorias** - Antiguidade, Idade Média, Moderna, Contemporânea, Civilizações, Guerras, Filosofia, etc.
+- **4 níveis de dificuldade** - Beginner, Intermediate, Advanced, Expert
+- **19 novos testes** - 318 testes totais, flutter analyze 0 issues
+
 ## [8.2.0] - 2026-07-23
 
 ### Learning Engine V1

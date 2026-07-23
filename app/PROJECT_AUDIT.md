@@ -2,6 +2,73 @@
 
 ---
 
+## Sprint 8.3.0 — Learning Paths (Trilhas de Aprendizagem)
+
+**Data**: 2025-07-23
+
+### Critérios de Aceite
+
+| Critério | Status |
+|---|---|
+| Trilhas funcionando | ✅ LearningPath entity + repository |
+| Módulos funcionando | ✅ PathModule com ordem + conteúdos |
+| Desbloqueio funcionando | ✅ PathProgressService (locked→unlocked→completed) |
+| Progresso salvo | ✅ PathProgress + ModuleProgress com upsert |
+| Dashboard atualizado | ✅ getInProgressPaths, getCompletedPaths |
+| Recomendações funcionando | ✅ PathRecommendationService (categorias relacionadas) |
+| flutter analyze sem erros | ✅ No issues found |
+| Projeto compilando normalmente | ✅ 318 testes passando |
+
+### Arquitetura
+
+Módulo independente `features/learning_paths/` com:
+- **Domain**: `learning_path_entities.dart` (9 entidades/enums), `learning_paths_repository.dart`
+- **Data**: `learning_paths_remote_datasource.dart` (Supabase), `learning_paths_repository_impl.dart`
+- **Services**:
+  - `PathProgressService` — start path, complete content, unlock modules, track progress
+  - `CertificateService` — geração automática de certificados ao concluir trilha
+  - `PathRecommendationService` — recomendações por categorias relacionadas
+- **DI**: `LearningPathsDI` registrado em `service_locator.dart`
+
+### Entidades
+
+| Entidade | Função |
+|---|---|
+| `LearningPath` | Trilha (nome, categoria, dificuldade, XP, badge) |
+| `PathModule` | Módulo dentro da trilha (ordem, conteúdos) |
+| `PathContent` | Conteúdo individual (entity_id, tipo, opcional) |
+| `PathProgress` | Progresso do usuário na trilha |
+| `ModuleProgress` | Progresso em módulo (locked/unlocked/completed) |
+| `PathCertificate` | Certificado de conclusão |
+
+### Seed Inicial
+
+8 trilhas com módulos reais (3 módulos × 3 conteúdos = 9 conteúdos cada):
+1. Egito Antigo
+2. Império Romano
+3. Grécia Antiga
+4. Idade Média
+5. Renascimento
+6. Revolução Francesa
+7. Segunda Guerra Mundial
+8. Brasil Colonial
+
+### Banco de Dados
+
+Migration `004_learning_paths_schema.sql` — 6 tabelas:
+`learning_paths`, `path_modules`, `path_contents`, `path_progress`, `module_progress`, `path_certificates`
+
+### Escalabilidade
+
+Preparado para: milhares de trilhas, premium, multi-autor, multi-idioma, vídeo/áudio/texto, conteúdos opcionais e pré-requisitos.
+
+### Testes
+
+- 318 testes totais (+19 novos)
+- Cobertura: entities roundtrip, path progress (start, complete, unlock), certificates, recommendations
+
+---
+
 ## Sprint 8.2.0 — Learning Engine V1
 
 **Data**: 2025-07-23
