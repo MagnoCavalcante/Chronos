@@ -3,5 +3,7 @@ export 'chronos_typography.dart';
 export 'chronos_spacing.dart';
 export 'chronos_radius.dart';
 export 'chronos_shadows.dart';
+export 'chronos_elevation.dart';
+export 'chronos_animation.dart';
 export 'chronos_icons.dart';
 export 'chronos_theme.dart';
