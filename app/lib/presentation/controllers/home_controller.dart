@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import '../../core/gamification/gamification_service.dart';
 import '../../core/home/home_item.dart';
 import '../../core/home/home_repository.dart';
 import '../../core/utils/logger.dart';
@@ -14,6 +15,7 @@ class HomeState {
   final List<HomeItem> recommendations;
   final HomeItem? surprise;
   final Map<String, List<HomeItem>> categories;
+  final HomeGamificationSummary? gamification;
 
   const HomeState({
     this.isLoading = false,
@@ -25,6 +27,7 @@ class HomeState {
     this.recommendations = const [],
     this.surprise,
     this.categories = const {},
+    this.gamification,
   });
 
   HomeState copyWith({
@@ -37,6 +40,7 @@ class HomeState {
     List<HomeItem>? recommendations,
     HomeItem? surprise,
     Map<String, List<HomeItem>>? categories,
+    HomeGamificationSummary? gamification,
     bool clearError = false,
   }) {
     return HomeState(
@@ -49,6 +53,7 @@ class HomeState {
       recommendations: recommendations ?? this.recommendations,
       surprise: surprise ?? this.surprise,
       categories: categories ?? this.categories,
+      gamification: gamification ?? this.gamification,
     );
   }
 }
@@ -56,10 +61,12 @@ class HomeState {
 /// Controller reativo da Home inteligente.
 class HomeController extends ChangeNotifier {
   final HomeRepository _repository;
+  final GamificationService _gamificationService;
   HomeState _state = const HomeState();
 
-  HomeController({HomeRepository? repository})
-      : _repository = repository ?? HomeRepository();
+  HomeController({HomeRepository? repository, GamificationService? gamificationService})
+      : _repository = repository ?? HomeRepository(),
+        _gamificationService = gamificationService ?? GamificationService();
 
   HomeState get state => _state;
 
@@ -70,6 +77,7 @@ class HomeController extends ChangeNotifier {
     try {
       final continueStudying = await _repository.getContinueStudying();
       final recommendations = await _repository.getRecommendations();
+      final gamification = await _gamificationService.getHomeSummary();
       final results = await Future.wait([
         _repository.getContinueExploring(limit: 10),
         _repository.getHighlights(limit: 10),
@@ -90,6 +98,7 @@ class HomeController extends ChangeNotifier {
         continueStudying: continueStudying,
         recommendations: recommendations,
         surprise: results[3] as HomeItem?,
+        gamification: gamification,
         categories: {
           'Civilizações': results[4] as List<HomeItem>,
           'Personagens': results[5] as List<HomeItem>,
@@ -120,6 +129,10 @@ class HomeController extends ChangeNotifier {
 
   Future<void> onItemOpened(HomeItem item) async {
     await _repository.logAccess(item);
+    await _gamificationService.onViewContent(
+      entityType: item.entityType,
+      entityId: item.entityId,
+    );
   }
 
   Future<void> surpriseMe() async {

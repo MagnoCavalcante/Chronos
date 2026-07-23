@@ -15,4 +15,8 @@ class RouteNames {
   static const String sources = '/sources';
   static const String settings = '/settings';
   static const String about = '/about';
+  static const String profile = '/profile';
+  static const String achievements = '/achievements';
+  static const String challenges = '/challenges';
+  static const String weeklySummary = '/weekly-summary';
 }

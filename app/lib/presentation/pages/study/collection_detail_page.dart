@@ -40,6 +40,7 @@ class _CollectionDetailPageState extends State<CollectionDetailPage> {
         elevation: 0,
         title: Text(widget.collection.title, style: ChronosTypography.titleMedium.copyWith(fontWeight: FontWeight.bold)),
         actions: [
+          IconButton(icon: const Icon(Icons.check_circle_outlined, color: ChronosColors.success), onPressed: _complete, tooltip: 'Concluir coleção'),
           IconButton(icon: const Icon(Icons.delete_rounded), onPressed: _delete),
           IconButton(icon: const Icon(Icons.copy_rounded), onPressed: _duplicate),
         ],
@@ -77,6 +78,11 @@ class _CollectionDetailPageState extends State<CollectionDetailPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _complete() async {
+    final ok = await _controller.completeCollection(widget.collection.id);
+    if (ok && mounted) Navigator.of(context).pop();
   }
 
   Future<void> _delete() async {

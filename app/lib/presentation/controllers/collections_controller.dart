@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/gamification/gamification_service.dart';
 import '../../core/study/collection_repository.dart';
 import '../../core/study/progress_repository.dart';
 import '../../core/study/study_models.dart';
@@ -70,6 +71,13 @@ class CollectionsController extends ChangeNotifier {
     return ok;
   }
 
+  Future<bool> completeCollection(String id) async {
+    final ok = await collectionRepository.completeCollection(id);
+    if (ok) await GamificationService().onCollectionCompleted(id);
+    if (ok) await load();
+    return ok;
+  }
+
   Future<bool> addItem(String collectionId, String entityType, String entityId, {String? notes}) async {
     final item = await collectionRepository.addItemToCollection(
       collectionId: collectionId,
@@ -88,5 +96,12 @@ class CollectionsController extends ChangeNotifier {
       progressPercent: percent,
       addedSeconds: seconds,
     );
+    if (status == StudyStatus.completed) {
+      await GamificationService().onStudyCompleted(
+        entityType: entityType,
+        entityId: entityId,
+        minutes: (seconds ?? 0) ~/ 60,
+      );
+    }
   }
 }

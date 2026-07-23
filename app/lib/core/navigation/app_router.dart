@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import '../../core/crud/crud_module_configs.dart';
 import '../../core/crud/crud_screen.dart';
 import '../../presentation/pages/navigation/app_shell.dart';
+import '../../presentation/pages/profile/achievements_page.dart';
+import '../../presentation/pages/profile/challenges_page.dart';
+import '../../presentation/pages/profile/profile_page.dart';
+import '../../presentation/pages/profile/weekly_summary_page.dart';
 import '../../presentation/screens/eras_screen.dart';
 import '../presentation/widgets/widgets.dart';
 import '../theme/theme.dart';
@@ -27,6 +31,10 @@ class AppRouter {
         RouteNames.artifacts: (context) => CrudScreen(config: CrudModuleConfigs.artifacts),
         RouteNames.locations: (context) => CrudScreen(config: CrudModuleConfigs.historicalLocations),
         RouteNames.sources: (context) => CrudScreen(config: CrudModuleConfigs.historicalSources),
+        RouteNames.profile: (context) => const ProfilePage(),
+        RouteNames.achievements: (context) => const AchievementsPage(),
+        RouteNames.challenges: (context) => const ChallengesPage(),
+        RouteNames.weeklySummary: (context) => const WeeklySummaryPage(),
         RouteNames.settings: (context) => const _FutureSprintPlaceholderScreen(
               title: 'Configurações do CHRONOS',
               description: 'O painel de preferências, sincronização offline de dados e ajustes visuais será liberado na Sprint 5.6.',

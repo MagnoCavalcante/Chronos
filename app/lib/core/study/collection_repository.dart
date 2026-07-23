@@ -90,6 +90,21 @@ class CollectionRepository {
     }
   }
 
+  Future<bool> completeCollection(String id) async {
+    final client = _client;
+    if (client == null) return false;
+    try {
+      await client.from('collections').update({
+        'ativo': false,
+        'updated_at': DateTime.now().toIso8601String(),
+      }).eq('id', id);
+      return true;
+    } catch (e) {
+      ChronosLogger.error('Erro ao concluir coleção', error: e);
+      return false;
+    }
+  }
+
   Future<bool> duplicateCollection(String id) async {
     final original = await getCollectionById(id);
     if (original == null) return false;

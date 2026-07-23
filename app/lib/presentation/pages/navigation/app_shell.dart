@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/navigation/route_names.dart';
 import '../../../core/theme/theme.dart';
 import '../../../core/presentation/widgets/widgets.dart';
 import 'main_navigation.dart';
@@ -235,7 +236,7 @@ class _AppShellState extends State<AppShell> {
         ChronosIconButton(
           icon: Icons.account_circle_outlined,
           tooltip: 'Perfil',
-          onPressed: () {},
+          onPressed: () => Navigator.of(context).pushNamed(RouteNames.profile),
         ),
         ChronosSpacing.hSizedBoxMD,
       ],

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'package:chronos/core/gamification/gamification_service.dart';
 import 'package:chronos/presentation/engine/entity_registry.dart';
 import 'package:chronos/presentation/widgets/browser/entity_card.dart';
 import '../../domain/entities/search_result.dart';
@@ -177,6 +178,7 @@ class ChronosSearchController extends ChangeNotifier {
           hasMore: page.hasMore,
         );
         _history.add(searchQuery.text.trim());
+        unawaited(GamificationService().onSearch());
         _analytics.record(
           query: searchQuery.text.trim(),
           resultCount: page.results.length,

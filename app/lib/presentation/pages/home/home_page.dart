@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../../core/gamification/gamification_models.dart';
+import '../../../core/gamification/gamification_service.dart';
+import '../../../core/gamification/level_calculator.dart';
 import '../../../core/home/home_item.dart';
 import '../../../core/presentation/widgets/widgets.dart';
 import '../../../core/theme/theme.dart';
@@ -81,6 +84,57 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildProgressCard(HomeGamificationSummary summary) {
+    final profile = summary.profile;
+    final totalXp = profile?.totalXp ?? 0;
+    final level = profile?.currentLevel ?? 1;
+    final progress = LevelCalculator.levelProgress(totalXp);
+    final streak = profile?.streakDays ?? 0;
+    final challenges = summary.challenges.where((c) => !c.completed).toList();
+
+    return ChronosCard(
+      onTap: () => Navigator.of(context).pushNamed(RouteNames.profile),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Nível $level · $totalXp XP',
+                  style: ChronosTypography.titleMedium.copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
+              if (streak > 0) ...[
+                const Icon(Icons.local_fire_department, color: ChronosColors.warning, size: 18),
+                ChronosSpacing.hSizedBoxXS,
+                Text('$streak', style: ChronosTypography.bodySmall),
+              ],
+            ],
+          ),
+          ChronosSpacing.vSizedBoxSM,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6),
+            child: LinearProgressIndicator(
+              value: progress,
+              minHeight: 10,
+              backgroundColor: ChronosColors.border,
+              valueColor: const AlwaysStoppedAnimation<Color>(ChronosColors.accent),
+            ),
+          ),
+          ChronosSpacing.vSizedBoxSM,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('+${summary.dailyXp} XP hoje', style: ChronosTypography.bodySmall.copyWith(color: ChronosColors.textSecondary)),
+              Text('${challenges.length} desafios ativos', style: ChronosTypography.bodySmall.copyWith(color: ChronosColors.textSecondary)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   void _surpriseMe() {
     _controller.surpriseMe().then((_) {
       final surprise = _controller.state.surprise;
@@ -117,6 +171,12 @@ class _HomePageState extends State<HomePage> {
           ChronosSpacing.vSizedBoxLG,
           _buildSearchBar(context),
           ChronosSpacing.vSizedBoxLG,
+          if (state.gamification != null) ...[
+            const ChronosSectionHeader(title: 'Seu progresso hoje', icon: Icons.local_fire_department_rounded),
+            ChronosSpacing.vSizedBoxSM,
+            _buildProgressCard(state.gamification!),
+            ChronosSpacing.vSizedBoxLG,
+          ],
           if (state.continueStudying != null) ...[
             const ChronosSectionHeader(title: 'Continue Estudando', icon: Icons.play_circle_fill_rounded),
             ChronosSpacing.vSizedBoxSM,

@@ -62,6 +62,8 @@ class ChronosBadge extends StatelessWidget {
       ),
       child: Text(
         displayText,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
         style: ChronosTypography.labelSmall.copyWith(
           fontSize: 9,
           color: color,
