@@ -2,6 +2,22 @@
 
 Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 
+## [1.0.0-beta.1] - 2026-07-23
+
+### Beta Infrastructure
+- **Bug Tracker** - Sistema de registro com prioridade, categoria e status
+- **Telemetria Local** - Tempo de uso, pesquisas, features, crashes (sem envio externo)
+- **Beta Center** - Painel interno com versão, status API/DB, storage, sessões
+- **Feature Toggle** - Ativar/desativar funcionalidades sem recompilar
+- **Feedback Assistant** - Captura automática de erros com descrição do usuário
+- **Release Metrics** - Comparação automática entre versões (cold start, memória, erros)
+
+### Qualidade
+- **233 testes** automatizados passando
+- Versionamento beta: 1.0.0-beta.1+2
+
+---
+
 ## [1.0.0] - 2026-07-23
 
 ### Funcionalidades Principais

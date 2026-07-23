@@ -10,6 +10,7 @@ import '../../features/onboarding/di/onboarding_di.dart';
 import '../../features/feedback/di/feedback_di.dart';
 import '../../features/whats_new/di/whats_new_di.dart';
 import '../../features/dev_tools/di/dev_tools_di.dart';
+import '../../features/beta/di/beta_di.dart';
 import '../navigation/navigation_service.dart';
 import '../../data/datasources/era_remote_datasource.dart';
 import '../../data/datasources/historical_event_remote_datasource.dart';
@@ -180,5 +181,6 @@ void setupServiceLocator() {
   FeedbackDI.register();
   WhatsNewDI.register();
   DevToolsDI.register();
+  BetaDI.register();
 }
 
