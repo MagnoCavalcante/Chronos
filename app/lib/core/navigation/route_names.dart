@@ -19,4 +19,5 @@ class RouteNames {
   static const String achievements = '/achievements';
   static const String challenges = '/challenges';
   static const String weeklySummary = '/weekly-summary';
+  static const String ai = '/ai';
 }

@@ -229,6 +229,11 @@ class _AppShellState extends State<AppShell> {
       ),
       actions: [
         ChronosIconButton(
+          icon: Icons.auto_fix_high_rounded,
+          tooltip: 'Chronos AI',
+          onPressed: () => Navigator.of(context).pushNamed(RouteNames.ai),
+        ),
+        ChronosIconButton(
           icon: Icons.notifications_none_rounded,
           tooltip: 'Notificações',
           onPressed: () {},
