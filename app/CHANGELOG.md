@@ -2,6 +2,22 @@
 
 Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 
+## [8.1.0] - 2026-07-23
+
+### Knowledge Graph & Navegação Inteligente
+- **KnowledgeGraphService** - Serviço central de traversal do grafo com relações bidirecionais
+- **Continue Estudando** - Recomendações baseadas no grafo, priorizadas por tipo
+- **Descoberta Inteligente** - Sugestões de segundo nível ("Talvez você também queira estudar")
+- **Cadeia de Acontecimentos** - Antecedentes → Evento → Consequências → Eventos Posteriores
+- **Breadcrumb Histórico** - Navegação hierárquica (História → Era → Civilização → Entidade)
+- **Linha do Tempo Contextual** - Destaque automático antes/durante/depois
+- **Mapa Contextual** - Locais de nascimento, morte, campanhas, eventos navegáveis
+- **Busca Agrupada** - Resultados organizados por Personagens, Eventos, Civilizações, etc.
+- **Pessoas Relacionadas** - Card visual horizontal com personagens conectados
+- **Relações Bidirecionais** - Nenhuma página fica isolada no grafo
+- **DB Migration** - Índices reversos, full-text search, colunas source_type/name
+- **14 novos testes** - 266 testes totais, flutter analyze 0 issues
+
 ## [1.0.0-beta.1] - 2026-07-23
 
 ### Beta Infrastructure

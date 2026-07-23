@@ -7,8 +7,11 @@ abstract class KnowledgeRepository {
   /// Obtém a entry completa de conhecimento de uma entidade.
   Future<KnowledgeEntry?> getEntry(String entityId, EntityType entityType);
 
-  /// Obtém as relações de uma entidade.
+  /// Obtém as relações de uma entidade (saída: source→target).
   Future<List<KnowledgeRelation>> getRelations(String entityId);
+
+  /// Obtém as relações inversas de uma entidade (entrada: target→source).
+  Future<List<KnowledgeRelation>> getReverseRelations(String entityId);
 
   /// Obtém as fontes de uma entidade.
   Future<List<HistoricalSource>> getSources(String entityId);

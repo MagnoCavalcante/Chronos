@@ -47,6 +47,12 @@ class KnowledgeRepositoryImpl implements KnowledgeRepository {
   }
 
   @override
+  Future<List<KnowledgeRelation>> getReverseRelations(String entityId) async {
+    final data = await _remote.fetchReverseRelations(entityId);
+    return data.map(KnowledgeRelation.fromJson).toList();
+  }
+
+  @override
   Future<List<HistoricalSource>> getSources(String entityId) async {
     final data = await _remote.fetchSources(entityId);
     return data.map(HistoricalSource.fromJson).toList();

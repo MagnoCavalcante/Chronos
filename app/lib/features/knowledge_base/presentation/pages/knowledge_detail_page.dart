@@ -2,12 +2,19 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/theme/theme.dart';
 import '../../domain/entities/knowledge_entities.dart';
+import '../../services/knowledge_graph_service.dart';
 import '../widgets/consensus_section.dart';
+import '../widgets/continue_studying_section.dart';
+import '../widgets/contextual_timeline_section.dart';
 import '../widgets/curiosities_section.dart';
 import '../widgets/debates_section.dart';
-import '../widgets/knowledge_timeline_section.dart';
+import '../widgets/discovery_section.dart';
+import '../widgets/event_chain_section.dart';
+import '../widgets/history_breadcrumb.dart';
+import '../widgets/map_locations_section.dart';
 import '../widgets/related_entities_section.dart';
-import '../widgets/reliability_badge.dart';
+import '../widgets/related_people_section.dart';
+import '../widgets/reliability_badge.dart'; // ignore: unused_import
 import '../widgets/sources_section.dart';
 
 /// Página de detalhes completa de uma entidade na Knowledge Base.
@@ -15,18 +22,34 @@ import '../widgets/sources_section.dart';
 /// Reutilizável para qualquer tipo: Character, Event, Civilization, Artifact, Location.
 class KnowledgeDetailPage extends StatelessWidget {
   final KnowledgeEntry entry;
+  final List<BreadcrumbItem> breadcrumb;
+  final List<KnowledgeRelation> continueStudying;
+  final List<KnowledgeRelation> discoverySuggestions;
+  final List<KnowledgeRelation> relatedPeople;
+  final List<MapLocationData> mapLocations;
+  final EventChainData? eventChain;
   final VoidCallback? onFavorite;
   final VoidCallback? onShare;
   final VoidCallback? onAskAI;
   final ValueChanged<KnowledgeRelation>? onRelationTap;
+  final ValueChanged<BreadcrumbItem>? onBreadcrumbTap;
+  final ValueChanged<MapLocationData>? onMapLocationTap;
 
   const KnowledgeDetailPage({
     super.key,
     required this.entry,
+    this.breadcrumb = const [],
+    this.continueStudying = const [],
+    this.discoverySuggestions = const [],
+    this.relatedPeople = const [],
+    this.mapLocations = const [],
+    this.eventChain,
     this.onFavorite,
     this.onShare,
     this.onAskAI,
     this.onRelationTap,
+    this.onBreadcrumbTap,
+    this.onMapLocationTap,
   });
 
   @override
@@ -41,6 +64,13 @@ class KnowledgeDetailPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Breadcrumb
+                  if (breadcrumb.isNotEmpty) ...[                    HistoryBreadcrumb(
+                      items: breadcrumb,
+                      onTap: onBreadcrumbTap,
+                    ),
+                    const SizedBox(height: ChronosSpacing.md),
+                  ],
                   _buildHeader(),
                   const SizedBox(height: ChronosSpacing.lg),
                   _buildResumo(),
@@ -58,7 +88,32 @@ class KnowledgeDetailPage extends StatelessWidget {
                   ],
                   if (entry.linhaDoTempo.isNotEmpty) ...[
                     const SizedBox(height: ChronosSpacing.lg),
-                    KnowledgeTimelineSection(entries: entry.linhaDoTempo),
+                    ContextualTimelineSection(entries: entry.linhaDoTempo),
+                  ],
+                  // Cadeia de acontecimentos
+                  if (eventChain != null && !eventChain!.isEmpty) ...[
+                    const SizedBox(height: ChronosSpacing.lg),
+                    EventChainSection(
+                      currentName: entry.nome,
+                      chain: eventChain!,
+                      onTap: onRelationTap,
+                    ),
+                  ],
+                  // Pessoas relacionadas
+                  if (relatedPeople.isNotEmpty) ...[
+                    const SizedBox(height: ChronosSpacing.lg),
+                    RelatedPeopleSection(
+                      people: relatedPeople,
+                      onTap: onRelationTap,
+                    ),
+                  ],
+                  // Mapa contextual
+                  if (mapLocations.isNotEmpty) ...[
+                    const SizedBox(height: ChronosSpacing.lg),
+                    MapLocationsSection(
+                      locations: mapLocations,
+                      onTap: onMapLocationTap,
+                    ),
                   ],
                   if (entry.consenso != null) ...[
                     const SizedBox(height: ChronosSpacing.lg),
@@ -82,6 +137,22 @@ class KnowledgeDetailPage extends StatelessWidget {
                   if (entry.fontes.isNotEmpty) ...[
                     const SizedBox(height: ChronosSpacing.lg),
                     SourcesSection(sources: entry.fontes),
+                  ],
+                  // Continue estudando
+                  if (continueStudying.isNotEmpty) ...[
+                    const SizedBox(height: ChronosSpacing.lg),
+                    ContinueStudyingSection(
+                      suggestions: continueStudying,
+                      onTap: onRelationTap,
+                    ),
+                  ],
+                  // Descoberta inteligente
+                  if (discoverySuggestions.isNotEmpty) ...[
+                    const SizedBox(height: ChronosSpacing.lg),
+                    DiscoverySection(
+                      suggestions: discoverySuggestions,
+                      onTap: onRelationTap,
+                    ),
                   ],
                   const SizedBox(height: ChronosSpacing.xxl),
                 ],

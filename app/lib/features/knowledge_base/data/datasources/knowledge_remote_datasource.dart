@@ -7,6 +7,7 @@ import '../../domain/entities/knowledge_entities.dart';
 abstract class KnowledgeRemoteDataSource {
   Future<Map<String, dynamic>?> fetchEntry(String entityId, EntityType entityType);
   Future<List<Map<String, dynamic>>> fetchRelations(String entityId);
+  Future<List<Map<String, dynamic>>> fetchReverseRelations(String entityId);
   Future<List<Map<String, dynamic>>> fetchSources(String entityId);
   Future<List<Map<String, dynamic>>> fetchDebates(String entityId);
   Future<List<Map<String, dynamic>>> fetchCuriosities(String entityId);
@@ -59,6 +60,32 @@ class KnowledgeRemoteDataSourceImpl implements KnowledgeRemoteDataSource {
       return List<Map<String, dynamic>>.from(response);
     } catch (e) {
       ChronosLogger.error('Erro ao buscar relações: $e', tag: _tag);
+      return [];
+    }
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> fetchReverseRelations(String entityId) async {
+    try {
+      final client = _client;
+      if (client == null) return [];
+
+      final response = await client
+          .from('knowledge_relations')
+          .select()
+          .eq('target_id', entityId);
+
+      // Converter relações inversas: trocar source/target para perspectiva do entityId
+      return List<Map<String, dynamic>>.from(response).map((r) {
+        return {
+          ...r,
+          'target_id': r['source_entity_id'],
+          'target_type': r['source_type'] ?? 'character',
+          'target_name': r['source_name'] ?? '',
+        };
+      }).toList();
+    } catch (e) {
+      ChronosLogger.error('Erro ao buscar relações inversas: \$e', tag: _tag);
       return [];
     }
   }

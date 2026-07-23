@@ -17,6 +17,9 @@ class MockKnowledgeRemoteDataSource implements KnowledgeRemoteDataSource {
   Future<List<Map<String, dynamic>>> fetchRelations(String entityId) async => [];
 
   @override
+  Future<List<Map<String, dynamic>>> fetchReverseRelations(String entityId) async => [];
+
+  @override
   Future<List<Map<String, dynamic>>> fetchSources(String entityId) async => [];
 
   @override
