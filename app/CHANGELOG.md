@@ -1,0 +1,38 @@
+# Changelog
+
+Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
+
+## [1.0.0] - 2026-07-23
+
+### Funcionalidades Principais
+- **Dashboard** - Tela principal com métricas e acesso rápido
+- **Timeline** - Linha do tempo interativa com filtros por era, tipo e período
+- **Relationship Engine** - Motor de relações entre entidades históricas
+- **Sistema de Estudos** - Flashcards, quizzes e revisão espaçada
+- **Chronos AI** - Assistente inteligente com RAG e múltiplos provedores
+- **Mapa Histórico** - OpenStreetMap com clustering, lazy loading e animações
+- **Exportação** - Markdown, HTML, PDF, Image via ExportEngine central
+- **Modo Apresentação** - Fullscreen com gestos, teclado e controle Bluetooth
+- **Busca Global** - Pesquisa federada com filtros e ordenação
+
+### Infraestrutura
+- **Offline First** - Cache inteligente com SharedPreferences
+- **Supabase** - Backend com autenticação, banco e storage
+- **Design System** - Tokens de cores, tipografia, espaçamento, elevação, animação
+- **Acessibilidade** - Alto contraste, daltonismo, escala de fontes, haptic feedback
+- **Analytics Local** - Métricas sem envio externo
+
+### UX/UI
+- **Onboarding** - Introdução guiada em 8 passos
+- **Tooltips** - Dicas contextuais de primeira utilização
+- **Microinterações** - Animações suaves (fade, scale, shimmer, bounce)
+- **Empty/Error States** - Estados padronizados com ações
+- **Skeleton Loading** - Loading states consistentes
+- **What's New** - Release notes automáticas
+
+### Qualidade
+- **195 testes** automatizados passando
+- **flutter analyze** sem issues
+- **Arquitetura limpa** - Domain, Data, Presentation separados
+- **DI** - Service Locator com módulos por feature
+- **Desacoplamento** - Providers abstratos para map, AI, export
