@@ -1,6 +1,7 @@
 import '../../features/historical_characters/di/historical_characters_di.dart';
 import '../../features/civilizations/di/civilizations_di.dart';
 import '../../features/ai/di/ai_di.dart';
+import '../../features/map/di/map_di.dart';
 import '../navigation/navigation_service.dart';
 import '../../data/datasources/era_remote_datasource.dart';
 import '../../data/datasources/historical_event_remote_datasource.dart';
@@ -162,5 +163,6 @@ void setupServiceLocator() {
   CivilizationsDI.register();
   SearchDI.register();
   AiDI.register();
+  MapDI.register();
 }
 
