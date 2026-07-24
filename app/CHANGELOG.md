@@ -2,6 +2,22 @@
 
 Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 
+## [9.4.0] - 2026-07-24
+
+### Painel Administrativo (Admin Studio V1)
+- **DashboardService** — Dashboard com stats gerais (usuários, conteúdos, entidades), growth, cache 5min
+- **EntityManagementService** — CRUD genérico para 8 tipos de entidade (personagens, eventos, civilizações, artefatos, localizações, fontes, trilhas, quizzes) com versionamento e auditoria automáticos
+- **EditorialFlowService** — Fluxo editorial completo: Rascunho → Em Revisão → Aprovado → Publicado → Arquivado, com rejeição e registro de responsáveis
+- **ContentVersionService** — Versionamento de conteúdo com histórico, comparação (diff), restauração de versões
+- **MediaLibraryService** — Biblioteca de mídia: imagens, vídeos, documentos, áudios, miniaturas. Organização por pastas e tags
+- **UserManagementService** — 8 perfis (SuperAdmin, Admin, Editor, Revisor, Tradutor, Moderador, Premium, Gratuito) com permissões granulares por módulo
+- **AuditService** — 14 tipos de ação auditáveis (login, CRUD, publicação, importação, exportação, alteração de permissões)
+- **ImportExportService** — Importação JSON/CSV com mapeamento automático; Exportação JSON/CSV/Markdown
+- **EditorAssistantService** — Assistente editorial IA (campos incompletos, fontes ausentes, classificação Fato/Teoria/Debate, inconsistências cronológicas, sugestão de relações). Nunca publica automaticamente
+- **VisualEditorService** — Editor visual com 12 tipos de bloco (heading, paragraph, image, video, table, quote, observation, fact, theory, debate, footnote, reference), conversão Markdown, reordenação
+- **6 tabelas Supabase** — admin_users, managed_contents, editorial_flow, content_versions, audit_logs, media_library
+- **49 novos testes** — 423 testes totais, flutter analyze 0 issues
+
 ## [8.5.0] - 2026-07-24
 
 ### Tutor de IA (Chronos AI Teacher)

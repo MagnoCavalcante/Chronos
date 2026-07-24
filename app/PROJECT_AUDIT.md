@@ -2,6 +2,64 @@
 
 ---
 
+## Sprint 9.4.0 — Painel Administrativo (Admin Studio V1)
+
+**Data**: 2025-07-24
+
+### Critérios de Aceite
+
+| Critério | Status |
+|---|---|
+| CRUD completo para todas as entidades | ✅ EntityManagementService (8 tipos: character, event, civilization, artifact, location, source, learningPath, quiz) |
+| Fluxo editorial funcionando | ✅ EditorialFlowService (draft → inReview → approved → published → archived) |
+| Versionamento funcionando | ✅ ContentVersionService (histórico, comparação de versões, restauração) |
+| Biblioteca de mídia funcionando | ✅ MediaLibraryService (upload, folders, tags, busca) |
+| Gestão de usuários funcionando | ✅ UserManagementService (8 roles, permissões granulares por módulo) |
+| Auditoria funcionando | ✅ AuditService (login, logout, CRUD, publish, archive, restore, import, export, roleChange) |
+| Importação e exportação funcionando | ✅ ImportExportService (JSON, CSV import + JSON, CSV, Markdown export) |
+| Dashboard administrativo | ✅ DashboardService (stats, growth, entity counts, cache 5min) |
+| Editor visual | ✅ VisualEditorService (12 block types, Markdown export, reorder) |
+| Assistente editorial IA | ✅ EditorAssistantService (campos incompletos, fontes, classificação, cronologia, relações) |
+| flutter analyze sem erros | ✅ No issues found |
+| Projeto compilando | ✅ 423 testes passando (+49 novos) |
+
+### Arquitetura
+
+Módulo independente `features/admin/` com:
+- **DashboardService** — Estatísticas com cache, entity counts, growth data
+- **EntityManagementService** — CRUD genérico para 8 tipos de entidade, versionamento automático, auditoria automática
+- **EditorialFlowService** — Ciclo editorial completo com registro de quem criou/revisou/aprovou
+- **ContentVersionService** — Versionamento com diff e restauração
+- **MediaLibraryService** — Biblioteca de mídia com folders, tags, busca
+- **UserManagementService** — 8 perfis, permissões granulares por módulo/ação
+- **AuditService** — 14 tipos de ação auditáveis
+- **ImportExportService** — CSV/JSON import, JSON/CSV/Markdown export
+- **EditorAssistantService** — IA auxiliar (nunca publica automaticamente, requer aprovação)
+- **VisualEditorService** — 12 tipos de bloco (heading, paragraph, image, video, table, quote, observation, fact, theory, debate, footnote, reference)
+
+### Entidades
+
+- `AdminUser`, `AdminPermission` — Usuários e permissões
+- `ManagedContent`, `EditorBlock` — Conteúdo gerenciável com blocos visuais
+- `ContentVersion` — Versões de conteúdo
+- `EditorialEntry` — Fluxo editorial
+- `AuditLogEntry` — Logs de auditoria
+- `MediaAsset` — Biblioteca de mídia
+- `EditorAssistantSuggestion`, `ImportResult` — Assistente e importação
+- Enums: AdminRole (8), EditorialStatus (5), AdminEntityType (8), AuditActionType (14), MediaType (5), EditorBlockType (12), AssistantSuggestionType (5), DataFormat (4), AdminModule (14), PermissionAction (6)
+
+### Banco de Dados
+
+Migration `007_admin_studio_schema.sql` — 6 tabelas:
+`admin_users`, `managed_contents`, `editorial_flow`, `content_versions`, `audit_logs`, `media_library`
+
+### Testes
+
+- 423 testes totais (+49 novos)
+- Cobertura: entities (8), dashboard (4), entity management (5), editorial flow (2), content version (2), media library (3), user management (4), audit (2), import/export (5), editor assistant (4), visual editor (3), enums (5)
+
+---
+
 ## Sprint 8.5.0 — Tutor de IA (Chronos AI Teacher)
 
 **Data**: 2025-07-24
