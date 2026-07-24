@@ -175,7 +175,6 @@ void setupServiceLocator() {
   HistoricalCharactersDI.register();
   CivilizationsDI.register();
   SearchDI.register();
-  AiDI.register();
   MapDI.register();
   PresentationModeDI.register();
   ExportDI.register();
@@ -190,5 +189,6 @@ void setupServiceLocator() {
   LearningDI.register();
   LearningPathsDI.register();
   AdaptiveLearningDI.register();
+  AiDI.register();
 }
 

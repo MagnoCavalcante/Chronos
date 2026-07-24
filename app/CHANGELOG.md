@@ -2,6 +2,21 @@
 
 Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 
+## [8.5.0] - 2026-07-24
+
+### Tutor de IA (Chronos AI Teacher)
+- **AiTeacherService** — Chat inteligente, IA contextual (PageContext), explicações em 4 níveis, comparações, timeline inteligente, relações históricas
+- **AiQuizGeneratorService** — Quiz IA automático (múltipla escolha, V/F, resposta curta, discursiva, misto), avaliação de respostas
+- **StudySessionService** — Sessões de estudo guiadas (explicação → pergunta → resposta → correção → transição)
+- **TutorMemoryService** — Memória persistente integrada ao Learning Engine (dúvidas, dificuldades, domínio, progresso)
+- **PathTutorService** — Tutor da trilha (explicar módulos, revisar, praticar)
+- **Sugestões automáticas** — Pós-conteúdo (resumo, quiz, aprofundar, próximo) e pós-conversa (recomendações)
+- **Segurança** — IA responde EXCLUSIVAMENTE com Base de Conhecimento do Chronos
+- **RAG Pipeline** — Interfaces preparadas: DocumentIndexer, EmbeddingProvider, SemanticSearchEngine, DocumentRetriever, ResponseGenerator
+- **Escalabilidade** — Preparado para múltiplos providers (OpenAI, Gemini, Claude, Llama), TTS/STT, offline parcial
+- **2 tabelas Supabase** — tutor_sessions, tutor_memory
+- **32 novos testes** — 374 testes totais, flutter analyze 0 issues
+
 ## [8.4.0] - 2026-07-23
 
 ### Tutor Inteligente e Aprendizagem Adaptativa

@@ -2,6 +2,60 @@
 
 ---
 
+## Sprint 8.5.0 — Tutor de IA (Chronos AI Teacher)
+
+**Data**: 2025-07-24
+
+### Critérios de Aceite
+
+| Critério | Status |
+|---|---|
+| Chat funcionando | ✅ AiTeacherService.ask() (perguntas livres, todos os modos) |
+| Contexto funcionando | ✅ AiTeacherService.askInContext() (PageContext da página aberta) |
+| Comparações funcionando | ✅ AiTeacherService.compare() (tabela estruturada) |
+| Quiz IA funcionando | ✅ AiQuizGeneratorService (MC, V/F, curta, discursiva, misto, avaliação) |
+| Tutor das Trilhas funcionando | ✅ PathTutorService (explicar, revisar, praticar módulos) |
+| Sessões de estudo funcionando | ✅ StudySessionService (aula guiada, correção, fluxo completo) |
+| Recomendações funcionando | ✅ AiTeacherService.getPostConversationRecommendations() |
+| Memória do Tutor | ✅ TutorMemoryService (dúvidas, dificuldades, domínio, progresso) |
+| Explicações em níveis | ✅ 4 níveis (básico, intermediário, avançado, acadêmico) |
+| Sugestões automáticas | ✅ getPostContentSuggestions() (resumo, quiz, aprofundar, próximo) |
+| Linha do tempo inteligente | ✅ askTimeline() (consulta temporal na base) |
+| Relações históricas | ✅ explainRelation() (cadeia de influência) |
+| Segurança (não inventa) | ✅ Todas as respostas usam EXCLUSIVAMENTE Base de Conhecimento |
+| RAG preparado | ✅ Interfaces: DocumentIndexer, EmbeddingProvider, SemanticSearchEngine, DocumentRetriever, ResponseGenerator |
+| flutter analyze sem erros | ✅ No issues found |
+| Projeto compilando | ✅ 374 testes passando (+32 novos) |
+
+### Arquitetura
+
+Módulo expandido `features/ai/` com novos serviços:
+- **AiTeacherService** — Chat inteligente, IA contextual, explicações em níveis, comparações, timeline, relações
+- **AiQuizGeneratorService** — Quiz IA (MC, V/F, curta, discursiva, misto), avaliação de respostas
+- **StudySessionService** — Sessões de estudo guiadas (explicação → pergunta → resposta → correção → transição)
+- **TutorMemoryService** — Memória persistente (dúvidas, dificuldades, domínio, progresso)
+- **PathTutorService** — Tutor da trilha (explicar, revisar, praticar módulos)
+
+### Entidades Novas
+
+- `TutorSession`, `SessionStep` — Sessão de estudo com etapas
+- `TutorMemoryEntry` — Memória do tutor
+- `TutorSuggestion`, `ComparisonResult`, `ComparisonRow` — Sugestões e comparações
+- `AiGeneratedQuiz`, `PageContext` — Quiz IA e contexto de página
+- RAG interfaces: `DocumentIndexer`, `EmbeddingProvider`, `SemanticSearchEngine`, `DocumentRetriever`, `ResponseGenerator`
+
+### Banco de Dados
+
+Migration `006_ai_teacher_schema.sql` — 2 tabelas:
+`tutor_sessions`, `tutor_memory`
+
+### Testes
+
+- 374 testes totais (+32 novos)
+- Cobertura: entities roundtrip, teacher service (7), quiz generator (6), sessions (4), memory (4), path tutor (4), RAG interfaces (2)
+
+---
+
 ## Sprint 8.4.0 — Tutor Inteligente e Aprendizagem Adaptativa
 
 **Data**: 2025-07-23
