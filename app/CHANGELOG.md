@@ -2,6 +2,21 @@
 
 Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 
+## [8.4.0] - 2026-07-23
+
+### Tutor Inteligente e Aprendizagem Adaptativa
+- **LearnerProfileService** - Perfil versionado com refresh automático (nível, tópicos, accuracy, preferências)
+- **TutorService** - 8 modos de explicação adaptados ao nível (iniciante/intermediário/avançado, resumos, analogias, prova)
+- **AdaptiveRecommendationEngine** - Motor desacoplado via RecommendationStrategy (ML-ready), cache 15min, explainability
+- **AdaptiveQuizService** - Dificuldade dinâmica (easy→medium→hard→expert), trigger review após 3 erros
+- **StudyPlanService** - Plano semanal personalizado (revisão 20% + quiz 10% + conteúdo novo 70%)
+- **DifficultyDetectionService** - Detecção automática: baixa accuracy (<60%), revisões pendentes, tempo excessivo
+- **LearningReportService** - Relatórios semanais/mensais com evolução, recomendações, tópicos dominados
+- **LearningPrivacyService** - Exportar/excluir dados de aprendizagem (LGPD-ready)
+- **4 tabelas Supabase** - learner_profiles (versionado), study_plans, learning_reports, adaptive_recommendations
+- **Documentação** - ADAPTIVE_LEARNING.md, RECOMMENDATION_ENGINE.md, TUTOR_AI.md
+- **24 novos testes** - 342 testes totais, flutter analyze 0 issues
+
 ## [8.3.0] - 2026-07-23
 
 ### Learning Paths (Trilhas de Aprendizagem)

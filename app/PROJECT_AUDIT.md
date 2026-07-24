@@ -2,6 +2,62 @@
 
 ---
 
+## Sprint 8.4.0 — Tutor Inteligente e Aprendizagem Adaptativa
+
+**Data**: 2025-07-23
+
+### Critérios de Aceite
+
+| Critério | Status |
+|---|---|
+| Perfil de aprendizagem funcionando | ✅ LearnerProfileService (versionado, refresh automático) |
+| Tutor Inteligente funcionando | ✅ TutorService (8 modos, explicações contextuais) |
+| Recomendações personalizadas funcionando | ✅ AdaptiveRecommendationEngine (cache, explainability) |
+| Quizzes adaptativos funcionando | ✅ AdaptiveQuizService (dificuldade dinâmica) |
+| Plano de estudo automático funcionando | ✅ StudyPlanService (semanal, 7 dias) |
+| Detecção de dificuldades | ✅ DifficultyDetectionService (3 critérios) |
+| Relatórios de aprendizagem funcionando | ✅ LearningReportService (semanal/mensal) |
+| Privacidade (exportar/excluir) | ✅ LearningPrivacyService |
+| RecommendationEngine desacoplado | ✅ Interface RecommendationStrategy (ML-ready) |
+| Perfil versionado | ✅ UNIQUE(user_id, version) |
+| Explainability | ✅ Toda recomendação tem campo reason |
+| flutter analyze sem erros | ✅ No issues found |
+| flutter test aprovado | ✅ 342 testes passando (+24 novos) |
+
+### Arquitetura
+
+Módulo independente `features/adaptive_learning/` com:
+- **Domain**: entities (7 classes, 8 enums), repository interface
+- **Data**: datasource Supabase, repository impl
+- **Services** (8):
+  - `LearnerProfileService` — perfil versionado, refresh automático
+  - `TutorService` — 8 modos de explicação, contextual explanations
+  - `AdaptiveRecommendationEngine` — desacoplado via interface, cache 15min, explainability
+  - `AdaptiveQuizService` — dificuldade dinâmica (easy→hard), trigger review
+  - `StudyPlanService` — plano semanal (revisão 20% + quiz 10% + conteúdo 70%)
+  - `DifficultyDetectionService` — baixa accuracy, revisões pendentes, tempo excessivo
+  - `LearningReportService` — relatórios semanais/mensais com evolução
+  - `LearningPrivacyService` — exportar/excluir dados
+- **DI**: `AdaptiveLearningDI` registrado em `service_locator.dart`
+
+### Banco de Dados
+
+Migration `005_adaptive_learning_schema.sql` — 4 tabelas:
+`learner_profiles`, `study_plans`, `learning_reports`, `adaptive_recommendations`
+
+### Documentação
+
+- `docs/ADAPTIVE_LEARNING.md` — Arquitetura e fluxo
+- `docs/RECOMMENDATION_ENGINE.md` — Algoritmos e scoring
+- `docs/TUTOR_AI.md` — Modos e integração
+
+### Testes
+
+- 342 testes totais (+24 novos)
+- Cobertura: entities roundtrip, profile refresh, tutor prompts, quiz adaptativo, difficulty detection, reports, privacy
+
+---
+
 ## Sprint 8.3.0 — Learning Paths (Trilhas de Aprendizagem)
 
 **Data**: 2025-07-23

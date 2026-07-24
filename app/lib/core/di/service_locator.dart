@@ -14,6 +14,7 @@ import '../../features/beta/di/beta_di.dart';
 import '../../features/knowledge_base/di/knowledge_base_di.dart';
 import '../../features/learning/di/learning_di.dart';
 import '../../features/learning_paths/di/learning_paths_di.dart';
+import '../../features/adaptive_learning/di/adaptive_learning_di.dart';
 import '../navigation/navigation_service.dart';
 import '../../data/datasources/era_remote_datasource.dart';
 import '../../data/datasources/historical_event_remote_datasource.dart';
@@ -188,5 +189,6 @@ void setupServiceLocator() {
   KnowledgeBaseDI.register();
   LearningDI.register();
   LearningPathsDI.register();
+  AdaptiveLearningDI.register();
 }
 
